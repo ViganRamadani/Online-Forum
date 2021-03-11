@@ -10,6 +10,11 @@ const session = require('express-session');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
+//Requiring user route
+const userRoutes = require('./routes/users');
+
+//Requiring user model
+const User = require('./models/usermodel');
 
 dotenv.config({path : './config.env'});
 
@@ -18,6 +23,19 @@ mongoose.connect(process.env.DATABASE_LOCAL, {
     useUnifiedTopology : true,
     useCreateIndex : true
 });
+
+//middleware for session
+app.use(session({
+    secret : 'Just a simple login/sign up application.',
+    resave : true,
+    saveUninitialized : true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy({usernameField : 'email'}, User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //middleware flash messages
 app.use(flash());
