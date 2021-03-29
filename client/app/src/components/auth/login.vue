@@ -61,7 +61,7 @@ export default {
           this.$router.push('/') 
         }
       } catch (err) {
-        swal('Error', 'Something Went Wrong', 'error') 
+        swal('Error', "Your account doesnt't exists", 'error') 
         console.log(err.response) 
       }
     }
