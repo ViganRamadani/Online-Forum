@@ -13,7 +13,8 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Please Include your password']
+    required: [true, 'Please Include your password'],
+    minlength: 7
   },
   tokens: [
     {

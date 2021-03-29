@@ -9,12 +9,7 @@ exports.registerNewUser = async (req, res) => {
         message: "Email already in use"
       })
     }
-    let password_length = await User.find({ password: req.body.password })
-    if (password_length.length < 8) {
-      return res.status(409).json({
-        message: "Password should contains at least 8 characters"
-      })
-    }
+    
     // if (isUser.length >= 1) {
     //   return res.status(409).json({
     //     message: 'email already in use'
