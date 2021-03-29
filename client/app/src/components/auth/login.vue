@@ -39,8 +39,8 @@
   </div>
 </template>
 <script>
-import swal from "sweetalert";
-
+// import swal from "sweetalert";
+import swal from 'sweetalert2';
 export default {
   data() {
     return {
@@ -57,12 +57,22 @@ export default {
         let token = response.data.token 
         localStorage.setItem('jwt', token) 
         if (token) {
-          swal('Success', 'Login Successful', 'success') 
+          swal.fire('Success', 'Login Successful', 'success') 
           this.$router.push('/') 
         }
       } catch (err) {
-        swal('Error', "Your account doesnt't exists", 'error') 
-        console.log(err.response) 
+        // swal.fire('Error', "Your account doesnt't exists", 'error') 
+        // console.log(err.response) 
+          swal.fire({
+      title: 'Incorrect email or password!',
+  text: '',
+  imageUrl: 'https://i.kym-cdn.com/entries/icons/original/000/018/489/nick-young-confused-face-300x256-nqlyaa.jpg',
+  imageWidth: 400,
+  imageHeight: 200,
+  imageAlt: 'Confused',
+  animation: false
+})
+console.log(err.response) 
       }
     }
   }

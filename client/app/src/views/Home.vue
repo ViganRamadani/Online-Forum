@@ -43,6 +43,7 @@
 </template>
 <script>
 import VueJwtDecode from "vue-jwt-decode";
+import swal from 'sweetalert2';
 
 export default {
   data() {
@@ -52,13 +53,30 @@ export default {
   },
   methods: {
     getUserDetails() {
+      
       let token = localStorage.getItem("jwt");
       let decoded = VueJwtDecode.decode(token);
       this.user = decoded;
     },
     logUserOut() {
-      localStorage.removeItem("jwt");
+    swal.fire({
+    title: 'Do you want to Log Out?',
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'OK',
+    closeOnConfirm: true,
+    closeOnCancel: true
+   }).then((result) => { 
+      if (result.value===true) { 
+        //  $('#logoutform').submit() // this submits the form 
+         localStorage.removeItem("jwt");
       this.$router.push("/login");
+      } 
+   }) 
+      // localStorage.removeItem("jwt");
+      // this.$router.push("/login");
     }
   },
   created() {
