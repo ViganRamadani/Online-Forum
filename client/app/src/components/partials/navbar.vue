@@ -20,8 +20,7 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <button v-if="user.loggedIn" @click="logUserOut"> LogOut</button>
-              
+              <button v-if="getUserDetails.user" @click="logUserOut">LogOut</button>
             </li>
           </ul>
         </div>
@@ -32,8 +31,12 @@
 
 <script>
   export default {
-    // name: "navbar"
-    
+    methods: {
+      logUserOut() {
+        localStorage.removeItem("jwt");
+        this.$router.push("/login");
+      }
+    }
   }
 </script>
 

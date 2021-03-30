@@ -28,10 +28,6 @@ export default {
       let token = localStorage.getItem("jwt");
       let decoded = VueJwtDecode.decode(token);
       this.user = decoded;
-    },
-    logUserOut() {
-      localStorage.removeItem("jwt");
-      this.$router.push("/login");
     }
   },
   created() {
