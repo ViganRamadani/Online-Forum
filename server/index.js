@@ -19,7 +19,7 @@ mongoose // Connect to the database
   }) 
 // db configuaration ends here
 
-//registering cors
+//registering cors 
 app.use(cors()) 
 
 //configure body parser
