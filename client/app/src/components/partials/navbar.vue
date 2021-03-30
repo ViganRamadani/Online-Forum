@@ -20,7 +20,7 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <button v-if="getUserDetails.user" @click="logUserOut">LogOut</button>
+              <button @click="logUserOut">LogOut</button>
             </li>
           </ul>
         </div>
@@ -30,7 +30,14 @@
 </template>
 
 <script>
+
   export default {
+    // name: "navbar"
+    data(){
+      return{ 
+        
+      }
+    },
     methods: {
       logUserOut() {
         localStorage.removeItem("jwt");
