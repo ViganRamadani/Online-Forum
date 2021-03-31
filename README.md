@@ -2,7 +2,7 @@
 
 ## How to setup the servers.
 ``` 
-cd serve
+cd server
 npm i 
 npm run serve
 ```
