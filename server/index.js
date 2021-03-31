@@ -1,11 +1,10 @@
 const express = require('express') 
 const morgan = require('morgan') 
 const cors = require('cors') 
-const bodyParser = require('body-parser') 
+require('dotenv').config()
 const mongoose = require('mongoose') 
 const config = require('./config/db') 
 const app = express() 
-
 
 //configure database and mongoose
 mongoose.set('useCreateIndex', true)
@@ -22,22 +21,23 @@ mongoose // Connect to the database
 //registering cors 
 app.use(cors()) 
 
-//configure body parser
-app.use(bodyParser.urlencoded({ extended: false })) 
-app.use(bodyParser.json()) 
-//configure body-parser ends here
+app.use(express.urlencoded({ extended: false })) 
+app.use(express.json()) 
 
 app.use(morgan('dev'))  // configire morgan
 
+const PORT = process.env.PORT
+app.listen(PORT, (err) => {
+  if (err) {
+    console.log("Huoston, we got a problem.", err)
+  } else
+    console.log(`App is running on port: ${PORT}`)
+})
+
 // define first route
 app.get('/', (req, res) => {
-  console.log('Hello MEVN Soldier') 
-}) 
-
-const PORT = process.env.PORT || 3000
+  console.log('Hello MEVN Soldier')
+})
 
 const userRoutes = require('./api/user/route/user')  //bring in our user routes
 app.use('/user', userRoutes) 
-app.listen(PORT, () => {
-  console.log(`App is running on ${PORT}`) 
-}) 

@@ -3,25 +3,21 @@ const User = require('../model/User')
 exports.registerNewUser = async (req, res) => {
   try {
     // console.log(isUser) 
-    let users_with_same_email = await User.find({ email: req.body.email })
-    if (users_with_same_email.length >= 1) {
+    let usersWithSameEmail = await User.find({ email: req.body.email })
+    if (usersWithSameEmail.length >= 1) {
       return res.status(409).json({
         message: "email already in use"
       })
     }
-    // if (isUser.length >= 1) {
-    //   return res.status(409).json({
-    //     message: 'email already in use'
-    //   }) 
-    // }
     const user = new User({
       name: req.body.name,
       email: req.body.email,
       password: req.body.password
+      
     }) 
-    let data = await user.save() 
+    let userData = await user.save() 
     const token = await user.generateAuthToken()  // here it is calling the method that we created in the model
-    res.status(201).json({ data, token }) 
+    res.status(201).json({ userData, token })
   } catch (err) {
     res.status(400).json({ err: err }) 
     console.log(err)

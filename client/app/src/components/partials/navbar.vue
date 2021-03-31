@@ -20,7 +20,7 @@
         >
           <ul class="navbar-nav">
             <li class="nav-item active">
-              <button @click="logUserOut">LogOut</button>
+              <button v-if="user" @click="logUserOut">LogOut</button>
             </li>
           </ul>
         </div>
@@ -30,12 +30,13 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex"; 
+
 
   export default {
     // name: "navbar"
     data(){
       return{ 
-        
       }
     },
     methods: {
@@ -43,7 +44,12 @@
         localStorage.removeItem("jwt");
         this.$router.push("/login");
       }
-    }
+    },
+     computed: {
+    ...mapGetters({
+      user: (['user'])
+    }),
+  }
   }
 </script>
 
