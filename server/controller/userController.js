@@ -13,6 +13,7 @@ exports.signUpUser = async (req, res) => {
   } catch (err) {
     res.status(400).json({ message: err.message })
   }
+  
   // try {
   //   const user = new User({
   //     username: req.body.username,

@@ -1,8 +1,24 @@
 <template>
   <div id="app">
+    <header>
+      <navbar></navbar>
+    </header>
     <router-view />
   </div>
 </template>
+
+<script>
+import navbar from "./components/partials/navbar"
+
+export default {
+  components: {
+    navbar: navbar
+  }
+
+
+}
+</script>
+
 
 <style>
 #app {
