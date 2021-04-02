@@ -39,5 +39,5 @@ app.get('/', (req, res) => {
   console.log('Hello MEVN Soldier')
 })
 
-const userRoutes = require('./api/user/route/user')  //bring in our user routes
+const userRoutes = require('./route/user')  //bring in our user routes
 app.use('/user', userRoutes) 

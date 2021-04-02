@@ -32,11 +32,13 @@
 <script>
 import { mapGetters } from "vuex"; 
 
+// import VueJwtDecode from "vue-jwt-decode";
 
   export default {
     // name: "navbar"
     data(){
       return{ 
+
       }
     },
     methods: {
@@ -45,11 +47,14 @@ import { mapGetters } from "vuex";
         this.$router.push("/login");
       }
     },
-     computed: {
-    ...mapGetters({
-      user: (['user'])
-    }),
-  }
+    computed: {
+      // ...mapState([
+      //   'user',
+      // ]),
+      ...mapGetters([
+        'user'
+      ])
+    },
   }
 </script>
 
