@@ -1,46 +1,52 @@
-const User = require('./model/User') 
+const User = require('../model/user')
+// const firebaseFunctions = require('firebase-functions');
 
-exports.registerNewUser = async (req, res) => {
+exports.signUpUser = async (req, res) => {
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+  })
   try {
-    let usersWithSameEmail = await User.find({ email: req.body.email })
-    if (usersWithSameEmail.length >= 1) {
-      return res.status(409).json({
-        message: "email already in use"
-      })
-    }
+    const newUser = await user.save()
 
-    const user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password
-    })
-
-    let userData = await user.save() 
-    const token = await user.generateAuthToken()  // here it is calling the method that we created in the model
-    res.status(201).json({ userData, token })
+    res.status(201).json(newUser)
   } catch (err) {
-    res.status(400).json({ err: err }) 
+    res.status(400).json({ message: err.message })
+  }
+  
+  // try {
+  //   const user = new User({
+  //     username: req.body.username,
+  //     email: req.body.email,
+  //   })
+
+  //   user.save(err => {
+  //     if(err) {
+  //       res.json(err) 
+  //     } else {
+  //       res.json("Succesfully Saved User!")
+  //     }
+  //   });
+  //   // let userData = await user.save()
+  // } catch (err) {
+  //   res.status(400).json({ err: err })
+  //   console.log(err)
+  // }
+}
+
+exports.getAllUsers = async (req, res) => {
+  User.find().sort({ createdAt: -1 })
+  .then(users => {
+    res.status(200).json(users)
+    // res.render('index', {title: 'all users', user: users})
+  })
+  .catch(err => {
     console.log(err)
-  }
-} 
+    res.status(500).json(err)
+  })
+}
 
-exports.loginUser = async (req, res) => { 
-  try {
-    const email = req.body.email
-    const password = req.body.password
-    const user = await User.findByCredentials(email, password)
-    if (!user) {
-      return res
-        .status(401)
-        .json({ error: "Login failed! Check authentication credentials" })
-    }
-    const token = await user.generateAuthToken()
-    res.status(201).json({ user, token })
-  } catch (err) {
-    res.status(400).json({ err: err })
-  }
-} 
-
-exports.getUserDetails = async (req, res) => {
-  await res.json(req.userData)
-};
+// exports.getAllUsers = async (req, res) => { 
+//   const user = await getAllUsers()
+//   res.send(await user.find().toArray())
+// }

@@ -1,11 +1,12 @@
-const express = require('express') 
-const morgan = require('morgan') 
-const cors = require('cors') 
+const express = require('express')
+const morgan = require('morgan')
+const cors = require('cors')
+const mongoose = require('mongoose')
 require('dotenv').config()
-const mongoose = require('mongoose') 
-const config = require('./config/db') 
-const app = express() 
+const config = require('./config/db')
+const app = express()
 
+mongoose.set('useFindAndModify', false);
 //configure database and mongoose
 mongoose.set('useCreateIndex', true)
 mongoose // Connect to the database
@@ -15,14 +16,14 @@ mongoose // Connect to the database
   })
   .catch(err => {
     console.log({ database_error: err })
-  }) 
+  })
 // db configuaration ends here
 
 //registering cors 
-app.use(cors()) 
+app.use(cors())
 
-app.use(express.urlencoded({ extended: false })) 
-app.use(express.json()) 
+app.use(express.urlencoded({ extended: false }))
+app.use(express.json())
 
 app.use(morgan('dev'))  // configire morgan
 
@@ -39,5 +40,5 @@ app.get('/', (req, res) => {
   console.log('Hello MEVN Soldier')
 })
 
-const userRoutes = require('./route/user')  //bring in our user routes
-app.use('/user', userRoutes) 
+const userRoutes = require('./route/index')  //bring in our user routes
+app.use('/user', userRoutes)

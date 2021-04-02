@@ -1,38 +1,14 @@
 <template>
-  <div>
-    <section>
-      <div class="container mt-5">
-        <div class="row">
-          <div class="col-md-12">
-            <ul class="list-group">
-              <li class="list-group-item">Name : {{ user.name }}</li>
-              <li class="list-group-item">Email : {{ user.email }}</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
+  <div class="home">
   </div>
 </template>
+
 <script>
-import VueJwtDecode from "vue-jwt-decode";
+// @ is an alias to /src
 
 export default {
-  data() {
-    return {
-      
-    };
-  },
-  methods: {
-    getUserDetails() {
-      let token = localStorage.getItem("jwt");
-      let decoded = VueJwtDecode.decode(token);
-      this.user = decoded;
-    }
-  },
-  created() {
-    this.getUserDetails();
+  name: "Home",
+  components: {
   }
 };
 </script>
-<style scoped></style>
