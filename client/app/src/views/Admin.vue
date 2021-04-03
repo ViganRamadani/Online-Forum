@@ -1,35 +1,43 @@
 <template>
   <div>
-    <h1>Admin</h1>
-      <h4>Hello World</h4>
-      <h1>{{ user.data.displayName }} </h1>
-      <h1> {{ user }} </h1>
-      <h1>{{ user.uid }}</h1> 
-      
-      <form @submit.prevent="addPost">
-        <div class="col-md-6">
-          <input id="title" type="text" class="form-control" v-model="postForm.title" placeholder="title" value required autofocus />
-        </div>
-      <div class="col-md-6">
-        <input type="text" v-model="postForm.description" placeholder="description" />
-      </div>
-      <button type="submit">Add post</button>
-      </form>
-      <br>
-      <div v-if="userData.length !== 0">
-        <div v-for="user in userData" :key="user._id">
-          <!-- <p>{{ user }}</p> -->
-          <h1>{{ user.username }}</h1>
-          <h2>{{ user.email }}</h2>
-        </div>
-
+    <h1 style="text-align:center; padding: 5px;">Admin</h1>
+    <div class="container">
+      <div v-if="userData.length !== 0" class="users-table-main">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                  Username:
+              </th>
+              <th>
+                  Email:
+              </th>
+              <th>
+                Options:
+              </th>
+            </tr>
+          </thead>
+          <tbody style="width: max-content;">
+              <tr v-for="user in userData" :key="user._id">
+                <td>
+                  <router-link :to="'user/' + user._id"> <h1>{{ user.username }}</h1> </router-link>
+                </td>
+                <td>
+                  {{ user.email }}
+                </td>
+                <td>
+                  <a href="">Edit</a> | 
+                  <router-link :to="'user/' + user._id">Details</router-link> | 
+                  <a href="">Delete</a>
+                </td>
+              </tr>
+          </tbody>
+        </table>
       </div>
       <div v-else>
         <p>No users yeet.</p>
       </div>
-      
-      <!-- <p>{{userData}}</p> -->
-
+    </div>
   </div>
 </template>
 
@@ -54,8 +62,10 @@ export default {
   created() {
     axios
       .get('http://localhost:3000/user/allUsers')
-      .then(respose => ( this.userData = respose.data ))
-      console.log(this.userData)
+      .then(respose => { 
+        this.userData = respose.data 
+        console.log(respose)
+      })
   },
   computed: {
     ...mapGetters({
@@ -66,12 +76,14 @@ export default {
   methods: {
     addPost() {
       axios.post("http://localhost:3000/user/addPost", this.postForm)
-      this.$router.push("/")      
+      this.$refs.addPost.reset(); // This will clear that form
+      // this.$router.push("/")      
     }
   }
 };
 </script>
 
-<style>
+<style scoped>
+
 
 </style>
