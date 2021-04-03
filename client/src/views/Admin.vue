@@ -13,14 +13,14 @@
                   Email:
               </th>
               <th>
-                Options:
+                  Options:
               </th>
             </tr>
           </thead>
           <tbody style="width: max-content;">
               <tr v-for="user in userData" :key="user._id">
                 <td>
-                  <router-link :to="'user/' + user._id"> <h1>{{ user.username }}</h1> </router-link>
+                  <router-link :to="'user/' + user._id">{{ user.username }}</router-link>
                 </td>
                 <td>
                   {{ user.email }}
