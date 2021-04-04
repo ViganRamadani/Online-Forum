@@ -10,7 +10,7 @@
         <input type="email" v-model="formUser.email" placeholder="email"/>
       </div>
       <div class="password">
-        <input type="password" v-model.trim="formUser.password" placeholder="password" />
+        <input minlength="8" type="password" v-model.trim="formUser.password" placeholder="password" />
       </div>
       <button type="submit">Register</button>
     </form>
@@ -47,7 +47,8 @@ export default {
             displayName: this.formUser.username,
             });  
             axios.post("http://localhost:3000/user/signUp", this.formUser)
-            this.$router.push("/admin")  
+            this.$router.push("/admin")
+           
         }).catch(err => {
           this.error = err
         });

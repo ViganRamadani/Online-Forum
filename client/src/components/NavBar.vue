@@ -1,10 +1,11 @@
 <template>
   <nav style="display: flex">
-    <router-link class="menu-items" to="/">Home</router-link>
+    <router-link v-if="user.loggedIn" class="menu-items" to="/">Home</router-link>
     <router-link class="menu-items" to="/about">About</router-link>
-    <Dropdown title="Tutorials" :items="tutorials" />
+    <Dropdown v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
     <router-link class="menu-items" to="/contactUs">Contact Us</router-link>
-    <router-link class="menu-items" to="/admin">Admin</router-link>
+
+    <router-link v-if="user.loggedIn" class="menu-items" to="/admin">Admin</router-link>
 
     <div class="go-right">
       <div class="flex-row">
@@ -12,6 +13,7 @@
         <router-link v-if="!user.loggedIn" class="menu-items" to="/register">Register</router-link>
         <router-link v-if="!user.loggedIn" class="menu-items" to="/login">Login</router-link>
         <div id="welcome-text" v-if="user.loggedIn">
+
           <p>Welcome! {{user.data.displayName}}</p>
         </div>
         <button v-if="user.loggedIn" @click="signOut" id="signOut" class="menu-items" >Sign out</button>

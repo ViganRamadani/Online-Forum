@@ -35,9 +35,9 @@ export default {
         .auth()
         .signInWithEmailAndPassword(this.user.email, this.user.password)
         .then(() => {
-          this.$router.push('admin')
+          this.$router.push('/')
           // this.$router.push({ name: 'admin' });
-          // swal('Success', 'Login Successful', 'success') 
+          swal('Success', 'Login Successful', 'success') 
         })
         .catch(err => {
           swal('Error', 'Something Went Wrong', 'error') 

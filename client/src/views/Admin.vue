@@ -22,8 +22,12 @@
                 <td>
                   <router-link :to="'user/' + user._id">{{ user.username }}</router-link>
                 </td>
+                
                 <td>
                   {{ user.email }}
+                </td>
+                <td>
+                  {{ user.isAdmin }}
                 </td>
                 <td>
                   <a href="">Edit</a> | 
