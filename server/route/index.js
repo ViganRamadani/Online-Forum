@@ -8,6 +8,7 @@ const userController = require('../controllers/userController')
 router.post('/signUp', userController.signUpUser)
 router.get('/allUsers', userController.getAllUsers)
 router.get('/:id', userController.getUser)
+console.log(userController.getUser);
 // router.get('/me', userController.getUserDetails)
 
 //@ USER POST

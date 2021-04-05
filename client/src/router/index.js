@@ -15,27 +15,29 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import( /* webpackChunkName: "home" */ '../views/Home.vue'),
+    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
     // component: Home
   },
   {
     path: "/login",
     name: "login",
-    component: () => import( /* webpackChunkName: "login" */ '../views/Login.vue'),
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
     // component: Login
     meta: {
       // requiresAuth: false,
-      isAuthenticated: null,
+      isAuthenticated: null
     }
   },
   {
     path: "/register",
     name: "register",
     meta: {
-      requiresAuth: null,
+      requiresAuth: null
       // isAuthenticated: false,
     },
-    component: () => import( /* webpackChunkName: "register" */ '../views/Register.vue'),
+    component: () =>
+      import(/* webpackChunkName: "register" */ "../views/Register.vue")
     // component: Register
   },
   {
@@ -44,28 +46,32 @@ const routes = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import( /* webpackChunkName: "about" */ "../views/About.vue")
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/About.vue")
     // meta: { requiresAuth: true }
   },
   {
     path: "/forgotPassword",
     name: "forgotPassword",
-    component: () => import( /* webpackChunkName: "forgotPassword" */ '../views/ForgotPassword.vue'),
+    component: () =>
+      import(
+        /* webpackChunkName: "forgotPassword" */ "../views/ForgotPassword.vue"
+      ),
     meta: { requiresAuth: true }
   },
   {
     path: "/admin",
     name: "admin",
-    component: () => import( /* webpackChunkName: "admin" */ '../views/Admin.vue'),
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/Admin.vue"),
     meta: { requiresAuth: true }
   },
   {
     path: "/user/:id",
     name: "user",
-    component: () => import( /* webpackChunkName: "user" */ '../views/User.vue'),
+    component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
     meta: { requiresAuth: true }
   }
-
 ];
 
 const router = new VueRouter({

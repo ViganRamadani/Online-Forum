@@ -12,10 +12,10 @@ import Navbar from "./components/NavBar";
 export default {
   components: {
     // "top-header": Header,
-    Navbar: Navbar,
+    Navbar: Navbar
   },
   data() {
     return {};
-  },
+  }
 };
-</script>  
+</script>

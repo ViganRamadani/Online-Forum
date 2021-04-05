@@ -26,9 +26,9 @@ export default {
   props: ["title", "items"],
   data() {
     return {
-      isOpen: false,
+      isOpen: false
     };
-  },
+  }
 };
 </script>
 

@@ -7,34 +7,36 @@
           <thead>
             <tr>
               <th>
-                  Username:
+                Username:
               </th>
               <th>
-                  Email:
+                Email:
               </th>
               <th>
-                  Options:
+                Options:
               </th>
             </tr>
           </thead>
           <tbody style="width: max-content;">
-              <tr v-for="user in userData" :key="user._id">
-                <td>
-                  <router-link :to="'user/' + user._id">{{ user.username }}</router-link>
-                </td>
-                
-                <td>
-                  {{ user.email }}
-                </td>
-                <td>
-                  {{ user.isAdmin }}
-                </td>
-                <td>
-                  <a href="">Edit</a> | 
-                  <router-link :to="'user/' + user._id">Details</router-link> | 
-                  <a href="">Delete</a>
-                </td>
-              </tr>
+            <tr v-for="user in userData" :key="user._id">
+              <td>
+                <router-link :to="'user/' + user._id">{{
+                  user.username
+                }}</router-link>
+              </td>
+
+              <td>
+                {{ user.email }}
+              </td>
+              <td>
+                {{ user.isAdmin }}
+              </td>
+              <td>
+                <a href="">Edit</a> |
+                <router-link :to="'user/' + user._id">Details</router-link> |
+                <a href="">Delete</a>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -48,46 +50,41 @@
 <script>
 import "firebase/auth";
 import { mapGetters } from "vuex";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "admin",
   data() {
     return {
       postForm: {
-        title: '',
-        description: '',
+        title: "",
+        description: ""
       },
-      userData: {},
+      userData: {}
       // user: 'erfsf',
       // secrets: "",
     };
   },
   created() {
-    axios
-      .get('http://localhost:3000/user/allUsers')
-      .then(respose => { 
-        this.userData = respose.data 
-        console.log(respose)
-      })
+    axios.get("http://localhost:3000/user/allUsers").then(respose => {
+      this.userData = respose.data;
+      console.log(respose);
+    });
   },
   computed: {
     ...mapGetters({
-        // map `this.user` to `this.$store.getters.user`
-        user: "user",
-      }),
+      // map `this.user` to `this.$store.getters.user`
+      user: "user"
+    })
   },
   methods: {
     addPost() {
-      axios.post("http://localhost:3000/user/addPost", this.postForm)
+      axios.post("http://localhost:3000/user/addPost", this.postForm);
       this.$refs.addPost.reset(); // This will clear that form
-      // this.$router.push("/")      
+      // this.$router.push("/")
     }
   }
 };
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

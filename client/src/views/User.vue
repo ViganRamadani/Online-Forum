@@ -9,31 +9,29 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 import { mapGetters } from "vuex";
 
-  export default {
-    data() {
-      return {
-        id: this.$route.params.id,
-        userData: {},
-      }
-    },
-    created() {
-      axios
-      .get('http://localhost:3000/user/' + this.id)
-      .then(respose => ( this.userData = respose.data ))
-      console.log(this.userData)
-    },
-    computed: {
-    ...mapGetters({
-        // map `this.user` to `this.$store.getters.user`
-        user: "user",
-      }),
+export default {
+  data() {
+    return {
+      id: this.$route.params.id,
+      userData: {}
+    };
   },
+  created() {
+    axios
+      .get("http://localhost:3000/user/" + this.id)
+      .then(respose => (this.userData = respose.data));
+    console.log(this.userData);
+  },
+  computed: {
+    ...mapGetters({
+      // map `this.user` to `this.$store.getters.user`
+      user: "user"
+    })
   }
+};
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

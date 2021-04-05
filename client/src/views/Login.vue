@@ -1,4 +1,5 @@
 <template>
+<div>
   <div>
     <h3>Login</h3>
     <form @submit.prevent="userLogin">
@@ -10,7 +11,13 @@
       </div>
       <button>Login</button>
     </form>
-    <div class="error" v-if="error">{{error.message}}</div>
+    <div class="error" v-if="error">{{ error.message }}</div>
+  </div>
+  <div>
+    <button @click="googleSignIn">
+      Sign In with Google
+    </button>
+  </div>
   </div>
 </template>
 
@@ -24,31 +31,47 @@ export default {
     return {
       user: {
         email: "",
-        password: "",
+        password: ""
       },
-        error: "",
+      error: ""
     };
   },
+  name: "SignUp",
   methods: {
+    googleSignIn: function() {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      firebase
+        .auth()
+        .signInWithPopup(provider)
+        .then(result => {
+          let token = result.credential.accessToken;
+          let user = result.user;
+          console.log(token); // Token
+          console.log(user); // User that was authenticated
+        })
+        .catch(err => {
+          console.log(err); // This will give you all the information needed to further debug any errors
+        });
+    },
     userLogin() {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.user.email, this.user.password)
         .then(() => {
-          this.$router.push('/')
+          this.$router.push("/");
           // this.$router.push({ name: 'admin' });
-          swal('Success', 'Login Successful', 'success') 
+          // swal('Success', 'Login Successful', 'success')
         })
         .catch(err => {
-          swal('Error', 'Something Went Wrong', 'error') 
-          console.log(err.response) 
+          swal("Error", "Something Went Wrong", "error");
+          console.log(err.response);
         });
-    },
+    }
   }
 };
 </script>
 
-<style >
+<style>
 div {
   color: inherit;
 }

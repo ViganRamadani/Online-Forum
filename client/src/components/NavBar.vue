@@ -1,22 +1,37 @@
 <template>
   <nav style="display: flex">
-    <router-link v-if="user.loggedIn" class="menu-items" to="/">Home</router-link>
+    <router-link v-if="user.loggedIn" class="menu-items" to="/"
+      >Home</router-link
+    >
     <router-link class="menu-items" to="/about">About</router-link>
     <Dropdown v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
     <router-link class="menu-items" to="/contactUs">Contact Us</router-link>
 
-    <router-link v-if="user.loggedIn" class="menu-items" to="/admin">Admin</router-link>
+    <router-link v-if="user.isAdmin" class="menu-items" to="/admin"
+      >Admin</router-link
+    >
 
     <div class="go-right">
       <div class="flex-row">
         <!-- user.loggedIn Checks the state of the user in the store/index.js file -->
-        <router-link v-if="!user.loggedIn" class="menu-items" to="/register">Register</router-link>
-        <router-link v-if="!user.loggedIn" class="menu-items" to="/login">Login</router-link>
+        <router-link v-if="!user.loggedIn" class="menu-items" to="/register"
+          >Register</router-link
+        >
+        <router-link v-if="!user.loggedIn" class="menu-items" to="/login"
+          >Login</router-link
+        >
         <div id="welcome-text" v-if="user.loggedIn">
-
-          <p>Welcome! {{user.data.displayName}}</p>
+          <p>Welcome! {{ user.data.displayName }}</p>
+          <p>{{ user.data.isAdmin }}</p>
         </div>
-        <button v-if="user.loggedIn" @click="signOut" id="signOut" class="menu-items" >Sign out</button>
+        <button
+          v-if="user.loggedIn"
+          @click="signOut"
+          id="signOut"
+          class="menu-items"
+        >
+          Sign out
+        </button>
       </div>
     </div>
   </nav>
@@ -35,31 +50,31 @@ export default {
       tutorials: [
         {
           title: "HTML",
-          link: "#",
+          link: "#"
         },
         {
           title: "CSS",
-          link: "#",
+          link: "#"
         },
         {
           title: "ASP.NET Core",
-          link: "#",
+          link: "#"
         },
         {
           title: "Vue",
-          link: "#",
-        },
-      ],
+          link: "#"
+        }
+      ]
     };
   },
   computed: {
     ...mapGetters({
       // map `this.user` to `this.$store.getters.user`
-      user: "user",
-    }),
+      user: "user"
+    })
   },
   components: {
-    Dropdown,
+    Dropdown
   },
   methods: {
     signOut() {
@@ -71,8 +86,8 @@ export default {
             this.$router.push("/login");
           });
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -111,7 +126,8 @@ nav .menu-items a {
 #welcome-text {
   display: flex;
   color: white;
-} #welcome-text p {
+}
+#welcome-text p {
   padding: 10px 20px;
   margin: 0;
 }
@@ -130,6 +146,4 @@ nav .menu-items a {
   background-color: rgb(128, 106, 106);
   border-bottom: 3px solid #d62e2e;
 }
-
-
 </style>
