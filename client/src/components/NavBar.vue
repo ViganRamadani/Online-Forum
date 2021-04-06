@@ -7,7 +7,7 @@
     <Dropdown v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
     <router-link class="menu-items" to="/contactUs">Contact Us</router-link>
 
-    <router-link v-if="user.isAdmin" class="menu-items" to="/admin"
+    <router-link v-if="user.loggedIn" class="menu-items" to="/admin"
       >Admin</router-link
     >
 
