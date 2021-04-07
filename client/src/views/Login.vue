@@ -76,7 +76,6 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
-import swal from "sweetalert";
 
 export default {
   data() {
@@ -85,6 +84,7 @@ export default {
         email: "",
         password: ""
       },
+      
       error: ""
     };
   },
@@ -109,21 +109,31 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.user.email, this.user.password)
+
         .then(() => {
-          this.$router.push("/admin");
-          // this.$router.push({ name: 'admin' });
-           //swal('Success', 'Login Successful', 'success')
+          this.$swal({
+            function: () => {
+              this.$router.push({ name: 'admin' })
+            },
+            title: 'Login Successful! :D',
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            // timer: 3000,
+            // timerProgressBar: true,
+            
+          })
         })
         .catch(err => {
-          swal("Error", "Something Went Wrong", "error");
+          // this.$swal("Error", "Something Went Wrong", "error");
           console.log(err.response);
         });
-    },
-    swalalert(){
-      swal('Coming soon...','','');
     }
   }
 };
+
+
 </script>
 
 <style scoped src="@/assets/css/Login.css">

@@ -15,8 +15,10 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue")
-    // component: Home
+    component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue"),
+    meta: {
+      requiresAuth: true,
+    }
   },
   {
     path: "/login",
@@ -26,7 +28,8 @@ const routes = [
     // component: Login
     meta: {
       // requiresAuth: false,
-      isAuthenticated: null
+      isAuthenticated: false,
+      requiresAuth: false,
     }
   },
   {
@@ -83,11 +86,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const isAuthenticated = firebase.auth().currentUser;
-  console.log("isauthenticated", isAuthenticated);
+  // console.log("isauthenticated", isAuthenticated);
   if (requiresAuth && !isAuthenticated) {
     next("/login");
+  } else if (!requiresAuth){
+    router.push({name: 'home'});
   } else {
     next();
+
   }
 });
 

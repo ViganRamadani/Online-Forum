@@ -1,10 +1,11 @@
 const User = require('../models/user')
+// const firebaseFunctions = require('firebase-functions');
 
-exports.signUpUser = async (req, res) => {
+exports.signUp = async (req, res) => {
   const user = new User({
     username: req.body.username,
     email: req.body.email,
-    isAdmin: false
+    isAdmin: false,
   })
   try {
     const newUser = await user.save()
@@ -27,15 +28,15 @@ exports.getAllUsers = async (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-  const id = req.params.id;
+  const currentUser = req.params.id;
+  // const currentUser = req.params.username
 
-  User.findById(id)
-    .then((user) => {
-      console.log(user)
-      res.status(200).json(user)
+  User.findOne({ username: currentUser })
+    .then(data => {
+      res.status(200).json(data)
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       res.status(500).json(err)
     })
 }

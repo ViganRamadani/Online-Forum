@@ -11,7 +11,6 @@
 import Navbar from "./components/NavBar";
 export default {
   components: {
-    // "top-header": Header,
     Navbar: Navbar
   },
   data() {

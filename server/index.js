@@ -30,14 +30,14 @@ app.use(morgan('dev'))  // configire morgan
 const PORT = process.env.PORT
 app.listen(PORT, (err) => {
   if (err) {
-    console.log(" problem.", err)
+    console.log("Huoston, we got a problem.", err)
   } else
     console.log(`App is running on port: ${PORT}`)
 })
 
 // define first route
 app.get('/', (req, res) => {
-  console.log('')
+  console.log('Hello MEVN Soldier')
 })
 
 const userRoutes = require('./route/index')  //bring in our user routes
