@@ -15,7 +15,7 @@
       <div class="flex-row">
         <!-- user.loggedIn Checks the state of the user in the store/index.js file -->
         <router-link v-if="!user.loggedIn" class="menu-items" to="/register"
-          >Register</router-link
+          >Sign Up</router-link
         >
         <router-link v-if="!user.loggedIn" class="menu-items" to="/login"
           >Login</router-link

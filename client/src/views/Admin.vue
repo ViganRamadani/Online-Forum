@@ -54,11 +54,13 @@
         <div class="forum-container">
           <form @submit.prevent="createForum">
             <label for="forumTopic">Forum Topic</label>
-            <input id="forumTopic" class="form-control" type="text" v-model="formForum.forumTitle" placeholder="Type here" required/>
+            <input id="forumTopic" class="form-control" type="text" v-model="postForm.forumTitle" placeholder="Type here" required/>
             <label for="forumDescription">Forum Description</label>
-            <input id="forumTopic" class="form-control" type="text" v-model="formForum.forumDescription" placeholder="Type here" required/>
-
-            <button type="submit" class="btn btn-success">Register</button>
+            <input id="forumDescription" class="form-control" type="text" v-model="postForm.forumDescription" placeholder="Type here" required/>
+            <label for="forumPicture">Select the forum topic Image</label>
+            <input id="forumDescription" ref='file' name='file' class="form-control" type="file" @change="selectFile"/>
+            
+            <button type="submit" class="btn btn-primary">Create Forum</button>
 
           </form>
         </div>
@@ -76,16 +78,44 @@ export default {
   name: "admin",
   data() {
     return {
+      userData: {},
+      // formForum: {
+      //   forumTitle: '',
+      //   forumDescription: ''
+      // },
+      file: '',
       postForm: {
         title: "",
-        description: ""
-      },
-      userData: {},
-      formForum: {
-        forumTitle: '',
-        forumDescription: ''
+        description: "",
+        imagePath: '',
       },
     };
+  },
+  methods: {
+    async createForum() {
+      const formData = new FormData();
+      formData.append('file', this.file);
+        try{
+          console.log(this.file);
+          axios.post("http://localhost:3000/user/admin/forumImg", formData)
+            // .then(res => {
+            //   this.postForm.imagePath = res.data.file.filename;
+            //   axios.post("http://localhost:3000/user/createForum", this.postForm)
+            // })
+        } catch(err){
+          console.log(err);
+        }
+    },
+    selectFile() {
+      this.file = this.$refs.file.files[0];
+    }
+    // createForum() {
+    //  axios
+    //   .get('http://localhost:3000/user/createForum', this.formForum)
+    //   .then(forumData => {
+    //     console.log(forumData);
+    //   })
+    // },
   },
   created() {
     axios
@@ -99,15 +129,6 @@ export default {
       // map `this.user` to `this.$store.getters.user`
       user: "user"
     })
-  },
-  methods: {
-    createForum() {
-     axios
-      .get('http://localhost:3000/user/createForum', this.formForum)
-      .then(forumData => {
-        console.log(forumData);
-      })
-    },
   },
 };
 </script>

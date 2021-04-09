@@ -1,27 +1,64 @@
+:root {
+  /*LIGHT THEME*/
+  --bg: rgba(250, 250, 250, 0.90);
+  --bg-2: rgba(0, 0, 0, 0.03);
+  --bg-hover: lightgray;
+  --nav-font-color: #343a40;
+  --font-color: black;
+  --card-light: white;
+  --font-color-dark-hover: #1d2393;
+  --post-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0);
+  --post-shadow-hover: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  --highlight: #f7f7f7;
+  --highlight-2: #414648;
+  --link: #3ca4ff;
+  --transition-delay: 0.2s ease;
+}
+
+.dark-mode {
+  --bg: #2d2d2d;
+  --bg-2: #393939;
+  --bg-3: #787878;
+  --bg-hover: lightgray;
+  --font-color: white;
+  --font-color-dark-hover: #45ac9f;
+  --font-color-hover: black;
+  --card-light: #393939;
+  --post-shadow: 0 4px 8px 0 rgba(135, 135, 135, 0.20), 0 6px 20px 0 rgba(178, 178, 178, 0.00);
+  --post-shadow-hover: 0 4px 8px 0 rgba(67, 82, 255, 0.20), 0 6px 20px 0 rgba(255, 255, 255, 0.05);
+  --highlight: #393939;
+  --highlight-2: #414648;
+  --link: #3ca4ff;
+}
+
+
+
+
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   text-decoration: none;
-
 }
 
 body,
 html,
-.App,
+#app,
 .vue-tempalte,
 .vertical-center {
   width: 100%;
   height: 100%;
 }
 
-body {
+#app {
   font-family: "montserrat", sans-serif;
+  background-color: var(--color);
 }
 
 header {
   width: 100vw;
-  background-color: #222;
+  background-color: rgba(34, 34, 34, 0.9);
   padding: 15px;
 }
 
@@ -34,9 +71,8 @@ header {
   flex-direction: row;
 }
 
-
-
 /* @ TABLE */
+/* 
 .table {
   width: 100%;
   margin-bottom: 1rem;
@@ -382,4 +418,4 @@ header {
 
 .table-responsive>.table-bordered {
   border: 0;
-}
+} */

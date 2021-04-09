@@ -36,7 +36,7 @@
                 <label class="mb-1">
                   <h6 class="mb-0 text-sm">Email Address</h6>
                 </label>
-                <input class="mb-4" type="text" name="email" v-model="user.email" placeholder="Enter a valid email address" />
+                <input class="mb-4" type="email" name="email" v-model="user.email" placeholder="Enter a valid email address" />
               </div>
               <div class="row px-3">
                 <label class="mb-1">
@@ -51,7 +51,7 @@
                 </button>
               </div>
               <div class="row mb-4 px-3">
-                <small class="font-weight-bold" >Don't have an account?<router-link style="color:red;" to="/register">Register</router-link></small >
+                <small class="font-weight-bold" >Don't have an account? <router-link style="color:#1A237E;" class="bt" to="/register">Sign Up</router-link></small >
                 <!--<router-link class="menu-items" to="/about">About</router-link>-->
               </div>
             </form>
@@ -112,17 +112,17 @@ export default {
 
         .then(() => {
           this.$swal({
-            function: () => {
-              this.$router.push({ name: 'admin' })
-            },
             title: 'Login Successful! :D',
+            text: 'Redirecting...',
             icon: 'success',
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            // timer: 3000,
-            // timerProgressBar: true,
-            
+            timer: 1000,
+            timerProgressBar: true,
+          }).then(() => {
+              // this.$router.push({ name: 'admin' })
+              window.location = "/";
           })
         })
         .catch(err => {

@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const config = require('./config/db')
 const app = express()
+// const multer = require('multer');
 
 mongoose.set('useFindAndModify', false);
 //configure database and mongoose
@@ -18,6 +19,8 @@ mongoose // Connect to the database
     console.log({ database_error: err })
   })
 // db configuaration ends here
+
+// mongoose.onc
 
 //registering cors 
 app.use(cors())

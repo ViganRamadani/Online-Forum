@@ -1,5 +1,5 @@
 const User = require('../models/user')
-// const firebaseFunctions = require('firebase-functions');
+
 
 exports.signUp = async (req, res) => {
   const user = new User({
@@ -8,7 +8,7 @@ exports.signUp = async (req, res) => {
     isAdmin: false,
   })
   try {
-    const newUser = await user.save()
+    const newUser =  await user.save()
     return res.status(201).json(newUser)
   } catch (err) {
     return res.status(400).json({ message: err.message })
@@ -19,7 +19,6 @@ exports.getAllUsers = async (req, res) => {
   User.find().sort({ createdAt: -1 })
     .then(users => {
       res.status(200).json(users)
-      // res.render('index', {title: 'all users', user: users})
     })
     .catch(err => {
       console.log(err)

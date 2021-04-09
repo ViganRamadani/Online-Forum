@@ -59,7 +59,7 @@
                   name="Submit"
                   class="btn btn-blue text-center"
                 >
-                  Login
+                  Sign Up
                 </button>
               </div>
              

@@ -89,8 +89,8 @@ router.beforeEach((to, from, next) => {
   // console.log("isauthenticated", isAuthenticated);
   if (requiresAuth && !isAuthenticated) {
     next("/login");
-  } else if (!requiresAuth){
-    router.push({name: 'home'});
+  // } else if (!requiresAuth){
+    // router.push({name: 'home'});
   } else {
     next();
 
