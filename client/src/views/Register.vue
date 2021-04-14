@@ -16,67 +16,28 @@
             <form @submit.prevent="userRegistration">
               <div class="row px-3">
                 <label>Full Name</label>
-                <input
-                  type="name"
-                  class="mb-4"
-                  placeholder="Username"
-                  name="name"
-                  v-model="formUser.username"
-                  id="name"
-                  value
-                  required
-                  autofocus
-                />
+                <input type="name" class="mb-4" placeholder="Username" name="name" v-model="formUser.username" id="name" value required autofocus/>
               </div>
               
               <div class="row px-3">
                 <label class="mb-1">
                   <h6 class="mb-0 text-sm">Email Address</h6>
                 </label>
-                <input
-                  class="mb-4"
-                  type="text"
-                  name="email"
-                  v-model="formUser.email"
-                  placeholder="Enter a valid email address"
-                />
+                <input class="mb-4" type="text" name="email" v-model="formUser.email" placeholder="Enter a valid email address"/>
               </div>
               <div class="row px-3">
                 <label class="mb-1">
                   <h6 class="mb-0 text-sm">Password</h6>
                 </label>
-                <input
-                   minlength="8"
-                   type="password"
-                  v-model.trim="formUser.password"
-                  placeholder="Enter password"
-                />
+                <input minlength="6" type="password" v-model.trim="formUser.password" placeholder="Enter password"/>
               </div>
               <br>
               <div class="row mb-3 px-3">
-                <button
-                  type="submit"
-                  name="Submit"
-                  class="btn btn-blue text-center"
-                >
+                <button type="submit" name="Submit" class="btn btn-blue text-center">
                   Sign Up
                 </button>
               </div>
-             
             </form>
-          </div>
-        </div>
-      </div>
-      <div class="bg-blue py-4">
-        <div class="row px-3">
-          <small class="ml-4 ml-sm-5 mb-2"
-            >Copyright &copy; 2021. All rights reserved.</small
-          >
-         <div class="social-contact ml-4 ml-sm-auto">
-            <span class="fa fa-facebook mr-4 text-sm"></span>
-            <span class="fa fa-google-plus mr-4 text-sm"></span>
-            <span class="fa fa-linkedin mr-4 text-sm"></span>
-            <span class="fa fa-twitter mr-4 mr-sm-5 text-sm"></span>
           </div>
         </div>
       </div>
@@ -102,9 +63,6 @@ export default {
     };
   },
   methods: {
-    // onFilePicked(event) {
-    //   this.user.profilePic = event.target.files[0];
-    // },
     userRegistration() {
       firebase
         .auth()
@@ -117,7 +75,18 @@ export default {
             displayName: this.formUser.username
           });
           axios.post("http://localhost:3000/user/signUp", this.formUser);
-          this.$router.push("/admin");
+          this.$swal({
+            title: 'Welcome to the Club :D',
+            html: 'Redirecting...',
+            timer: 2000,
+            icon: 'success',
+            showConfirmButton: false,
+            timerProgressBar: true,
+          })
+          .then(() => {
+            this.$router.push("/admin");
+              // window.location = "/";
+          })
         })
         .catch(err => {
           this.error = err;

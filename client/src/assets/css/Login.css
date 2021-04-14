@@ -132,14 +132,15 @@
   }
   
   .btn-blue {
-    background-color: #1a237e;
+    background-color: #383838;
     width: 150px;
     color: #fff;
     border-radius: 2px;
+    transition: all 0.2s;
   }
   
   .btn-blue:hover {
-    background-color: #000;
+    background-color: #1a7e4f;
     cursor: pointer;
   }
   

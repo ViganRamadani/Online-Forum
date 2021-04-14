@@ -22,8 +22,8 @@ export default {
   created() {
     axios
       .get("http://localhost:3000/user/" + this.id)
-      .then(respose => (this.userData = respose.data));
-    console.log(this.userData);
+      .then(res => (this.userData = res.data));
+    // console.log(this.userData);
   },
   computed: {
     ...mapGetters({
