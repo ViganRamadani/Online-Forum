@@ -36,7 +36,7 @@
                 <label class="mb-1">
                   <h6 class="mb-0 text-sm">Email Address</h6>
                 </label>
-                <input class="mb-4" type="text" name="email" v-model="user.email" placeholder="Enter a valid email address" />
+                <input class="mb-4" type="email" name="email" v-model="user.email" placeholder="Enter a valid email address" />
               </div>
               <div class="row px-3">
                 <label class="mb-1">
@@ -51,24 +51,14 @@
                 </button>
               </div>
               <div class="row mb-4 px-3">
-                <small class="font-weight-bold" >Don't have an account?<router-link style="color:red;" to="/register">Register</router-link></small >
+                <small class="font-weight-bold" >Don't have an account? <router-link style="color:#1A237E;" class="bt" to="/register">Sign Up</router-link></small >
                 <!--<router-link class="menu-items" to="/about">About</router-link>-->
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="bg-blue py-4">
-        <div class="row px-3">
-          <small class="ml-4 ml-sm-5 mb-2">Copyright &copy; 2021. All rights reserved.</small>
-          <div class="social-contact ml-4 ml-sm-auto">
-            <span class="fa fa-facebook mr-4 text-sm"></span>
-            <span class="fa fa-google-plus mr-4 text-sm"></span>
-            <span class="fa fa-linkedin mr-4 text-sm"></span>
-            <span class="fa fa-twitter mr-4 mr-sm-5 text-sm"></span>
-          </div>
-        </div>
-      </div>
+      
     </div>
   </div>
 </template>
@@ -76,7 +66,6 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
-import swal from "sweetalert";
 
 export default {
   data() {
@@ -85,6 +74,7 @@ export default {
         email: "",
         password: ""
       },
+      
       error: ""
     };
   },
@@ -109,21 +99,31 @@ export default {
       firebase
         .auth()
         .signInWithEmailAndPassword(this.user.email, this.user.password)
+
         .then(() => {
-          this.$router.push("/admin");
-          // this.$router.push({ name: 'admin' });
-           //swal('Success', 'Login Successful', 'success')
+          this.$swal({
+            title: 'Login Successful! :D',
+            text: 'Redirecting...',
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1250,
+            timerProgressBar: true,
+          }).then(() => {
+              // this.$router.push({ name: 'admin' })
+              window.location = "/";
+          })
         })
         .catch(err => {
-          swal("Error", "Something Went Wrong", "error");
+          // this.$swal("Error", "Something Went Wrong", "error");
           console.log(err.response);
         });
-    },
-    swalalert(){
-      swal('Coming soon...','','');
     }
   }
 };
+
+
 </script>
 
 <style scoped src="@/assets/css/Login.css">

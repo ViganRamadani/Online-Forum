@@ -7,22 +7,16 @@
     <Dropdown v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
     <router-link class="menu-items" to="/contactUs">Contact Us</router-link>
 
-    <router-link v-if="user.loggedIn" class="menu-items" to="/admin"
-      >Admin</router-link
-    >
+    <router-link v-if="user.loggedIn && userData.isAdmin == true" class="menu-items" to="/admin"
+      >Admin</router-link>
 
     <div class="go-right">
       <div class="flex-row">
         <!-- user.loggedIn Checks the state of the user in the store/index.js file -->
-        <router-link v-if="!user.loggedIn" class="menu-items" to="/register"
-          >Register</router-link
-        >
-        <router-link v-if="!user.loggedIn" class="menu-items" to="/login"
-          >Login</router-link
-        >
-        <div id="welcome-text" v-if="user.loggedIn">
-          <p>Welcome! {{ user.data.displayName }}</p>
-          <p>{{ user.data.isAdmin }}</p>
+        <router-link v-if="!user.loggedIn" class="menu-items" to="/register">Sign Up</router-link>
+        <router-link v-if="!user.loggedIn" class="menu-items" to="/login">Login</router-link>
+        <div id="welcomeUser" v-if="user.loggedIn">
+          <p>Welcome! <router-link id="username" :to="/user/ + user.data.displayName">{{ user.data.displayName }}</router-link></p>
         </div>
         <button
           v-if="user.loggedIn"
@@ -42,11 +36,13 @@ import Dropdown from "./Dropdown";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { mapGetters } from "vuex";
+import axios from "axios"
 
 export default {
   name: "navbar",
   data() {
     return {
+      userData: {},
       tutorials: [
         {
           title: "HTML",
@@ -73,6 +69,14 @@ export default {
       user: "user"
     })
   },
+  mounted() {
+    axios
+      .get("http://localhost:3000/user/" + this.user.data.displayName)
+      .then(res => {
+        this.userData = res.data;
+        console.log(this.userData);
+        });
+  },
   components: {
     Dropdown
   },
@@ -90,60 +94,3 @@ export default {
   }
 };
 </script>
-
-<style>
-nav {
-  display: flex;
-  align-items: center;
-}
-
-nav .menu-items {
-  position: relative;
-  display: flex;
-  padding: 10px 20px;
-  border-bottom: 3px solid transparent;
-  color: #fff;
-  text-align: center;
-  transition: 0.4s;
-}
-
-nav .menu-items.active,
-nav .menu-items:hover {
-  color: #fff;
-  text-decoration: none;
-
-  background-color: #444;
-  border-bottom: 3px solid #ff5858;
-
-  /* border-bottom-color: #ff5858; */
-}
-
-nav .menu-items a {
-  color: inherit;
-  text-decoration: none;
-}
-
-#welcome-text {
-  display: flex;
-  color: white;
-}
-#welcome-text p {
-  padding: 10px 20px;
-  margin: 0;
-}
-
-#signOut {
-  width: fit-content;
-  height: max-content;
-  font-size: inherit;
-  background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  outline: none;
-  cursor: pointer;
-}
-#signOut:hover {
-  background-color: rgb(128, 106, 106);
-  border-bottom: 3px solid #d62e2e;
-}
-</style>

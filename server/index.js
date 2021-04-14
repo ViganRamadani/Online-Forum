@@ -5,6 +5,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const config = require('./config/db')
 const app = express()
+// const multer = require('multer');
 
 mongoose.set('useFindAndModify', false);
 //configure database and mongoose
@@ -19,6 +20,8 @@ mongoose // Connect to the database
   })
 // db configuaration ends here
 
+// mongoose.onc
+
 //registering cors 
 app.use(cors())
 
@@ -30,14 +33,14 @@ app.use(morgan('dev'))  // configire morgan
 const PORT = process.env.PORT
 app.listen(PORT, (err) => {
   if (err) {
-    console.log(" problem.", err)
+    console.log("Huoston, we got a problem.", err)
   } else
     console.log(`App is running on port: ${PORT}`)
 })
 
 // define first route
 app.get('/', (req, res) => {
-  console.log('')
+  console.log('Hello MEVN Soldier')
 })
 
 const userRoutes = require('./route/index')  //bring in our user routes

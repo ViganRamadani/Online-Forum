@@ -1,10 +1,10 @@
-body {
+/* body {
     color: #000;
     overflow-x: hidden;
     height: 100%;
     background-color: #b0bec5;
     background-repeat: no-repeat;
-  }
+  } */
   
   .card0 {
     box-shadow: 0px 4px 8px 0px #757575;
@@ -132,14 +132,15 @@ body {
   }
   
   .btn-blue {
-    background-color: #1a237e;
+    background-color: #383838;
     width: 150px;
     color: #fff;
     border-radius: 2px;
+    transition: all 0.2s;
   }
   
   .btn-blue:hover {
-    background-color: #000;
+    background-color: #1a7e4f;
     cursor: pointer;
   }
   

@@ -7,7 +7,7 @@ export default new Vuex.Store({
     user: {
       loggedIn: false,
       data: null,
-      isAdmin: false
+      // isAdmin: false
     },
     userData: []
   },
@@ -31,7 +31,7 @@ export default new Vuex.Store({
         commit("SET_USER", {
           displayName: user.displayName,
           email: user.email,
-          isAdmin: user.isAdmin
+          // isAdmin: user.isAdmin
         });
       } else {
         commit("SET_USER", null);
