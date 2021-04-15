@@ -110,7 +110,6 @@ export default {
 
 #startHere a {
   color: black;
-
 }
 .home-main {
   text-align: center;
@@ -134,7 +133,6 @@ export default {
   justify-content: center;
   width: 952px;
   margin: 0 auto;
-
 }
 
 .go-horizontal {
