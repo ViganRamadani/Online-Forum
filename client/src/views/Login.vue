@@ -14,13 +14,13 @@
           <div class="card2 card border-0 px-4 py-5">
             <div class="row mb-4 px-3">
               <h6 class="mb-0 mr-4 mt-2">Sign in with</h6>
-              <div class="facebook text-center mr-3" @click="swalalert">
+              <div class="facebook text-center mr-3" >
                 <div class="fa fa-facebook"></div>
               </div>
               <div class="twitter text-center mr-3">
                 <div class="fa fa-google" @click="googleSignIn"></div>
               </div>
-              <div class="linkedin text-center mr-3" @click="swalalert">
+              <div class="linkedin text-center mr-3" >
                 <div class="fa fa-linkedin"></div>
               </div>
             </div>
@@ -58,7 +58,6 @@
           </div>
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -116,7 +115,7 @@ export default {
           })
         })
         .catch(err => {
-          // this.$swal("Error", "Something Went Wrong", "error");
+         this.$swal("Error", "Something Went Wrong", "error");
           console.log(err.response);
         });
     }

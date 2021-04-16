@@ -5,7 +5,7 @@ import VueRouter from "vue-router";
 // import Login from "../views/Login.vue";
 // import Admin from "../views/Admin.vue";
 // import ForgotPass from "../views/ForgotPassword.vue";
-
+// import OperationSystem from '../components/OperationSystem.vue';
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -79,6 +79,36 @@ const routes = [
     path: "/forums/:id",
     name: "forums",
     component: () => import(/* webpackChunkName: "user" */ "../views/Forums.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/operationsystem",
+    name: "OperationSystem",
+    component: () => import("../views/OperationSystem.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/mobile",
+    name: "mobile",
+    component: () => import("../views/Mobile.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/software",
+    name: "software",
+    component: () => import("../views/Software.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/hardware",
+    name: "hardware",
+    component: () => import("../views/Hardware.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/security",
+    name: "security",
+    component: () => import("../views/Security.vue"),
     meta: { requiresAuth: true }
   }
 ];

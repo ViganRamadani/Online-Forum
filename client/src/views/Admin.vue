@@ -4,7 +4,8 @@
       <h1>Admin</h1>
     </div>
     <div class="container">
-      <div v-if="userData.length !== 0 && currentUser.isAdmin === true" class="users-table-main">
+      <!-- && currentUser.isAdmin === true" -->
+      <div v-if="userData.length !== 0"  class="users-table-main">
         <table class="table">
           <thead>
             <tr>
@@ -96,6 +97,15 @@ export default {
     };
   },
   methods: {
+    deleteUsers(){
+        // var user = firebase.auth().currentUser;
+
+        // user.delete().then(function() {
+        //   // User deleted.
+        // }).catch(function(error) {
+        //   // An error happened.
+        // });
+    },
     async createForum() {
       const formData = new FormData();
       formData.append('file', this.file);
