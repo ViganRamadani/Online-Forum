@@ -3,7 +3,11 @@
     <header>
       <Navbar></Navbar>
     </header>
-    <router-view />
+   
+     <!-- Router view -->
+    <div class="container mt-5">
+      <router-view></router-view>
+    </div>
     <Footer></Footer>
   </div>
 </template>

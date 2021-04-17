@@ -110,7 +110,23 @@ const routes = [
     name: "security",
     component: () => import("../views/Security.vue"),
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/createcategorypost',
+    name: 'CreateCategoryPost',
+    component: () => import('../components/CreateCategoryPost')
+  },
+  {
+    path: '/listcategorypost',
+    name: 'ListCategoryPost',
+    component: () => import('../components/ListCategoryPost')
+  },
+  {
+    path: '/editcategorypost/:id',
+    name: 'EditCategoryPost',
+    component: () => import('../components/EditCategoryPost')
   }
+
 ];
 
 const router = new VueRouter({

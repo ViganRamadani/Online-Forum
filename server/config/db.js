@@ -1,4 +1,4 @@
 module.exports = {
-  database: "mongodb://localhost:27017/onlineForum",
-  secret: "password"
+  database: "mongodb://localhost:27017/onlineForum"
+  
 };
