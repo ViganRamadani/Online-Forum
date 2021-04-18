@@ -12,7 +12,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="category in Categories" :key="category._id">
-                        <div v-if="category.selected === 'Operation System'">
+                        <div v-if="category.selected === 'Web'">
                         <td >{{ category.title }}</td>
                         <td>{{ category.question }}</td>
                         <td>{{ category.selected }}</td>

@@ -65,8 +65,8 @@ export default {
           link: "/mobile"
         },
         {
-          title: "Software",
-          link: "/software"
+          title: "Web",
+          link: "/web"
         },
         {
           title: "Hardware",
@@ -107,6 +107,7 @@ export default {
 nav {
   display: flex;
   align-items: center;
+  
 }
 
 nav .menu-items {
