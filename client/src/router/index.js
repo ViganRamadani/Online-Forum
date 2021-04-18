@@ -94,9 +94,9 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/software",
-    name: "software",
-    component: () => import("../views/Software.vue"),
+    path: "/web",
+    name: "web",
+    component: () => import("../views/Web.vue"),
     meta: { requiresAuth: true }
   },
   {
