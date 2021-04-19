@@ -8,7 +8,7 @@
       <p>Welcome! Have a look around and join the discussions.</p>
     </div>
 
-    <div id="allForums" class="forums-main" v-if="forums">
+    <div v-if="forums.length != 0" id="allForums" class="forums-main">
       <div id="startHere">
         <a href="#allForums">Ask Here!</a>  
       </div>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <div v-else>
-      <p>No forums yet..</p>
+      <h1>No forums yet..</h1>
     </div>
 
     <!-- <form enctype="multipart/form-data" ref="addPost" @submit.prevent="addPost">

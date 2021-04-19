@@ -70,7 +70,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/user/:id",
+    path: "/user/:username",
     name: "user",
     component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
     meta: { requiresAuth: true }

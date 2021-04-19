@@ -27,9 +27,9 @@ exports.getAllUsers = async (req, res) => {
 }
 
 exports.getUser = (req, res) => {
-  const currentUser = req.params.id;
+  // const currentUser = req.params.username;
   
-  User.findOne({ username: currentUser })
+  User.findOne({ username: req.params.username })
     .then(data => {
       res.status(200).json(data)
     })
@@ -41,7 +41,7 @@ exports.getUser = (req, res) => {
 
 exports.addProfile = async (req, res) => {
   try {
-    var user = await User.findOneAndUpdate({ "username": req.body.username })
+    var user = await User.findOne({ "username": req.body.username })
     if (req.body.profilePath !== null) {
       user.profilePath = req.body.profilePath
     }

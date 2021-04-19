@@ -54,14 +54,19 @@
       <div class="forum-container-main">
         <div class="forum-container">
           <form @submit.prevent="createForum">
-            <label for="forum-Topic">Forum Topic</label>
-            <input id="forum-Topic" class="form-control" type="text" v-model="postForm.forumTopic" placeholder="Type here" required/>
-            <label for="forum-Description">Forum Description</label>
-            <input id="forum-Description" class="form-control" type="text" v-model="postForm.forumDescription" placeholder="Type here" required/>
-            <label for="forum-Picture">Select the forum topic Image</label>
-            <input  id="forum-Description" class="form-control" type="file" @change="selectFile" ref='file' name='file'/>
+            <label for="forum-topic">Forum Topic</label>
+            <input id="forum-topic" class="form-control" type="text" v-model="postForm.forumTopic" placeholder="Type here" required/>
+            <label for="forum-description">Forum Description</label>
+            <input id="forum-description" class="form-control" type="text" v-model="postForm.forumDescription" placeholder="Type here" required/>
             
-            <button type="submit" class="btn btn-primary">Create Forum</button>
+            <div class="flex-column">
+              <input hidden id="forum-picture" class="form-control" type="file" @change="selectFile" ref='file' name='file'/>
+              <div class='flex-row'>
+                <button @click.prevent="choosePic" class="btn btn-primary">Select Picture</button>
+                <button v-if="url" type="submit" class="btn btn-success">Create Forum</button>
+              </div>
+              
+            </div>
           </form>
           
         </div>
@@ -105,6 +110,17 @@ export default {
             .then(res => {
               this.postForm.imagePath = res.data.file.filename;
               axios.post("http://localhost:3000/user/admin/createForum", this.postForm)
+              this.postForm = ''
+
+              this.$swal({
+                title: "Forum Created",
+                icon: 'success',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1250,
+                timerProgressBar: false,
+
+              })
             })
         } catch(err){
           console.log(err);
@@ -122,6 +138,9 @@ export default {
       const filePreview = this.$refs.file.files[0];
       this.url = URL.createObjectURL(filePreview);
     },
+    choosePic() {
+      this.$refs.file.click()
+    }
   },
   created() {
     axios

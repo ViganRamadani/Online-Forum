@@ -18,14 +18,18 @@
           <div class="dropdown-main">
             <button class="toggle-menu">···</button>
             <ul class="menu-list">
-              <li class="menu-button"><a class="menu-report" :href="postData._id">Report Post</a></li>
-              <li class="menu-button"><a class="menu-remove" href="">Delete Post</a></li>
+              <li class="menu-button"><button class="menu-report" @click="reportPost(postData._id)">Report Post</button></li>
+              <li class="menu-button"><button class="menu-remove" @click="deletePost(postData._id)">Delete Post</button></li>
             </ul>
           </div>
         </div>
 
         <div class="content-main">
           <img :src="require('../../../server/uploads/' + postData.imagePath)">
+        </div>
+        <div class="bottom-main">
+          <button class="btn">Like</button>
+          <button class="btn">Comment</button>
         </div>
       </div>
       
@@ -41,7 +45,7 @@ export default {
   name: "userPost",
   data(){
     return {
-
+      userData: {},
       postData: {},
       username: {},
     }
@@ -121,6 +125,14 @@ export default {
   height: 75%;
 }
 
+.bottom-main {
+  display: flex;
+  justify-content: center;
+}
+.bottom-main button {
+  margin: 5px;
+}
+
 /* @ DROPDOWN */
 .dropdown-main {
   position: relative;
@@ -162,14 +174,17 @@ export default {
 .menu-button, .menu-report, .menu-remove {
     width: 100%;
     height: 100%;
+    background-color: white;
+    border: none;
     color: black;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
     font-size: 25px;
     transition: all 0.2s ease;
     text-decoration: none;
-} .menu-button a {
+} .menu-button button {
     padding: 10px;
 } .menu-report:hover {
     background-color: rgb(255, 251, 57);

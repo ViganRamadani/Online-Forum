@@ -2,7 +2,7 @@
   <div class="user-profile-container">
 
     <div @click="toggleProfile" class="profile">
-      <img id="profilePic" :src="require('../../../server/uploads/' + userData.profilePath)">
+      <img v-if="userData.profilePath != null" id="profilePic" :src="require('../../../server/uploads/' + userData.profilePath)">
       <div class="change-profile-main">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="changeProfile bi bi-person-bounding-box" viewBox="0 0 16 16">
           <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
@@ -17,23 +17,23 @@
 
     <div @click="reveal = !reveal" v-show="reveal" class="new-profile-main">
       <div class="profile-containter">
-        <form @submit='changeProfile'>
+        <form @submit.prevent='changeProfile'>
           <p style='text-align: center;'>Profile Preview Settings</p>
           
           <div v-if="!url" class="current-profile">
-            <img id="currentProfilePic" :src="require('../../../server/uploads/' + userData.profilePath)">
+            <img v-if="userData.profilePath" id="currentProfilePic" :src="require('../../../server/uploads/' + userData.profilePath)">
           </div>
 
           <div v-else class="new-profile">
             <img :src="url" alt="New Profile Pic">
           </div>
 
-          <div class="submit-photo" v-if="userData.profilePath == null">
-            <!-- <button @click='selectFile' type="submit" ref="submit" class="btn btn-outline-success">Create Profile Picture</button> -->
+          <div class="submit-photo" v-if="userData.profilePath === null">
+            <button @click='selectFile' type="submit" ref="submit" class="btn btn-outline-success">Create Profile Picture</button>
             <button @click.prevent='profileTrigger' class="btn btn-outline-dark">This aint it chief</button>
           </div>
           <div class="submit-photo" v-else>
-            <button @click='selectFile' type="submit" ref="submit" class="btn btn-outline-success">yee</button>
+            <button type="submit" ref="submit" class="btn btn-outline-success">yee</button>
             <button @click.prevent='profileTrigger' class="btn btn-outline-dark">Change Profile</button>
             <input hidden id="forum-Description" class="form-control" type="file" @change="selectFile" ref='file' name='file'/>
           </div>
@@ -41,24 +41,25 @@
       </div>
     </div>
 
-    <div class="all-posts-main">
+    <div v-if="userData.allPosts.length != 0" class="all-posts-main">
       <div v-for="post in userData.allPosts" :key="post.postId">
-        <div v-if="post.length !== 0">
+        <div v-if="post.length != 0">
           <div>
-            <!-- <img  :src="require('../../../server/uploads/' + userData.profilePath)"> -->
+            <img :src="require('../../../server/uploads/' + userData.profilePath)">
             <div>
               <h2>{{ post.postTitle }}</h2>
               <p>{{ post.forum }}</p>
             </div>
           </div>
         <h3> {{ post.description }}</h3>
-
+        
         <img width="250px" :src="require('../../../server/uploads/' + post.imagePath)">
         </div>
         <div v-else><h1>Hurr Durr</h1></div>
       </div>
-      
     </div>
+    <div v-else><h1>Hurr Durr</h1></div>
+
     <!-- <div>
       <h2>{{ userData.isAdmin }}</h2>
     </div> -->
@@ -73,7 +74,7 @@ export default {
   data() {
     return {
       reveal: false,
-      id: this.$route.params.id,
+      username: this.$route.params.username,
       userData: {},
       file: '',
       url: null,
@@ -92,10 +93,11 @@ export default {
           .then(res => {
             this.postForm.profilePath = res.data.file.filename;
             this.postForm.username = this.user.data.displayName
-            console.log(this.postForm);
+            // console.log(this.postForm);
             axios.patch('http://localhost:3000/user/addProfile', this.postForm)
-      this.reveal = !this.reveal;
 
+            // @ This forces a refresh so that you'll see the change in the profile
+            window.location = "/user/" + this.user.data.displayName;
           })
       } catch(err) {
         console.log(err);
@@ -107,7 +109,6 @@ export default {
       // To preview the file
       const filePreview = this.$refs.file.files[0];
       this.url = URL.createObjectURL(filePreview);
-      // this.reveal = false;
     },
     profileTrigger() {
       this.$refs.file.click()
@@ -120,10 +121,15 @@ export default {
     }
   },
   created() {
-
+    // const username = this.usernameURI.replace(" ", "%20")
+    // console.log(username);
+    // console.log(this.usernameURI)
+    
     axios
-      .get("http://localhost:3000/user/" + this.id)
+      .get("http://localhost:3000/user/" + this.username)
       .then(res => (this.userData = res.data));
+
+    // console.log(this.res)
     // console.log(this.userData);
   },
   computed: {

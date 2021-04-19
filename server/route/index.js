@@ -43,16 +43,13 @@ router.delete('/admin/deleteUser/:username', adminController.deleteUser)
 // //@ USER
 router.post('/signUp', userController.signUp)
 
-router.get('/:id', userController.getUser)
+router.get('/:username', userController.getUser)
 
 router.post('/profilePic', upload.single('file'), (req, res) => {
   res.json({ file: req.file });
 });
+
 router.patch('/addProfile', userController.addProfile)
-
-// router.post('/addProfile', userController.addProfile)
-
-
 
 // //@ USER POST
 router.get('/getPost/:username&:id', userPostController.getPost)

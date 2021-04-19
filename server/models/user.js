@@ -21,6 +21,9 @@ const postDetails = mongoose.Schema({
     type: String,
     required: true
   },
+},
+{ 
+  timestamps: true
 })
 
 const userSchema = mongoose.Schema({
@@ -36,11 +39,16 @@ const userSchema = mongoose.Schema({
   },
   profilePath: {
     type: String,
+    sparse: true,
+    unique: false,
   },
   isAdmin: {
     type: { Boolean, default: false }
   },
   allPosts: [ postDetails ]
+},
+{
+  timestamps: true
 })
 
 module.exports = mongoose.model('User', userSchema)
