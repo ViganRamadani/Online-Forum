@@ -121,7 +121,7 @@ export default {
       // To preview the file
       const filePreview = this.$refs.file.files[0];
       this.url = URL.createObjectURL(filePreview);
-    }
+    },
   },
   created() {
     axios
@@ -132,8 +132,21 @@ export default {
     axios.get('http://localhost:3000/user/' + this.user.data.displayName)
       .then(res => {
         this.currentUser = res.data
-      })    
+        console.log(this.currentUser)
+
+        // @ Check if the current logged In user is an Admin
+        if (this.currentUser.isAdmin != true) {
+          this.$router.push("/");
+          console.log("Access Denied!")
+        } else {
+          console.log("Access Granted!")
+        } 
+      })
   },
+  mounted(){
+    
+  },
+
   computed: {
     ...mapGetters({
       // map `this.user` to `this.$store.getters.user`

@@ -72,7 +72,7 @@ export default {
         .get("http://localhost:3000/user/" + this.user.data.displayName)
         .then(res => {
           this.userData = res.data;
-          console.log(this.userData);
+          // console.log(this.userData);
           });
   },
   components: {
