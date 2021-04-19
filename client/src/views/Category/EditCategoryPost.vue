@@ -50,8 +50,7 @@ export default {
                         timer: 1000,
                         showConfirmButton: false,
                     }).then(() => {
-                        // this.$router.push("/listCategoryPost");
-                        this.window.location.reload();
+                        this.$router.push("/listCategoryPost");
                     })
                 })
         }
