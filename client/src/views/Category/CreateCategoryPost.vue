@@ -58,7 +58,7 @@ import { mapGetters } from "vuex";
                 axios.post('http://localhost:3000/category/createcategorypost', this.categoryPost)
                 .then((data) => {
                     console.log(data);
-                //  this.$router.push('/listcategorypost')
+                this.$router.push('/listcategorypost')
                 //   this.CategoryPost = {
                 //     title: '',
                 //     question: '',

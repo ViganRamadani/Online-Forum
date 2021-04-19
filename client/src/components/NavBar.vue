@@ -59,7 +59,7 @@ export default {
         
         {
           title: "Make a Question",
-          link: "/category/createcategorypost"
+          link: "/createcategorypost"
         },
         {
           title: "Operation System",

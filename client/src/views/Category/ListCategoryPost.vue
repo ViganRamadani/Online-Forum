@@ -11,16 +11,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category in Categories" :key="category.id">
+                    <tr v-for="category in Categories" :key="category._id">
                         <!-- <div v-if="category.selected === 'Hardware'"> -->
                         <td >{{ category.title }}</td>
                         <td>{{ category.question }}</td>
                         <td>{{ category.selected }}</td>
                         <td>{{ category.author }}</td>
                         <td>
-                            <router-link :to="{name: 'update-categoryPost', params: { id: category._id }}" class="btn btn-success">Edit
+                            <router-link :to="'editCategoryPost/' +category._id" class="btn btn-success">Edit
                             </router-link>
-                            <button @click.prevent="deleteCategory(category.id)" class="btn btn-danger">Delete</button>
+                            <button @click.prevent="deleteCategory(category._id)" class="btn btn-danger">Delete</button>
                         </td>
                         <!-- </div> -->
                     </tr>

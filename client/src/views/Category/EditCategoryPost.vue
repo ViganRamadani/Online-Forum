@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h3 class="text-center">Update Student</h3>
+            <h3 class="text-center">Update Category Post</h3>
             <form @submit.prevent="handleUpdateForm">
                 <div class="form-group">
                     <label>Title</label>
@@ -10,7 +10,7 @@
 
                 <div class="form-group">
                     <label>Question</label>
-                    <input type="email" class="form-control" v-model="category.question" required>
+                    <input type="text" class="form-control" v-model="category.question" required>
                 </div>
 
                 <!-- <div class="form-group">
