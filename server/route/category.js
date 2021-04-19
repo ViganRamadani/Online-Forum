@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 let CategoryModel = require('../models/CategoryPost');
 
+// Get All Poss
 router.get('/allCategories',(req,res) => {
-    
     CategoryModel.find((error, data) => {
      if (error) {
        return next(error)
@@ -12,19 +12,20 @@ router.get('/allCategories',(req,res) => {
      }
    })
  })
+
+// Get All Posts of Specified Category
  router.get('/:selected', async(req,res)=> {
    try{
-    var category =await CategoryModel.find().where('selected', req.params.selected);
-    //console.log(category);
+    var category = await CategoryModel.find().where('selected', req.params.selected);
+    // console.log(category);
     res.json(category);
     //search params are case sensitive
-   }catch(err){
+   } catch (err){
       console.log(err)
    }
-
-  
  })
 
+//  Create Post
  router.post('/createcategorypost',async (req,res) => {
    try{
     const post = new CategoryModel({
@@ -32,7 +33,6 @@ router.get('/allCategories',(req,res) => {
       question:req.body.question,
       selected:req.body.selected,
       author:req.body.author
-      
     })
     const newPost = await post.save();
     return res.status(201).json(newPost);
@@ -41,20 +41,21 @@ router.get('/allCategories',(req,res) => {
    }
 }); 
 
-router.get('/edit-categoryPost/:id',(req, res) => {
-    CategoryModel.findById(req.params.id, (error, data) => {
-    if (error) {
-      return next(error)
-    } else {
-      return res.json(data)
-    }
+// Get Specific Post
+router.get('/categoryPost/:id',(req, res) => {
+  CategoryModel.findById(req.params.id, (error, data) => {
+  if (error) {
+    return next(error)
+  } else {
+    return res.json(data)
+  }
   })
 })
 
-// Update student
-router.patch('/update-categoryPost/:id',async (req, res) => {
+// Update Post
+router.post('/updatePost/:id', async (req, res) => {
   try{
-    const post = await CategoryModel.findById(req.params.id)
+    const post = await CategoryModel.findById(req.params.id);
     if(req.body.title != null){
       post.title = req.body.title
     }
@@ -67,25 +68,16 @@ router.patch('/update-categoryPost/:id',async (req, res) => {
     if(req.body.author != null){
       post.author = req.body.author
     }
-    post.save();
-    
-  }catch(err){
+    post.save()
+    // console.log(post)
+    res.status(201).json(post)
+  } catch(err){
     console.log(err);
   }
-  //   CategoryModel.findByIdAndUpdate(req.params.id, {
-  //   $set: req.body
-  // }, (error, data) => {
-  //   if (error) {
-  //     return next(error);
-  //   } else {
-  //     res.json(data)
-  //     console.log('Student successfully updated!')
-  //   }
-  // })
 })
 
-// Delete student
-router.route('/delete-categoryPost/:id').delete((req, res, next) => {
+// Delete Post
+router.delete('/deletePost/:id', (req, res, ) => {
     CategoryModel.findByIdAndRemove(req.params.id, (error, data) => {
     if (error) {
       return next(error);

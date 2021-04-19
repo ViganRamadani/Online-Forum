@@ -20,8 +20,6 @@ mongoose // Connect to the database
   })
 // db configuaration ends here
 
-// mongoose.onc
-
 //registering cors 
 app.use(cors())
 
@@ -40,7 +38,7 @@ app.listen(PORT, (err) => {
 
 // define first route
 app.get('/', (req, res) => {
-  console.log('')
+  console.log('HEllo')
 })
 
 const userRoutes = require('./route/index')  //bring in our user routes
@@ -48,29 +46,5 @@ app.use('/user', userRoutes)
 
 //Category posts
 const categoryAPI = require('./route/category')
-// // const app = express();
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({
-//   extended: false
-// }));
-//  app.use(cors());
 
-// API
 app.use('/category', categoryAPI)
-
-// Find 404
-// app.use((req, res, next) => {
-//   next(createError(404));
-// });
-
-// error handler
-// app.use(function (err, req, res, next) {
-//   console.error(err.message);
-//   if (!err.statusCode) err.statusCode = 500;
-//   res.status(err.statusCode).send(err.message);
-// });
-// Create port
-// const port = process.env.PORT || 4000;
-// const server = app.listen(port, () => {
-//   console.log('Connected to port ' + port)
-// })
