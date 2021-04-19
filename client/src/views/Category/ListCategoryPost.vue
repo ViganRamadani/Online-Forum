@@ -20,8 +20,8 @@
                         <td>{{ post.selected }}</td>
                         <td>{{ post.author }}</td>
                         <td>
-                            <router-link :to="'editCategoryPost/' + post._id" class="btn btn-success">Edit</router-link>
-                            <button @click.prevent="deleteCategory(post._id)" class="btn btn-danger">Delete</button>
+                            <router-link v-if="post.author == user.data.displayName" :to="'editCategoryPost/' + post._id" class="btn btn-success">Edit</router-link>
+                            <button v-if="post.author == user.data.displayName" @click.prevent="deleteCategory(post._id, post.author)" class="btn btn-danger">Delete</button>
                         </td>
                         <!-- </div> -->
                     </tr>
@@ -32,39 +32,66 @@
 </template>
 
 <script>
-    import axios from "axios";
-
-    export default {
-        data() {
-            return {
-                categories: {}
-            }
-        },
-        created() {
-            axios.get('http://localhost:3000/category/allCategories').then(res => {
-                this.categories = res.data;
-                console.log(this.categories);
-            }).catch(error => {
-                console.log(error)
-            });
-        },
-        methods: {
-            deleteCategory(id){
-                console.log(id);
-                // let apiURL = `http://localhost:3000/category/delete-categoryPost/${id}`;
-                // console.log("");
-                // let indexOfArrayItem = this.categories.findIndex(i => i._id === id);
-
-                // if (window.confirm("Do you really want to delete?")) {
-                //     axios.delete(apiURL).then(() => {
-                //         this.categories.splice(indexOfArrayItem, 1);
-                //     }).catch(error => {
-                //         console.log(error+" definder Vigan")  
-                //     });
-                // }
-            }
+import axios from "axios";
+import "firebase/auth";
+import { mapGetters } from "vuex";
+export default {
+    data() {
+        return {
+            categories: {},
         }
-    }
+    },
+    created() {
+        axios.get('http://localhost:3000/category/allCategories')
+        .then(res => {
+            this.categories = res.data;
+            console.log(this.categories);
+        }).catch(error => {
+            console.log(error)
+        });
+    },
+    methods: {
+        deleteCategory(id, author){
+            const currentUser = this.user.data.displayName
+            if (author == currentUser) {
+                // console.log(author);
+                // console.log(currentUser)
+                try {
+                    axios.delete('http://localhost:3000/category/deletePost/' + id)
+                    .then(res => {
+                        console.log(res, "Post Deleted!");
+                        this.$swal({
+                            title: 'Post Deleted!',
+                            icon: 'success',
+                            timer: 1000,
+                            showConfirmButton: false,
+                        }).then(() => {
+                            // this.$router.push("/listCategoryPost");
+                            // @ Forces a RELOAD
+                            window.location.reload(true);
+                        })
+                    })
+                } catch (err) {
+                    console.log(err);
+                }
+            } else {
+                this.$swal({
+                    title: 'Access Denied!',
+                    icon: 'danger',
+                    timer: 1000,
+                    showConfirmButton: false,
+                })
+            }
+            
+        }
+    },
+    computed: {
+    ...mapGetters({
+        // map `this.user` to `this.$store.getters.user`
+        user: "user",
+      }),
+  },
+}
 </script>
 
 <style>

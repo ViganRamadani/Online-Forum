@@ -41,20 +41,19 @@ export default {
     },
     methods: {
         handleUpdateForm() {
-            // let apiURL = `http://localhost:3000/category/update-categoryPost/${this.$route.params.id}`;
-
             axios.patch('http://localhost:3000/category/updatePost/' + this.$route.params.id, this.updatedPost)
                 .then(res => {
                     console.log(res.data)
+                    this.$swal({
+                        title: 'Post Updated!',
+                        icon: 'success',
+                        timer: 1000,
+                        showConfirmButton: false,
+                    }).then(() => {
+                        // this.$router.push("/listCategoryPost");
+                        this.window.location.reload();
+                    })
                 })
-                
-
-            // axios.post(apiURL, this.category).then((res) => {
-            //     console.log(res)
-            //     this.$router.push('/')
-            // }).catch(error => {
-            //     console.log(error)
-            // });
         }
     }
 }
