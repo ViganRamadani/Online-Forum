@@ -17,23 +17,22 @@
 
 <script>
 import axios from 'axios'
-    
-    export default {
-          data(){
-                return{
-                    postData:{}
-                }
-            },
-        created(){
-            axios.get('http://localhost:3000/category/'+this.$route.params.selected)
-                .then(res =>{
-                    console.log(res.data);
-                    this.postData = res.data;
-                })
+export default {
+    data(){
+        return{
+            postData:{}
         }
+    },
+    created(){
+        axios.get('http://localhost:3000/category/'+this.$route.params.selected)
+            .then(res =>{
+                console.log(res.data);
+                this.postData = res.data;
+            })
     }
+}
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>

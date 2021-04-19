@@ -53,19 +53,19 @@ router.get('/categoryPost/:id',(req, res) => {
 })
 
 // Update Post
-router.post('/updatePost/:id', async (req, res) => {
+router.patch('/updatePost/:id', async (req, res) => {
   try{
     const post = await CategoryModel.findById(req.params.id);
-    if(req.body.title != null){
+    if (req.body.title != null){
       post.title = req.body.title
     }
-    if(req.body.question != null){
+    if (req.body.question != null ){
       post.question = req.body.question
     }
-    if(req.body.selected != null){
+    if (req.body.selected != null){
       post.selected = req.body.selected
     }
-    if(req.body.author != null){
+    if (req.body.author != null){
       post.author = req.body.author
     }
     post.save()

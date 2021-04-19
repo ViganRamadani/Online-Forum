@@ -1,26 +1,27 @@
 <template>
-    <div class="row">
-        <div class="col-md-12">
+    <div>
+        <h1 style="text-align:center;">Search for questions... or ask them :D</h1>
+        <div class="table-main col-md-8">
             <table class="table table-striped ">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Title</th>
-                        <th>Question</th>
-                        <th>Category</th>
-                        <th>Author</th>
+                        <th>Title:</th>
+                        <th>Question:</th>
+                        <th>Category:</th>
+                        <th>Author:</th>
+                        <th>Options:</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category in Categories" :key="category.id">
+                    <tr v-for="post in categories" :key="post.id">
                         <!-- <div v-if="category.selected === 'Hardware'"> -->
-                        <td >{{ category.title }}</td>
-                        <td>{{ category.question }}</td>
-                        <td>{{ category.selected }}</td>
-                        <td>{{ category.author }}</td>
+                        <td >{{ post.title }}</td>
+                        <td>{{ post.question }}</td>
+                        <td>{{ post.selected }}</td>
+                        <td>{{ post.author }}</td>
                         <td>
-                            <router-link :to="{name: 'update-categoryPost', params: { id: category._id }}" class="btn btn-success">Edit
-                            </router-link>
-                            <button @click.prevent="deleteCategory(category.id)" class="btn btn-danger">Delete</button>
+                            <router-link :to="'editCategoryPost/' + post._id" class="btn btn-success">Edit</router-link>
+                            <button @click.prevent="deleteCategory(post._id)" class="btn btn-danger">Delete</button>
                         </td>
                         <!-- </div> -->
                     </tr>
@@ -36,37 +37,43 @@
     export default {
         data() {
             return {
-                Categories: {}
+                categories: {}
             }
         },
         created() {
             axios.get('http://localhost:3000/category/allCategories').then(res => {
-                this.Categories = res.data;
-                console.log(this.Categories);
+                this.categories = res.data;
+                console.log(this.categories);
             }).catch(error => {
                 console.log(error)
             });
         },
         methods: {
             deleteCategory(id){
-                let apiURL = `http://localhost:3000/category/delete-categoryPost/${id}`;
-                console.log("");
-                let indexOfArrayItem = this.Categories.findIndex(i => i._id === id);
+                console.log(id);
+                // let apiURL = `http://localhost:3000/category/delete-categoryPost/${id}`;
+                // console.log("");
+                // let indexOfArrayItem = this.categories.findIndex(i => i._id === id);
 
-                if (window.confirm("Do you really want to delete?")) {
-                    axios.delete(apiURL).then(() => {
-                        this.Categories.splice(indexOfArrayItem, 1);
-                    }).catch(error => {
-                        console.log(error+" definder Vigan")  
-                    });
-                }
+                // if (window.confirm("Do you really want to delete?")) {
+                //     axios.delete(apiURL).then(() => {
+                //         this.categories.splice(indexOfArrayItem, 1);
+                //     }).catch(error => {
+                //         console.log(error+" definder Vigan")  
+                //     });
+                // }
             }
         }
     }
 </script>
 
 <style>
-    .btn-success {
-        margin-right: 10px;
-    }
+.btn-success {
+    margin-right: 10px;
+}
+.table-main {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
 </style>

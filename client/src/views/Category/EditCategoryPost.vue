@@ -1,23 +1,16 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h3 class="text-center">Update Student</h3>
+            <h3 class="text-center">Update Post</h3>
             <form @submit.prevent="handleUpdateForm">
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" class="form-control" v-model="category.title" >
+                    <input type="text" class="form-control" v-model="updatedPost.title" :placeholder='currentPost.title'>
                 </div>
-
                 <div class="form-group">
                     <label>Question</label>
-                    <input type="email" class="form-control" v-model="category.question" required>
+                    <input type="text" class="form-control" v-model="updatedPost.question" :placeholder='currentPost.question'>
                 </div>
-
-                <!-- <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" class="form-control" v-model="category.selected" required>
-                </div> -->
-
                 <div class="form-group">
                     <button class="btn btn-danger btn-block">Update</button>
                 </div>
@@ -32,26 +25,36 @@ import axios from "axios";
 export default {
     data() {
         return {
-            category: { }
+            currentPost: '',
+            updatedPost:{ 
+                title: null,
+                description: '',
+            }
         }
     },
     created() {
-        let apiURL = `http://localhost:3000/category/edit-categoryPost/${this.$route.params.id}`;
-
-        axios.get(apiURL).then((res) => {
-            this.category = res.data;
-        })
+        axios.get('http://localhost:3000/category/categoryPost/' + this.$route.params.id)
+            .then(res => {
+                this.currentPost = res.data;
+                console.log(this.currentPost);
+            })
     },
     methods: {
         handleUpdateForm() {
-            let apiURL = `http://localhost:3000/category/update-categoryPost/${this.$route.params.id}`;
+            // let apiURL = `http://localhost:3000/category/update-categoryPost/${this.$route.params.id}`;
 
-            axios.post(apiURL, this.category).then((res) => {
-                console.log(res)
-                this.$router.push('/')
-            }).catch(error => {
-                console.log(error)
-            });
+            axios.patch('http://localhost:3000/category/updatePost/' + this.$route.params.id, this.updatedPost)
+                .then(res => {
+                    console.log(res.data)
+                })
+                
+
+            // axios.post(apiURL, this.category).then((res) => {
+            //     console.log(res)
+            //     this.$router.push('/')
+            // }).catch(error => {
+            //     console.log(error)
+            // });
         }
     }
 }

@@ -56,10 +56,13 @@ export default {
         }
       ], 
       category: [
-        
+        {
+          title: "All Questions",
+          link: "/listCategoryPost"
+        },
         {
           title: "Make a Question",
-          link: "/category/createcategorypost"
+          link: "/createcategorypost"
         },
         {
           title: "Operation System",
