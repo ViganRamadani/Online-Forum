@@ -1,8 +1,6 @@
 <template>
   <nav style="display: flex">
-    <router-link v-if="user.loggedIn" class="menu-items" to="/"
-      >Home</router-link
-    >
+    <router-link v-if="user.loggedIn" class="menu-items" to="/">Home</router-link>
     <router-link class="menu-items" to="/about">About</router-link>
     <Dropdown v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
     <router-link class="menu-items" to="/contactUs">Contact Us</router-link>
@@ -70,12 +68,12 @@ export default {
     })
   },
   mounted() {
-    axios
-      .get("http://localhost:3000/user/" + this.user.data.displayName)
-      .then(res => {
-        this.userData = res.data;
-        console.log(this.userData);
-        });
+      axios
+        .get("http://localhost:3000/user/" + this.user.data.displayName)
+        .then(res => {
+          this.userData = res.data;
+          console.log(this.userData);
+          });
   },
   components: {
     Dropdown

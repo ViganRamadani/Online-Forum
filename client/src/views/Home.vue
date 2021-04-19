@@ -8,8 +8,6 @@
       <p>Welcome! Have a look around and join the discussions.</p>
     </div>
 
-    
-
     <div id="allForums" class="forums-main" v-if="forums">
       <div id="startHere">
         <a href="#allForums">Ask Here!</a>  
@@ -144,7 +142,7 @@ export default {
   position: relative;
   min-width:450px;
   min-height: 450px;
-  margin: 0 10px;
+  margin: 10px 10px;
   border: 3px solid #fff;
 }
 
@@ -152,10 +150,7 @@ export default {
   width:450px;
   height:450px;
   object-fit: cover;
-  /* object-fit: none; */
   object-position: bottom;
-  /* vertical-align: middle; */
-
 }
 
 .forum-details {

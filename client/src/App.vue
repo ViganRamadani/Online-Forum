@@ -22,14 +22,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-header, footer {
-  width:auto;
-}
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-}
-</style>

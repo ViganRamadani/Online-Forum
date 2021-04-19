@@ -1,4 +1,4 @@
-// const User = require('../models/user')
+const User = require('../models/user')
 const Forum = require('../models/forum')
 
 exports.createForum = async (req, res) => {
@@ -46,6 +46,49 @@ exports.getAllUsers = async (req, res) => {
       res.status(500).json(err)
     })
 }
+
+exports.deleteUser = async (req, res) => {
+  try {
+    var user = await User.findOne({ "username": req.params.username });
+    // console.log(user.allPosts)
+    user.allPosts.forEach(async (post) => {
+      console.log(post) //* Will List all the Users Posts
+      var forum = await Forum.findOneAndUpdate({ 'forumTopic': post.forum },
+        { $pull: { allPosts: { "_id": post.postId } } }, 
+        { safe: true });
+    });
+
+    await user.remove(); 
+
+    res.send("Removed User")
+  } catch (error) {
+    console.log(error.message)
+  }
+}
+
+
+  // User.findById(id).then((user) => {
+  //   // Forum.find({ author: user.username })
+  //   Forum.deleteMany({ author: user.username })
+  // })
+
+
+    
+  
+
+// exports.getUser = (req, res) => {
+//   const currentUser = req.params.id;
+//   // const currentUser = req.params.username
+
+//   User.findOne({ username: currentUser })
+//     .then(data => {
+//       res.status(200).json(data)
+//     })
+//     .catch(err => {
+//       // console.log(err)
+//       res.status(500).json(err)
+//     })
+// }
 
 
 

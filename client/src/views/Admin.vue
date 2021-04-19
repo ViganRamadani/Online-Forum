@@ -23,11 +23,9 @@
             </tr>
           </thead>
           <tbody style="width: max-content;">
-            <tr v-for="user in userData" :key="user.username">
+            <tr v-for="user in userData" :key="user._id">
               <td>
-                <router-link :to="'user/' + user.username">{{
-                  user.username
-                }}</router-link>
+                <router-link :to="'user/' + user.username">{{user.username}}</router-link>
               </td>
 
               <td>
@@ -37,9 +35,10 @@
                 {{ user.isAdmin }}
               </td>
               <td>
-                <a href="">Edit</a> |
-                <router-link :to="'user/' + user.username">Details</router-link> |
-                <a href="">Delete</a>
+                <a class="btn" href="">Edit</a> |
+                <router-link class="btn" :to="'user/' + user.username">Details</router-link> |
+                <button class="btn" @click='deleteUser(user.username)'>Delete</button>
+                <!-- <a href=""></a> -->
               </td>
             </tr>
           </tbody>
@@ -93,6 +92,7 @@ export default {
         forumDescription: "",
         imagePath: '',
       },
+      selectedUser: {},
     };
   },
   methods: {
@@ -109,6 +109,12 @@ export default {
         } catch(err){
           console.log(err);
         }
+    },
+    async deleteUser(username) {
+      axios.delete("http://localhost:3000/user/admin/deleteUser/" + username)
+       .then(res => {
+         console.log(res);
+       })
     },
     selectFile() {
       this.file = this.$refs.file.files[0];
