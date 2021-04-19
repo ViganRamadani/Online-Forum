@@ -5,11 +5,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const config = require('./config/db')
 const app = express()
-var bodyParser = require('body-parser')
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.raw());
-// app.use(bodyParser.text()); 
+
 
 mongoose.set('useFindAndModify', false);
 //configure database and mongoose
@@ -44,35 +40,35 @@ app.listen(PORT, (err) => {
 
 // define first route
 app.get('/', (req, res) => {
-  console.log('Hello MEVN Soldier')
+  console.log('')
 })
 
 const userRoutes = require('./route/index')  //bring in our user routes
 app.use('/user', userRoutes)
 
 //Category posts
-const categoryAPI = require('../server/route/category.route')
-// const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
- app.use(cors());
+const categoryAPI = require('./route/category')
+// // const app = express();
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({
+//   extended: false
+// }));
+//  app.use(cors());
 
 // API
-app.use('/api', categoryAPI)
+app.use('/category', categoryAPI)
 
 // Find 404
-app.use((req, res, next) => {
-  next(createError(404));
-});
+// app.use((req, res, next) => {
+//   next(createError(404));
+// });
 
 // error handler
-app.use(function (err, req, res, next) {
-  console.error(err.message);
-  if (!err.statusCode) err.statusCode = 500;
-  res.status(err.statusCode).send(err.message);
-});
+// app.use(function (err, req, res, next) {
+//   console.error(err.message);
+//   if (!err.statusCode) err.statusCode = 500;
+//   res.status(err.statusCode).send(err.message);
+// });
 // Create port
 // const port = process.env.PORT || 4000;
 // const server = app.listen(port, () => {

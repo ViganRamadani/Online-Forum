@@ -11,16 +11,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="category in Categories" :key="category._id">
+                    <tr v-for="category in Categories" :key="category.id">
                         <!-- <div v-if="category.selected === 'Hardware'"> -->
                         <td >{{ category.title }}</td>
                         <td>{{ category.question }}</td>
                         <td>{{ category.selected }}</td>
                         <td>{{ category.author }}</td>
                         <td>
-                            <!-- <router-link :to="{name: 'edit', params: { id: category._id }}" class="btn btn-success">Edit
-                            </router-link> -->
-                            <button @click.prevent="deleteCategory(category._id)" class="btn btn-danger">Delete</button>
+                            <router-link :to="{name: 'update-categoryPost', params: { id: category._id }}" class="btn btn-success">Edit
+                            </router-link>
+                            <button @click.prevent="deleteCategory(category.id)" class="btn btn-danger">Delete</button>
                         </td>
                         <!-- </div> -->
                     </tr>
@@ -36,19 +36,20 @@
     export default {
         data() {
             return {
-                Categories: []
+                Categories: {}
             }
         },
         created() {
-            axios.get('http://localhost:3000/api').then(res => {
+            axios.get('http://localhost:3000/category/allCategories').then(res => {
                 this.Categories = res.data;
+                console.log(this.Categories);
             }).catch(error => {
                 console.log(error)
             });
         },
         methods: {
             deleteCategory(id){
-                let apiURL = `http://localhost:3000/api/delete-categoryPost/${id}`;
+                let apiURL = `http://localhost:3000/category/delete-categoryPost/${id}`;
                 console.log("");
                 let indexOfArrayItem = this.Categories.findIndex(i => i._id === id);
 

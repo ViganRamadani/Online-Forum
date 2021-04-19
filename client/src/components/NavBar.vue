@@ -56,25 +56,30 @@ export default {
         }
       ], 
       category: [
+        
+        {
+          title: "Make a Question",
+          link: "/category/createcategorypost"
+        },
         {
           title: "Operation System",
-          link: '/operationsystem'
+          link: '/category/operationsystem'
         },
         {
           title: "Mobile",
-          link: "/mobile"
+          link: "/category/mobile"
         },
         {
           title: "Web",
-          link: "/web"
+          link: "/category/web"
         },
         {
           title: "Hardware",
-          link: "/hardware"
+          link: "/category/hardware"
         },
         {
           title: "Security",
-          link: "/security"
+          link: "/category/security"
         }
       ]
     };
@@ -111,7 +116,8 @@ nav {
 }
 
 nav .menu-items {
-  position: relative;
+  position: relative; /* <-- Added */
+    z-index: 1; /* <-- Added */
   display: flex;
   padding: 10px 20px;
   border-bottom: 3px solid transparent;

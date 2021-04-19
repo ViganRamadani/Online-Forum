@@ -17,11 +17,11 @@
 
                     <div id="v-model-select" class="demo">
                     <select v-model="categoryPost.selected" >
-                        <option>Operation System</option>
-                        <option>Mobile</option>
-                        <option>Security</option>
-                        <option>Web</option>
-                        <option>Hardware</option>
+                        <option>operation system</option>
+                        <option>mobile</option>
+                        <option>security</option>
+                        <option>web</option>
+                        <option>hardware</option>
                          
 
                     </select>
@@ -53,19 +53,21 @@ import { mapGetters } from "vuex";
         methods: {
             
             handleSubmitForm() {
-              
+              try{
                 this.categoryPost.author = this.user.data.displayName;
-                axios.post('http://localhost:3000/api/createcategorypost', this.categoryPost).then((data) => {
+                axios.post('http://localhost:3000/category/createcategorypost', this.categoryPost)
+                .then((data) => {
                     console.log(data);
-                 this.$router.push('/listcategorypost')
+                //  this.$router.push('/listcategorypost')
                 //   this.CategoryPost = {
                 //     title: '',
                 //     question: '',
                 //     selected: ''
                 //   }
-                }).catch(error => {
-                    console.log(error)
-                });
+                })
+                }catch(err){
+                    console.log(err);
+                }
             } 
         },
         computed: {

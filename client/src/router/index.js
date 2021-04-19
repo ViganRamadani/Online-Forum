@@ -82,49 +82,25 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/operationsystem",
-    name: "OperationSystem",
-    component: () => import("../views/OperationSystem.vue"),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: "/mobile",
-    name: "mobile",
-    component: () => import("../views/Mobile.vue"),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: "/web",
-    name: "web",
-    component: () => import("../views/Web.vue"),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: "/hardware",
-    name: "hardware",
-    component: () => import("../views/Hardware.vue"),
-    meta: { requiresAuth: true }
-  },
-  {
-    path: "/security",
-    name: "security",
-    component: () => import("../views/Security.vue"),
-    meta: { requiresAuth: true }
-  },
-  {
     path: '/createcategorypost',
     name: 'CreateCategoryPost',
-    component: () => import('../components/CreateCategoryPost')
+    component: () => import('../views/CreateCategoryPost')
   },
   {
     path: '/listcategorypost',
     name: 'ListCategoryPost',
-    component: () => import('../components/ListCategoryPost')
+    component: () => import('../views/ListCategoryPost')
   },
   {
     path: '/editcategorypost/:id',
     name: 'EditCategoryPost',
-    component: () => import('../components/EditCategoryPost')
+    component: () => import('../views/EditCategoryPost')
+  },
+  {
+    path: "/category/:selected",
+    name: "categoryPosts",
+    component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/CategoryPosts.vue"),
+    meta: { requiresAuth: true }
   }
 
 ];
