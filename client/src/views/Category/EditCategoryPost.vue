@@ -44,11 +44,15 @@ export default {
             axios.patch('http://localhost:3000/category/updatePost/' + this.$route.params.id, this.updatedPost)
                 .then(res => {
                     console.log(res.data)
+                    // @ popup
                     this.$swal({
+                    // @ popup
+                        
                         title: 'Post Updated!',
                         icon: 'success',
                         timer: 1000,
                         showConfirmButton: false,
+
                     }).then(() => {
                         this.$router.push("/listCategoryPost");
                     })

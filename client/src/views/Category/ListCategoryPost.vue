@@ -60,6 +60,7 @@ export default {
                     axios.delete('http://localhost:3000/category/deletePost/' + id)
                     .then(res => {
                         console.log(res, "Post Deleted!");
+                    // @ popup
                         this.$swal({
                             title: 'Post Deleted!',
                             icon: 'success',

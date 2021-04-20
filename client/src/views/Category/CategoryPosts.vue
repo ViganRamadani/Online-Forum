@@ -1,6 +1,8 @@
 <template>
     <div>
         <!-- //<p>{{postData[0].selected}}</p> -->
+        <!-- Single POST -->
+
         <div v-for="post in postData" :key="post._id">
             <table>
                 <tr>

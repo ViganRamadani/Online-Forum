@@ -66,7 +66,7 @@ export default {
         },
         {
           title: "Operation System",
-          link: '/category/operationsystem'
+          link: "/category/operationsystem"
         },
         {
           title: "Mobile",

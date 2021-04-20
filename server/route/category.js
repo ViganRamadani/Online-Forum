@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 let CategoryModel = require('../models/CategoryPost');
 
-// Get All Poss
+//@ Get All Possts
 router.get('/allCategories',(req,res) => {
     CategoryModel.find((error, data) => {
      if (error) {
@@ -13,7 +13,7 @@ router.get('/allCategories',(req,res) => {
    })
  })
 
-// Get All Posts of Specified Category
+//@ Get All Posts of Specified Category
  router.get('/:selected', async(req,res)=> {
    try{
     var category = await CategoryModel.find().where('selected', req.params.selected);
@@ -25,7 +25,7 @@ router.get('/allCategories',(req,res) => {
    }
  })
 
-//  Create Post
+//@ Create Post
  router.post('/createcategorypost',async (req,res) => {
    try{
     const post = new CategoryModel({
@@ -41,7 +41,7 @@ router.get('/allCategories',(req,res) => {
    }
 }); 
 
-// Get Specific Post
+//@ Get Specific Post
 router.get('/categoryPost/:id',(req, res) => {
   CategoryModel.findById(req.params.id, (error, data) => {
   if (error) {
@@ -52,7 +52,7 @@ router.get('/categoryPost/:id',(req, res) => {
   })
 })
 
-// Update Post
+//@ Update Post
 router.patch('/updatePost/:id', async (req, res) => {
   try{
     const post = await CategoryModel.findById(req.params.id);
@@ -76,7 +76,7 @@ router.patch('/updatePost/:id', async (req, res) => {
   }
 })
 
-// Delete Post
+//@ Delete Post
 router.delete('/deletePost/:id', (req, res, ) => {
     CategoryModel.findByIdAndRemove(req.params.id, (error, data) => {
     if (error) {
