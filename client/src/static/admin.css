@@ -1,0 +1,68 @@
+.swal2-popup.swal2-toast::before {
+  flex-direction: column;
+}
+
+.swal2-popup.swal2-toast::after {
+  flex-direction: column;
+}
+
+.swal-admin-popup {
+  background-color: red;
+}
+
+.admin .swal2-header {
+  flex-direction: column;
+}
+
+#admin {
+  text-align: center;
+  margin: 20px 0;
+}
+
+#admin h1 {
+  font-weight: 600;
+}
+
+.forum-container-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.forum-container {
+  width: 500px;
+  padding: 5px 20px 0 20px;
+  margin: 0 auto 10px;
+  border: 2px solid rgb(81, 82, 81);
+  border-radius: 10px;
+}
+
+button {
+  margin: 10px auto;
+}
+
+
+#imgPreview {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid rgb(81, 82, 81);
+  border-radius: 10px;
+  padding: 10px;
+  width: 500px;
+  margin-bottom: 25px;
+}
+
+#imgPreview p {
+  margin-bottom: 5px;
+}
+
+#imgPreview img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.swal2-header {
+  display: block;
+}

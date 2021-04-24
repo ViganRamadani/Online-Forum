@@ -6,10 +6,10 @@ export default new Vuex.Store({
   state: {
     user: {
       loggedIn: false,
-      data: null,
-      // isAdmin: false
-    },
-    userData: []
+      data: {
+        displayName: null,
+      },
+    }
   },
   getters: {
     user(state) {
@@ -22,6 +22,9 @@ export default new Vuex.Store({
     },
     SET_USER(state, data) {
       state.user.data = data;
+    },
+    SET_USERNAME(state, data) {
+      state.user.data.displayName = data;
     }
   },
   actions: {
@@ -31,10 +34,9 @@ export default new Vuex.Store({
         commit("SET_USER", {
           displayName: user.displayName,
           email: user.email,
-          // isAdmin: user.isAdmin
         });
       } else {
-        commit("SET_USER", null);
+        commit("SET_USER", 'null');
       }
     }
   },

@@ -4,43 +4,29 @@
  
     </div>
     <div class="home-main">
-      <h1>Forums</h1>
+      <h1 id="title">Forums</h1>
+
       <p>Welcome! Have a look around and join the discussions.</p>
     </div>
 
-    
-
-    <div id="allForums" class="forums-main" v-if="forums">
-      <div id="startHere">
-        <a href="#allForums">Ask Here!</a>  
-      </div>
-      <div class="go-horizontal">
-        <div class="forum" v-for="forum in forums" :key="forum._id">
-          <router-link :to="'forums/' + forum.forumTopic"><img :src="require('../../../server/uploads/' + forum.imagePath)"></router-link>
-          <div class="forum-details">
-            <router-link :to="'forums/' + forum.forumTopic"><h3>{{ forum.forumTopic }}</h3></router-link>
-            <p>{{ forum.forumDescription }}</p>
+    <div v-if="forums.length != 0" id="allForums" class="forums-main">
+      
+      <div class="go-vertical">
+          <a id="startHere" href="#allForums">Ask Here!</a>
+        <div class="go-horizontal">
+          <div class="forum" v-for="forum in forums" :key="forum._id">
+            <router-link :to="'forums/' + forum.forumTopic"><img :src="require('../../../server/uploads/' + forum.imagePath)"></router-link>
+            <div class="forum-details">
+              <router-link :to="'forums/' + forum.forumTopic"><h3>{{ forum.forumTopic }}</h3></router-link>
+              <p>{{ forum.forumDescription }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div v-else>
-      <p>No forums yet..</p>
+      <h1>No forums yet..</h1>
     </div>
-
-    <!-- <form enctype="multipart/form-data" ref="addPost" @submit.prevent="addPost">
-      <h2>Create a Post here!</h2>
-        <div class="col-md-2 p-2">
-          <input id="title" class="form-control" type="text" v-model="postForm.title" placeholder="Title" value autofocus />
-        </div>
-      <div class="col-md-2 p-2">
-        <input id="description" class="form-control" type="text" v-model="postForm.description" placeholder="Description"/>
-      </div>
-      <div class="col-md-2 p-2">
-        <input type="file" @change="selectFile" ref="file" name="file" id="input-files" class="form-control-file border"/>
-      </div>
-      <button class="btn btn-primary" type="submit">Add post</button>
-    </form> -->
   </div>
 </template>
 
@@ -104,13 +90,12 @@ export default {
 
 <style scoped>
 #startHere {
-  margin-right: 15px;
+  margin-right: 25px;
   margin-left: auto;
-}
-
-#startHere a {
   color: black;
 }
+
+
 .home-main {
   text-align: center;
   margin: 20px 0;
@@ -131,31 +116,39 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 952px;
+  max-width: 952px;
+  min-height: 350px;
   margin: 0 auto;
 }
 
-.go-horizontal {
-  flex-wrap: wrap;
+.go-vertical {
   display: flex;
+  flex-direction: column;
+}
+
+.go-horizontal {
+  width: 100%;
+  /* max-width: 952px; */
+
+  flex-flow: row wrap;
+  display: flex;
+  /* flex-direction: column; */
 }
 
 .forum {
   position: relative;
-  min-width:450px;
-  min-height: 450px;
-  margin: 0 10px;
+  width:450px;
+  min-height: 100%;
+  margin: 10px 10px;
   border: 3px solid #fff;
 }
 
 .forum img {
-  width:450px;
+  width: 100%;
+  /* width:450px; */
   height:450px;
   object-fit: cover;
-  /* object-fit: none; */
   object-position: bottom;
-  /* vertical-align: middle; */
-
 }
 
 .forum-details {
@@ -177,6 +170,24 @@ export default {
 
 .forum-details p {
   text-align: left;
+}
+
+@media screen and (max-width: 939px) {
+  .forums-main {
+    max-width: 100%;
+  }
+  .go-vertical {
+    max-width: 495px;
+    width: 100%;
+
+  }
+
+  .go-horizontal {
+    width: 100%;
+    /* align-items: center; */
+    justify-content: center;
+  }
+  
 }
 
 </style>

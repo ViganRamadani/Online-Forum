@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 
-
 const postDetails = mongoose.Schema({
   postId: {
     type: String,
@@ -13,7 +12,23 @@ const postDetails = mongoose.Schema({
   postTitle: {
     type: String,
     required: true
-  }
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  imagePath: {
+    type: String,
+    required: true
+  },
+  likes: [{
+    author: { type: String, required: true },
+    postId: { type: String, required: true },
+  }],
+  // likes: { type: Number, required: true },
+},
+{ 
+  timestamps: true
 })
 
 const userSchema = mongoose.Schema({
@@ -27,17 +42,18 @@ const userSchema = mongoose.Schema({
     unique: true,
     required: [true, 'Please Include your email']
   },
+  profilePath: {
+    type: String,
+    sparse: true,
+    unique: false,
+  },
   isAdmin: {
     type: { Boolean, default: false }
   },
   allPosts: [ postDetails ]
-  // postId: [{
-  //   type: Schema.Types.ObjectId,
-  //   ref: 'User'
-  // }]
+},
+{
+  timestamps: true
 })
-
-
-// module.exports = mongoose.model('All', postDetails)
 
 module.exports = mongoose.model('User', userSchema)
