@@ -82,9 +82,15 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/user/post/:username&:id",
+    path: "/user/post/:username&:postId",
     name: "userPost",
     component: () => import(/* webpackChunkName: "userPost" */ "../views/UserPost.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/user/reportPost/:username&:postId",
+    name: "reportPost",
+    component: () => import(/* webpackChunkName: "reportPost" */ "../views/ReportPost.vue"),
     meta: { requiresAuth: true }
   }
 ];
@@ -97,15 +103,12 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const isAuthenticated = firebase.auth().currentUser;
+  const isAuthenticated =  firebase.auth().currentUser;
   // console.log("isauthenticated", isAuthenticated);
   if (requiresAuth && !isAuthenticated) {
     next("/login");
-  // } else if (!requiresAuth){
-    // router.push({name: 'home'});
   } else {
     next();
-
   }
 });
 

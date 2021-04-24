@@ -4,7 +4,6 @@
       <div class="row d-flex">
         <div class="col-lg-6">
           <div class="card1 pb-5">
-          
             <div class="row px-3 justify-content-center mt-4 mb-5 border-line">
                <img src="../assets/tech.png" class="image" />
             </div>
@@ -35,19 +34,17 @@
                 <label class="mb-1">
                   <h6 class="mb-0 text-sm">Email Address</h6>
                 </label>
-                <input class="mb-4" type="email" name="email" v-model="user.email" placeholder="Enter a valid email address" />
+                <input class="mb-4" type="email" name="email" v-model="userCredentials.email" placeholder="Enter a valid email address" />
               </div>
               <div class="row px-3">
                 <label class="mb-1">
                   <h6 class="mb-0 text-sm">Password</h6>
                 </label>
-                <input type="password" name="password" v-model="user.password" placeholder="Enter password"/>
+                <input type="password" name="password" v-model="userCredentials.password" placeholder="Enter password"/>
               </div>
               <br>
               <div class="row mb-3 px-3">
-                <button type="submit" name="Submit" class="btn btn-blue text-center">
-                  Login
-                </button>
+                <button type="submit" name="Submit" class="btn btn-blue text-center">Login</button>
               </div>
               <div class="row mb-4 px-3">
                 <small class="font-weight-bold" >Don't have an account? <router-link style="color:#1A237E;" class="bt" to="/register">Sign Up</router-link></small >
@@ -65,15 +62,15 @@
 <script>
 import firebase from "firebase/app";
 import "firebase/auth";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
     return {
-      user: {
+      userCredentials: {
         email: "",
         password: ""
       },
-      
       error: ""
     };
   },
@@ -97,20 +94,22 @@ export default {
     userLogin() {
       firebase
         .auth()
-        .signInWithEmailAndPassword(this.user.email, this.user.password)
-
-        .then(() => {
-          this.$swal({
-            title: 'Login Successful! :D',
+        .signInWithEmailAndPassword(this.userCredentials.email, this.userCredentials.password)
+        .then((data) => {
+            this.$swal({
+            title:  `Hi ${data.user.displayName}! :D`,
             text: 'Redirecting...',
             icon: 'success',
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
-            timer: 1250,
-            timerProgressBar: true,
+            timer: 1350,
+            customClass: {
+              container: 'login-success'
+            }
           }).then(() => {
               window.location = "/";
+              // this.$router.push({name: 'home'})
           })
         })
         .catch(err => {
@@ -118,12 +117,14 @@ export default {
           console.log(err.response);
         });
     }
-  }
+  },
+  computed: {
+    ...mapGetters({
+      // map `this.user` to `this.$store.getters.user`
+      user: "user"
+    })
+  },
 };
-
-
 </script>
 
-<style scoped src="@/assets/css/Login.css">
-
-</style>
+<style src="@/assets/css/Login.css"></style>

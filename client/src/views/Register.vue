@@ -77,7 +77,7 @@ export default {
           axios.post("http://localhost:3000/user/signUp", this.formUser);
           this.$swal({
             title: 'Welcome to the Club :D',
-            html: 'Redirecting...',
+            text: 'Redirecting...',
             timer: 2000,
             icon: 'success',
             showConfirmButton: false,

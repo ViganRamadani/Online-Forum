@@ -1,10 +1,14 @@
 <template>
   <div id="app">
+    
     <header>
       <Navbar></Navbar>
     </header>
+
     <router-view />
+    <div id="report"></div>
     <Footer></Footer>
+
   </div>
 </template>
 
@@ -22,3 +26,7 @@ export default {
   }
 };
 </script>
+
+<style src="./static/main.css">
+
+</style>

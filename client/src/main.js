@@ -8,7 +8,8 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import "@/static/main.css";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
-import VueSlideUpDown from 'vue-slide-up-down'
+import VueSlideUpDown from 'vue-slide-up-down';
+// import $ from 'jquery';
 
 // Import Bootstrap an BootstrapVue CSS files (order is important)
 import "bootstrap/dist/css/bootstrap.css";

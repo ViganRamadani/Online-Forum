@@ -6,20 +6,20 @@
         <div class="top-main">
 
           <router-link :to="'../' + this.userData.username">
-            <img id='userPic' :src="require('../../../server/uploads/' + userData.profilePath)">
+            <img v-if="userData.profilePath != null" id='userPic' :src="require('../../../server/uploads/' + userData.profilePath)">
           </router-link>
           <div class="post-title flex-column">
             <router-link id="username" :to="'../' + this.userData.username"> {{ userData.username }}</router-link>
             <div class="flex-row">
-              <router-link id="postTitle" style="display: flex;" :to="userData.username + '&' + postData.postId"><h4 style="display: flex;">{{ postData.postTitle }}</h4></router-link>
+              <h4 id="postTitle" style="display: flex;" >{{ postData.postTitle }}</h4>
               <!-- <span style="margin: 0 5px;">></span>  <router-link :to="'../../forums/' + postData.forum">{{ postData.forum }}</router-link> -->
             </div>
           </div>
           <div class="dropdown-main">
             <button class="toggle-menu">···</button>
             <ul class="menu-list">
-              <li class="menu-button"><button class="menu-report" @click="reportPost(postData._id)">Report Post</button></li>
-              <li class="menu-button"><button class="menu-remove" @click="deletePost(postData._id)">Delete Post</button></li>
+              <li class="menu-button"><button class="menu-report" @click="reportPost(postData.postId)">Report Post</button></li>
+              <li class="menu-button"><button class="menu-remove" @click="deletePost(postData.postId)">Delete Post</button></li>
             </ul>
           </div>
         </div>
@@ -30,9 +30,9 @@
         <div class="bottom-main">
           <button class="btn">Like</button>
           <button class="btn">Comment</button>
+          {{postData.likes.length}}
         </div>
       </div>
-      
     </div>
   </div>
 </template>
@@ -46,12 +46,35 @@ export default {
   data(){
     return {
       userData: {},
-      postData: {},
+      postData: {
+        // likes: []
+      },
       username: {},
     }
   },
+  methods: {
+    reportPost(id){
+      this.$router.push('../reportPost/' + this.$route.params.username + '&' + id);
+    },
+    async deletePost(id) {
+      await axios.delete('http://localhost:3000/user/deletePost/' + this.$route.params.username + '&' + id)
+      .then(async () => {
+        await this.$swal({
+          title: 'Post Deleted',
+          icon: 'success',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 1500,
+          // timerProgressBar: true
+        }).then(() => {
+            this.$router.push('../../forums/' + this.postData.forum)
+        })
+      })
+    }
+  },
   beforeMount(){
-    axios.get('http://localhost:3000/user/getPost/' + this.$route.params.username + '&' + this.$route.params.id)
+    axios.get('http://localhost:3000/user/getPost/' + this.$route.params.username + '&' + this.$route.params.postId)
       .then((res) =>{
         this.postData = res.data.allPosts[0];
         this.userData = res.data;
@@ -133,7 +156,7 @@ export default {
   margin: 5px;
 }
 
-/* @ DROPDOWN */
+/* DROPDOWN */
 .dropdown-main {
   position: relative;
   margin-left: auto;

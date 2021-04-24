@@ -21,6 +21,11 @@ const postDetails = mongoose.Schema({
     type: String,
     required: true
   },
+  likes: [{
+    author: { type: String, required: true },
+    postId: { type: String, required: true },
+  }],
+  // likes: { type: Number, required: true },
 },
 { 
   timestamps: true
