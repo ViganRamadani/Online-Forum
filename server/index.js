@@ -5,7 +5,7 @@ const mongoose = require('mongoose')
 require('dotenv').config()
 const config = require('./config/db')
 const app = express()
-// const multer = require('multer');
+
 
 mongoose.set('useFindAndModify', false);
 //configure database and mongoose
@@ -19,8 +19,6 @@ mongoose // Connect to the database
     console.log({ database_error: err })
   })
 // db configuaration ends here
-
-// mongoose.onc
 
 //registering cors 
 app.use(cors())
@@ -40,8 +38,13 @@ app.listen(PORT, (err) => {
 
 // define first route
 app.get('/', (req, res) => {
-  console.log('Hello MEVN Soldier')
+  console.log('HEllo')
 })
 
 const userRoutes = require('./route/index')  //bring in our user routes
 app.use('/user', userRoutes)
+
+//Category posts
+const categoryAPI = require('./route/category')
+
+app.use('/category', categoryAPI)

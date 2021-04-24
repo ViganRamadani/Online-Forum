@@ -1,11 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import Home from "../views/Home.vue";
-// import Register from "../views/Register.vue";
-// import Login from "../views/Login.vue";
-// import Admin from "../views/Admin.vue";
-// import ForgotPass from "../views/ForgotPassword.vue";
-
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -16,42 +10,26 @@ const routes = [
     path: "/",
     name: "home",
     component: () => import(/* webpackChunkName: "home" */ "../views/Home.vue"),
-    meta: {
-      requiresAuth: true,
-    }
+    meta: { requiresAuth: true }
   },
   {
     path: "/login",
     name: "login",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Login.vue"),
-    // component: Login
-    meta: {
-      // requiresAuth: false,
-      isAuthenticated: false,
-      requiresAuth: false,
-    }
+    component: () => import(/* webpackChunkName: "login" */ "../views/Login.vue"),
+    meta: { isAuthenticated: false, requiresAuth: false }
   },
   {
     path: "/register",
     name: "register",
-    meta: {
-      requiresAuth: null
-      // isAuthenticated: false,
-    },
     component: () =>
-      import(/* webpackChunkName: "register" */ "../views/Register.vue")
-    // component: Register
+      import(/* webpackChunkName: "register" */ "../views/Register.vue"),
+    meta: { requiresAuth: null }
   },
   {
     path: "/about",
     name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
-    // meta: { requiresAuth: true }
   },
   {
     path: "/forgotPassword",
@@ -92,7 +70,32 @@ const routes = [
     name: "reportPost",
     component: () => import(/* webpackChunkName: "reportPost" */ "../views/ReportPost.vue"),
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/createCategoryPost",
+    name: "createCategoryPost",
+    component: () => import(/* webpackChunkName: "createCategoryPost" */ "../views/category/CreateCategoryPost"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/listCategoryPost",
+    name: "listCategoryPost",
+    component: () => import(/* webpackChunkName: "listCategoryPost" */ "../views/category/ListCategoryPost"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/editCategoryPost/:id",
+    name: "editCategoryPost",
+    component: () => import(/* webpackChunkName: "editCategoryPost" */ "../views/category/EditCategoryPost"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/category/:selected",
+    name: "categoryPosts",
+    component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/category/CategoryPosts.vue"),
+    meta: { requiresAuth: true }
   }
+
 ];
 
 const router = new VueRouter({
@@ -103,7 +106,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-  const isAuthenticated =  firebase.auth().currentUser;
+  const isAuthenticated = firebase.auth().currentUser;
   // console.log("isauthenticated", isAuthenticated);
   if (requiresAuth && !isAuthenticated) {
     next("/login");
