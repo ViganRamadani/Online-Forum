@@ -6,6 +6,11 @@ const userPostSchema = mongoose.Schema({
   description: { type: String, required: true },
   imagePath: { type: String, required: true },
   author: { type: String, required: true },
+  likes: [{
+    likedBy: { type: String, required: true },
+    postId: { type: String, required: true },
+  }],
+  likeCount: { type: Number, required: true , default: 0 },
 },
 
   { timestamps: true }

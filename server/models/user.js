@@ -1,4 +1,11 @@
 const mongoose = require('mongoose')
+const {ObjectId} = mongoose.Schema.Types
+
+const likeSchema = mongoose.Schema({
+  // likedId: { type: ObjectId, ref: "users"},
+  likedBy: { type: String, required: true },
+  postId: { type: String, required: true },
+})
 
 const postDetails = mongoose.Schema({
   postId: {
@@ -21,11 +28,8 @@ const postDetails = mongoose.Schema({
     type: String,
     required: true
   },
-  likes: [{
-    author: { type: String, required: true },
-    postId: { type: String, required: true },
-  }],
-  // likes: { type: Number, required: true },
+  likes: [ likeSchema ],
+  likeCount: { type: Number, required: true, default: 0 },
 },
 { 
   timestamps: true
@@ -44,13 +48,16 @@ const userSchema = mongoose.Schema({
   },
   profilePath: {
     type: String,
-    sparse: true,
+    default: null,
     unique: false,
   },
   isAdmin: {
-    type: { Boolean, default: false }
+    type: Boolean, 
+    required: true, 
+    default: false  
   },
-  allPosts: [ postDetails ]
+  allPosts: [ postDetails ],
+  bio: { type: String, default: null},
 },
 {
   timestamps: true

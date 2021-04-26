@@ -92,19 +92,6 @@ exports.editUserRole = async (req, res) => {
   } catch (err) {
     console.log(err)
   }
-  // try {
-  //   await User.findOneAndUpdate({"username": req.params.username}, req.body)
-  //   .then(data => {
-  //     if(!data) {
-  //       res.status(404).send({ message: `Cannot Update user: ${req.params}. User may not be foud!`})
-  //     } else {
-  //       res.send(data)
-  //       console.log(data)
-  //     }
-  //   })
-  // } catch (err) {
-  //   console.log(err)
-  // }
 }
 
 

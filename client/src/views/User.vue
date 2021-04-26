@@ -38,10 +38,9 @@
         </form>
       </div>
     </div>
-
-    <div class="all-posts-main">
+    <!-- <h1 style="text-align:center; margin: 25px 0;">{{postLength}}</h1> -->
+    <div v-if="postLength != 0" class="all-posts-main">
       <div class="post" v-for="post in userData.allPosts" :key="post.postId">
-        <div v-if="post.length != 0 || post.length != null">
           <div class="flex-row top-main">
             <router-link class="username" :to="userData.username">
               <img class="postProfile" v-if="userData.profilePath" :src="require('../../../server/uploads/' + userData.profilePath)">
@@ -66,13 +65,9 @@
             <button class="btn">Like</button>
             <button class="btn">Comment</button>
           </div>
-        </div>
-        <div v-else ><h1>Hurr Durr</h1></div>
       </div>
     </div>
-    <!-- <div>
-      <h2>{{ userData.isAdmin }}</h2>
-    </div> -->
+    <div v-else ><h1 style="text-align:center; margin: 25px 0;">Hurr Durr</h1></div>
   </div>
 </template>
 
@@ -86,6 +81,7 @@ export default {
       reveal: false,
       username: this.$route.params.username,
       userData: {},
+      postLength: {},
       file: '',
       url: null,
       postForm: {
@@ -131,7 +127,10 @@ export default {
         }),
         await axios
         .get("http://localhost:3000/user/" + this.username)
-        .then(async res => this.userData = await res.data);
+        .then(async res => {
+          this.userData = await res.data
+          this.postLength = this.userData.allPosts.length
+        });
       })
     },
     selectFile() {
@@ -154,10 +153,11 @@ export default {
   async created() {
     await axios
       .get("http://localhost:3000/user/" + this.username)
-      .then(async res => this.userData = await res.data);
-
-    // console.log(this.res)
-    console.log(this.userData);
+      .then(async res => {
+        this.userData = await res.data
+        this.postLength = this.userData.allPosts.length
+      });
+    // console.log(this.userData);
   },
   computed: {
     ...mapGetters({

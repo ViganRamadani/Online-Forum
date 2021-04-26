@@ -56,10 +56,13 @@ router.patch('/addProfile', userController.addProfile)
 router.get('/getPost/:username&:id', userPostController.getPost)
 // router.get('/getPost/:id', userPostController.getPost)
 
-router.get('/like/:postId&:author', userPostController.likePost)
+router.put('/like/:username&:postId', userPostController.likePost)
+router.put('/unlike/:username&:postId', userPostController.unlikePost)
 
 router.delete('/deletePost/:username&:postId', userPostController.deletePost)
 
+
+// router.get('/test/:username', userPostController.test)
 
 // //@ Forum
 // router.post('/createForum', adminController.createForum)

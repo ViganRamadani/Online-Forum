@@ -62,17 +62,17 @@ exports.getPost = async (req, res) => {
       'allPosts.$': 1,
       'username': 1,
     })
-    .then((myDoc) => {
-      console.log(myDoc);
-      res.send(myDoc);
+    .then((myPost) => {
+      console.log(myPost);
+      res.send(myPost);
     })
-    .catch((err) => {
+    .catch(err => {
       console.error(err);
+      res.send(err);
     })
 }
 
 exports.deletePost = async (req, res) => {
-  
   try {
     // res.status(202).send("Proccessing Request.")
     const pId = req.params.postId;
@@ -106,45 +106,87 @@ exports.deletePost = async (req, res) => {
   }
 }
 
+
 exports.likePost = async (req, res) => {
-  const postId = req.params.postId;
-  const author = req.params.author;
+  const username = req.params.username;
   var index;
-  // console.log(postId)
-  await User.findOne({ "username": author}, (err, results) => {
+
+  await User.findOne({ "username": username }, (err, post) => {
     if (!err) {
-      // console.log(results)
-      // res.send(results);
-      for (let i = 0; i < results.allPosts.length; i++) {
-        if (results.allPosts[i].postId == req.params.postId) {
+      for (let i = 0; i < post.allPosts.length; i++) {
+        if (post.allPosts[i].postId == req.params.postId) {
           index = i;
           break;
         }
       }
-      // res.send(results.allPosts[index]);
-      User.findOneAndUpdate({"allPosts.postId": postId},
+      const obj = {
+        postId: req.params.postId,
+        likedBy: req.body.likedBy
+      }
+
+      User.findOneAndUpdate({ "username": username},
         {
-          "$push": { ["allPosts." + index + ".likes"]: req.params }
+          "$push": { ["allPosts." + index + ".likes"]: obj },
+          "$inc": { ["allPosts." + index + ".likeCount"]: 1 },
         }, 
-        (err, result) => {
-          // res.redirect('/home/' + req.params.postId);
-          res.send(result);
-          // res.redirect('/');
+        { 
+          returnOriginal: false //@ This ensures returning the updated Document Object
+        }).then((post) => {
+          res.send(post);
         })
         .catch(err => {
           console.log(err);
+          res.send(err);
         })
-
     } else {
+      // res.status(400).send(err);
       console.log(err)
     }
+  })
+}
 
-  // const user = User.findOne({
-  //   "username": req.params.username,
-  //   "allPosts.postId": pId
-  // },
-  // {
-  //   $push: { allPosts: {"postId": pId} }
-  // })
-})
+exports.test = (req, res) => {
+  User.find({"username": req.params.username}).populate('likes')
+    .then(data => {
+      res.send(data);
+    })
+}
+
+exports.unlikePost = async (req, res) => {
+  const username = req.params.username;
+  var index;
+
+  await User.findOne({ "username": username }, (err, post) => {
+    if (!err) {
+      for (let i = 0; i < post.allPosts.length; i++) {
+        if (post.allPosts[i].postId == req.params.postId) {
+          index = i;
+          break;
+        }
+      }
+      const obj = {
+        postId: req.params.postId,
+        likedBy: req.body.likedBy
+      }
+
+      User.findOneAndUpdate({ "username": username },
+        {
+          "$pull": { ["allPosts." + index + ".likes"]: obj },
+          "$inc": { ["allPosts." + index + ".likeCount"]: -1 },
+          returnOriginal: false
+        },
+        {
+          returnOriginal: false //@ This ensures returning the updated Document Object
+        }).then((post) => {
+          res.send(post);
+        })
+        .catch(err => {
+          console.log(err);
+          res.send(err);
+        })
+    } else {
+      // res.status(400).send(err);
+      console.log(err)
+    }
+  })
 }

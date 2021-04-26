@@ -1,5 +1,6 @@
 <template>
   <div>
+    <current-profile hidden @dataChanges="fetchData"></current-profile>
     <h1 style="text-align:center; margin: 25px;">Post view for {{postData.postTitle}}</h1>
     <div class="user-post-main">
       <div class="user-post">
@@ -28,33 +29,104 @@
           <img :src="require('../../../server/uploads/' + postData.imagePath)">
         </div>
         <div class="bottom-main">
-          <button class="btn">Like</button>
+          <div v-if="isLiked">
+            <button @click='dislike' class="btn">Dislike {{likesLength}}</button>
+          </div>
+          <div v-else>
+            <button @click='like()' class="btn">Like {{likesLength}}</button>
+          </div>
           <button class="btn">Comment</button>
-          {{postData.likes.length}}
         </div>
       </div>
     </div>
+    <!-- {{currentUser}} -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 import axios from "axios";
+import CurrentProfile from '../components/NavBar';
 
 export default {
   name: "userPost",
+  components: {
+    CurrentProfile
+  },
   data(){
     return {
       userData: {},
-      postData: {
-        // likes: []
-      },
+      currentUser: {},
+      postData: {},
       username: {},
+      isLiked: false,
+      postLength: {},
+      likesLength: {},
     }
   },
   methods: {
+    fetchData(data) {
+      this.currentUser = data
+    },
     reportPost(id){
       this.$router.push('../reportPost/' + this.$route.params.username + '&' + id);
+    },
+    like(){
+      // console.log("like")
+
+      const obj = {
+        likedBy: this.currentUser.username
+      }
+      // console.log(this.postData.postId)
+      axios.put('http://localhost:3000/user/like/'+ this.$route.params.username + "&" + this.postData.postId , obj)
+        .then(res => {
+          console.log(res.data)
+          let index;
+
+          for (var i = 0; i < res.data.allPosts.length; i++) {
+            if(res.data.allPosts[i].postId == this.postData.postId){
+              index = i
+              break;
+            }
+          }
+
+          this.postData = res.data.allPosts[index];
+          console.log(this.postData, " NewPost")
+          // const postlikes = this.postData.likes
+          // this.likesLength = this.postData.likes.length;
+          this.likesLength = this.postData.likes.length;
+
+          for (let index = 0; index < this.likesLength; index++) {
+            if(this.user.data.displayName == this.postData.likes[index].likedBy) {
+              this.isLiked = true
+              break;
+            }        
+          }
+        })
+    },
+    dislike(){
+      console.log("dislike")
+      const obj = {
+        likedBy: this.currentUser.username
+      }
+      // console.log(obj)
+      axios.put('http://localhost:3000/user/unlike/'+ this.$route.params.username + "&"+ this.postData.postId, obj)
+        .then(res => {
+          let index;
+
+          for (var i = 0; i < res.data.allPosts.length; i++) {
+            if(res.data.allPosts[i].postId == this.postData.postId){
+              index = i
+              break;
+            }
+          }
+
+          this.postData = res.data.allPosts[index];
+          this.likesLength = this.postData.likes.length;
+          console.log(this.postData)
+          this.isLiked = false
+          
+        })
     },
     async deletePost(id) {
       await axios.delete('http://localhost:3000/user/deletePost/' + this.$route.params.username + '&' + id)
@@ -78,11 +150,23 @@ export default {
       .then((res) =>{
         this.postData = res.data.allPosts[0];
         this.userData = res.data;
-        console.log(this.postData);
+        this.likesLength = this.postData.likes.length;
+        console.log(this.postData, " postData");
+        for (let index = 0; index < this.likesLength; index++) {
+          if(this.user.data.displayName == this.postData.likes[index].likedBy) {
+            this.isLiked = true
+            break;
+            }        
+        }
+      console.log(this.isLiked)
+
       })
       .catch((err) =>{
         console.log(err);
       })
+
+      
+      
   },
   computed: {
     ...mapGetters({
