@@ -82,6 +82,12 @@ const routes = [
     name: "categoryPosts",
     component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/category/CategoryPosts.vue"),
     meta: { requiresAuth: true }
+  },
+  {
+    path: "/contactUs",
+    name: "contactUs",
+    component: () => import(/* webpackChunkName: "contactUs" */ "../views/ContactUs.vue"),
+ 
   }
 
 ];
