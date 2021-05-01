@@ -48,7 +48,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/user/:id",
+    path: "/user/:username",
     name: "user",
     component: () => import(/* webpackChunkName: "user" */ "../views/User.vue"),
     meta: { requiresAuth: true }
@@ -56,31 +56,43 @@ const routes = [
   {
     path: "/forums/:id",
     name: "forums",
-    component: () => import(/* webpackChunkName: "user" */ "../views/Forums.vue"),
+    component: () => import(/* webpackChunkName: "forums" */ "../views/Forums.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/user/post/:username&:postId",
+    name: "userPost",
+    component: () => import(/* webpackChunkName: "userPost" */ "../views/UserPost.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/user/reportPost/:username&:postId",
+    name: "reportPost",
+    component: () => import(/* webpackChunkName: "reportPost" */ "../views/ReportPost.vue"),
     meta: { requiresAuth: true }
   },
   {
     path: "/createCategoryPost",
     name: "createCategoryPost",
-    component: () => import(/* webpackChunkName: "createCategoryPost" */ "../views/category/CreateCategoryPost"),
+    component: () => import(/* webpackChunkName: "createCategoryPost" */ "../views/Category/CreateCategoryPost"),
     meta: { requiresAuth: true }
   },
   {
     path: "/listCategoryPost",
     name: "listCategoryPost",
-    component: () => import(/* webpackChunkName: "listCategoryPost" */ "../views/category/ListCategoryPost"),
+    component: () => import(/* webpackChunkName: "listCategoryPost" */ "../views/Category/ListCategoryPost"),
     meta: { requiresAuth: true }
   },
   {
     path: "/editCategoryPost/:id",
     name: "editCategoryPost",
-    component: () => import(/* webpackChunkName: "editCategoryPost" */ "../views/category/EditCategoryPost"),
+    component: () => import(/* webpackChunkName: "editCategoryPost" */ "../views/Category/EditCategoryPost"),
     meta: { requiresAuth: true }
   },
   {
     path: "/category/:selected",
     name: "categoryPosts",
-    component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/category/CategoryPosts.vue"),
+    component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/Category/CategoryPosts.vue"),
     meta: { requiresAuth: true }
   },
   {
@@ -101,6 +113,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
   const isAuthenticated = firebase.auth().currentUser;
+  // console.log("isauthenticated", isAuthenticated);
   if (requiresAuth && !isAuthenticated) {
     next("/login");
   } else {
