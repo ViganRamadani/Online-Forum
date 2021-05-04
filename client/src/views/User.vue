@@ -38,17 +38,17 @@
         </form>
       </div>
     </div>
-    <!-- <h1 style="text-align:center; margin: 25px 0;">{{postLength}}</h1> -->
+    <h1 style="text-align:center; margin: 25px 0;">Users Posts</h1>
     <div v-if="postLength != 0" class="all-posts-main">
       <div class="post" v-for="post in userData.allPosts" :key="post.postId">
           <div class="flex-row top-main">
             <router-link class="username" :to="userData.username">
               <img class="postProfile" v-if="userData.profilePath" :src="require('../../../server/uploads/' + userData.profilePath)">
             </router-link>
-            <div class="flex-column">
-              <h2>{{ post.postTitle }}</h2>
+            <div class="flex-column px-2">
+              <span >{{ post.forum }}</span>
+              <h2 style="margin: 0;">{{ post.postTitle }}</h2>
               <h3> {{ post.description }}</h3>
-              <!-- <p>{{ post.forum }}</p> -->
             </div>
             <div class="dropdown-main">
               <button class="toggle-menu">···</button>
@@ -58,7 +58,7 @@
               </ul>
             </div>
           </div>
-          <div class="content-main">
+          <div class="content-main" v-if="post.imagePath">
             <img :src="require('../../../server/uploads/' + post.imagePath)">
           </div>
           <div class="bottom-main">
