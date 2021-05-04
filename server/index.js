@@ -45,6 +45,6 @@ const userRoutes = require('./route/index')  //bring in our user routes
 app.use('/user', userRoutes)
 
 //Category posts
-// const categoryAPI = require('./route/category')
+const categoryAPI = require('./route/category')
 
-// app.use('/category', categoryAPI)
+app.use('/category', categoryAPI)

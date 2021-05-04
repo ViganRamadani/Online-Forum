@@ -8,12 +8,32 @@ exports.createForum = async (req, res) => {
     imagePath: req.body.imagePath,
     allPosts: req.body.allPosts,
   })
-  try {
-    const newForum = await forum.save()
-    return res.status(201).json(newForum)
-  } catch(err) {
-    return res.status(400).json({ message: err.message }), console.log(err)
-  }
+  // console.log(forum.forumTopic, "YEE")
+  await Forum.find()
+    .then(async allForums => {
+      // console.log(allForums)
+      // allForums.forEach(async myForum => {
+      //   if (myForum.forumTopic == forum.forumTopic) {
+      //     return console.log("FOUND"),
+      //     console.log(myForum)
+      //     // break;
+      //   }
+      // })
+      // @ Instead of using the forEach or a normal forEach you can use some to return a simple true/false 
+      const same = allForums.some(myForum => myForum.forumTopic == forum.forumTopic)
+      console.log(same)
+      if (same === true) {
+        //@ 409 = Confilts the data on the Database
+        return res.status(409).send("Please enter a different Forum Topic!")
+      }
+      try {
+        const newForum = await forum.save()
+        return res.status(201).json(newForum)
+      } catch(err) {
+        return res.status(400).json({ message: err.message }), 
+        console.log(err)
+      }
+    })
 }
 
 exports.getForums = (req, res) => {
@@ -25,6 +45,18 @@ exports.getForums = (req, res) => {
       console.log(err)
     })
 }
+
+exports.test = (req, res) => {
+  Forum.find()
+    .then(forums => {
+      res.status(200).json(forums)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
+}
+
 
 exports.getForumPosts = async (req, res) => {
   Forum.find({ forumTopic: req.params.forumTopic }).sort({ createdAt: -1 })
@@ -78,9 +110,6 @@ exports.editUserRole = async (req, res) => {
   if (req.params.username == null || typeof (req.params.username) != 'string') {
     return res.status(400).send({ message: "Missing required Params!" })
   }
-  // if (req.body.isAdmin == null || typeof (req.body.isAdmin) != 'boolean') {
-  //   return res.status(400).send({ message: "Missing required Params!" })
-  // }
   try {
     const user = await User.findOneAndUpdate({"username": req.params.username}, req.body)
     if (!user) {
@@ -94,41 +123,51 @@ exports.editUserRole = async (req, res) => {
   }
 }
 
+exports.deleteForum = async (req, res) => {
+  forumTopic = req.params.forumTopic
 
-  // User.findById(id).then((user) => {
-  //   // Forum.find({ author: user.username })
-  //   Forum.deleteMany({ author: user.username })
-  // })
+  Forum.findOneAndDelete({forumTopic: forumTopic})
+    .then(async forumData => {
+      // res.send(forumData)
+      const forumPosts = forumData.allPosts
+      
+      const seen = new Set(); //@ Will set for only the objects with the unique author
+      const uniquePosts = forumPosts.filter(el => {
+        const duplicate = seen.has(el.author);
+        seen.add(el.author);
+        return !duplicate;
+      });
 
-
-    
+      const usersAffected = uniquePosts.reduce((a, o) =>
+        (a.push([" " + o.author]), a), [])
+      // console.log(usersAffected)
+      
+      console.log(uniquePosts.length);
+      for (let i = 0; i < uniquePosts.length; i++) {
+        // console.log(uniquePosts[i].author)
+        const myUser = await User.findOneAndUpdate(
+          {
+            "username": uniquePosts[i].author
+          },
+          {
+            $pull: { "allPosts": { "forum": forumTopic }}
+          },
+          {
+            safe: true,
+          }).catch(err => {
+            console.log(err)
+          })
+          if (!myUser) {
+            res.status(404).send("User not found!");
+          }
+          await myUser.save()
+          console.log(myUser)
+      }
+      res.status(200).send(`Forum: "${forumTopic}" was deleted altogether with: ${forumPosts.length} post/s form this/these user/s:
+        ${usersAffected}
+      `)
+    }).catch(err => {
+      console.log(err)
+    })
+}
   
-
-// exports.getUser = (req, res) => {
-//   const currentUser = req.params.id;
-//   // const currentUser = req.params.username
-
-//   User.findOne({ username: currentUser })
-//     .then(data => {
-//       res.status(200).json(data)
-//     })
-//     .catch(err => {
-//       // console.log(err)
-//       res.status(500).json(err)
-//     })
-// }
-
-
-
-// exports.createForum = async (req, res) => {
-//   const forum = new Forum({
-//     forumTopic: req.body.forumTopic,
-//     description: req.body.description
-//   })
-//   try {
-//     const newForum = await forum.save()
-//     return res.status(201).json(newForum)
-//   } catch {
-//     return res.status(400).json({ message: err.message })
-//   }
-// }

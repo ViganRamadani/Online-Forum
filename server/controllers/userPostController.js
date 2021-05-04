@@ -109,71 +109,52 @@ exports.deletePost = async (req, res) => {
 
 exports.likePost = async (req, res) => {
   const username = req.params.username;
+  const forumTopic = req.body.forumTopic;
   var index;
-
-  await User.findOne({ "username": username }, (err, post) => {
-    if (!err) {
+  const obj = {
+    postId: req.params.postId,
+    likedBy: req.body.likedBy
+  }
+  // console.log(forumTopic);
+  try {
+    //@ Liking in forum
+    await Forum.findOne({"forumTopic": forumTopic }, (err, forum) => {
+      // console.log(forum)
+      for (let i = 0; i < forum.allPosts.length; i++) {
+        if (forum.allPosts[i]._id == req.params.postId) {
+          index = i;
+          break;
+        }
+      }
+      postsSum = forum.allPosts.length
+      likeSum = forum.allPosts[index].likes.length + 1
+    }).then(async () => {
+      await Forum.findOneAndUpdate({ "forumTopic": forumTopic },
+        {
+          "$set": { "postsSum": postsSum },
+          "$push": { ["allPosts." + index + ".likes"]: obj },
+          "$set": { ["allPosts." + index + ".likeCount"]: likeSum },
+          // "$inc": { ["allPosts." + index + ".likeCount"]: 1 },
+        }).catch(err => {
+          console.error(err);
+        })
+    })
+    //@ Liking in user
+    await User.findOne({ "username": username }, (err, post) => {
+      // console.log(post)
       for (let i = 0; i < post.allPosts.length; i++) {
         if (post.allPosts[i].postId == req.params.postId) {
           index = i;
           break;
         }
       }
-      const obj = {
-        postId: req.params.postId,
-        likedBy: req.body.likedBy
-      }
-
-      User.findOneAndUpdate({ "username": username},
+      likeSum = post.allPosts[index].likes.length + 1
+    }).then(async () => {
+      await User.findOneAndUpdate({ "username": username },
         {
           "$push": { ["allPosts." + index + ".likes"]: obj },
-          "$inc": { ["allPosts." + index + ".likeCount"]: 1 },
-        }, 
-        { 
-          returnOriginal: false //@ This ensures returning the updated Document Object
-        }).then((post) => {
-          res.send(post);
-        })
-        .catch(err => {
-          console.log(err);
-          res.send(err);
-        })
-    } else {
-      // res.status(400).send(err);
-      console.log(err)
-    }
-  })
-}
-
-exports.test = (req, res) => {
-  User.find({"username": req.params.username}).populate('likes')
-    .then(data => {
-      res.send(data);
-    })
-}
-
-exports.unlikePost = async (req, res) => {
-  const username = req.params.username;
-  var index;
-
-  await User.findOne({ "username": username }, (err, post) => {
-    if (!err) {
-      for (let i = 0; i < post.allPosts.length; i++) {
-        if (post.allPosts[i].postId == req.params.postId) {
-          index = i;
-          break;
-        }
-      }
-      const obj = {
-        postId: req.params.postId,
-        likedBy: req.body.likedBy
-      }
-
-      User.findOneAndUpdate({ "username": username },
-        {
-          "$pull": { ["allPosts." + index + ".likes"]: obj },
-          "$inc": { ["allPosts." + index + ".likeCount"]: -1 },
-          returnOriginal: false
+          "$set": { ["allPosts." + index + ".likeCount"]: likeSum },
+          // "$inc": { ["allPosts." + index + ".likeCount"]: 1 },
         },
         {
           returnOriginal: false //@ This ensures returning the updated Document Object
@@ -184,9 +165,143 @@ exports.unlikePost = async (req, res) => {
           console.log(err);
           res.send(err);
         })
-    } else {
-      // res.status(400).send(err);
-      console.log(err)
+    })
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+exports.unlikePost = async (req, res) => {
+  const username = req.params.username;
+  var index;
+  const forumTopic = req.body.forumTopic;
+  const obj = {
+    postId: req.params.postId,
+    likedBy: req.body.likedBy
+  }
+  try {
+    //@ Unliking in forum
+    await Forum.findOne({ "forumTopic": forumTopic }, (err, forum) => {
+      console.log(forum)
+      for (let i = 0; i < forum.allPosts.length; i++) {
+        if (forum.allPosts[i]._id == req.params.postId) {
+          index = i;
+          break;
+        }
+      }
+      postsSum = forum.allPosts.length - 1
+    }).then(async () => {
+      await Forum.findOneAndUpdate({ "forumTopic": forumTopic },
+        {
+
+          "$set": { "postsSum": postsSum },
+          "$pull": { ["allPosts." + index + ".likes"]: obj },
+          "$inc": { ["allPosts." + index + ".likeCount"]: -1 },
+        }).catch(err => {
+          console.error(err);
+        })
+    })
+    //@ Unliking in User
+      await User.findOne({ "username": username }, (err, post) => {
+        for (let i = 0; i < post.allPosts.length; i++) {
+          if (post.allPosts[i].postId == req.params.postId) {
+            index = i;
+            break;
+          }
+        }
+        User.findOneAndUpdate({ "username": username },
+          {
+            "$pull": { ["allPosts." + index + ".likes"]: obj },
+            "$inc": { ["allPosts." + index + ".likeCount"]: -1 },
+            returnOriginal: false
+          },
+          {
+            returnOriginal: false //@ This ensures returning the updated Document Object
+          }).then((post) => {
+            res.send(post);
+          })
+          .catch(err => {
+            console.log(err);
+            res.send(err);
+          })
+      })
+  } catch {
+    res.status(400).send(err);
+    console.log(err)
+  }
+}
+
+exports.commentPost = async (req, res) => {
+  const username = req.params.username;
+  const forumTopic = req.body.forumTopic;
+  let index;
+  let userIndex;
+  const obj = {
+    postId: req.params.postId,
+    commentedBy: req.body.commentedBy,
+    commentDescription: req.body.commentDescription,
+  }
+  if (!req.body) {
+    return res.status(400).send({ message: 'Missing required Params!' })
+  }
+  //@ Commenting in forum
+  await Forum.findOne({ "forumTopic": forumTopic }, (err, forum) => {
+    // console.log(forum)
+    for (let i = 0; i < forum.allPosts.length; i++) {
+      if (forum.allPosts[i]._id == req.params.postId) {
+        index = i;
+        break;
+      }
     }
+    // if (!forum.allPosts[index].comments) {
+    //   return commentSum += 1;
+    // }
+    commentSum = forum.allPosts[index].comments.length + 1
+  }).then(async () =>{
+    await Forum.findOneAndUpdate({ "forumTopic": forumTopic },
+    {
+      "$push": { ["allPosts." + index + ".comments"]: obj },
+      "$set": { ["allPosts." + index + ".commentCount"]: commentSum },
+    },
+      { new: true, setDefaultsOnInsert: true, returnOriginal: false }
+    ).then(() =>{
+      User.findOne({"username": username}).then(user => {
+        for (let i = 0; i < user.allPosts.length; i++) {
+          if (user.allPosts[i].postId == req.params.postId) {
+            userIndex = i;
+            break;
+          }
+        }
+        commentSum = user.allPosts[userIndex].comments.length + 1
+      }).then(async () => {
+        await User.findOneAndUpdate({ "username": username },
+        {
+          "$push": { ["allPosts." + userIndex + ".comments"]: obj },
+          "$set": { ["allPosts." + userIndex + ".commentCount"]: commentSum },
+          ["allPosts." + userIndex + "likes"]: 0,
+          // comments: 1
+          // 'allPosts.comments':
+        },
+        {
+          returnOriginal: false 
+        }).then((userData) =>{
+          userComments = userData.allPosts[userIndex].comments
+          last = Object.keys(userComments)[Object.keys(userComments).length - 1] //@ gets the last index
+          res.send(userComments[last]);
+        })
+      })
+    })
+  }).catch(err =>{
+    console.log(err)
+    res.status(404).send("Something went wrong.")
   })
+
+  
+}
+
+exports.deleteCommentPost = (req, res) => {
+  if (!req.body) {
+    return res.status(400).send({ message: 'Missing required Params!' })
+  }
+
 }

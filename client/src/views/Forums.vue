@@ -18,20 +18,23 @@
       <hr />
 
       <vue-slide-up-down :active="active">
-        <form enctype="multipart/form-data" ref="addPost" @submit.prevent="addPost">
+        <div>
           <h2>Create a Post here!</h2>
-          <div class="col-md-2 p-2">
-            <input id="title" class="form-control" type="text" v-model="postForm.title" placeholder="Title" autofocus/>
-          </div>
-          <div class="col-md-2 p-2">
-            <input id="description" class="form-control" type="text" v-model="postForm.description" placeholder="Description"/>
-          </div>
-          <div class="col-md-2 p-2">
-            <input type="file" @change="selectFile" ref="file" name="file" id="input-files" class="form-control-file border"/>
-          </div>
-          <button class="btn btn-primary" type="submit">Add post</button>
-          <hr />
-        </form>
+          <form enctype="multipart/form-data" ref="addPost" @submit.prevent="addPost">
+            <div class="col-md-2 p-2">
+              <input id="title" class="form-control" type="text" v-model="postForm.title" placeholder="Title" autofocus/>
+            </div>
+            <div class="col-md-2 p-2">
+              <!-- <textarea > </textarea> -->
+              <input id="description" class="form-control" type="text" v-model="postForm.description" placeholder="Description"/>
+            </div>
+            <div class="col-md-2 p-2">
+              <input type="file" @change="selectFile" ref="file" name="file" id="input-files" class="form-control-file border"/>
+            </div>
+            <button class="btn btn-primary" type="submit">Add post</button>
+            <hr>
+          </form>
+        </div>
       </vue-slide-up-down>
 
       <div v-for="posts in forumData" :key="posts._id">
@@ -48,7 +51,7 @@
                 <button class="toggle-menu">···</button>
                 <ul class="menu-list">
                   <li  class="menu-button">
-                    <button class="menu-report" @click="reportPost(post.author, post._id)">Report Post</button>
+                    <button class="menu-report" @click="reportPost(post.author, post._id, forumTopic)">Report Post</button>
                   </li>
                   <li v-if="post.author == user.data.displayName || currentUser.isAdmin" class="menu-button">
                     <button class="menu-remove" @click="deletePost(post.author, post._id)">Delete Post</button>
@@ -62,7 +65,6 @@
         <div v-else>
           <h1>No posts yet D:</h1>
         </div>
-        <!-- {{currentUser}} -->
       </div>
     </div>
   </div>
@@ -91,32 +93,45 @@ export default {
         imagePath: '',
         author: '',
       },
+      formData: '',
     };
   },
   methods: {
-    fetchData(data) {
-      this.currentUser = data
+    async fetchData(data) {
+      this.currentUser = await data
     },
     async addPost() {
-      const formData = new FormData();
-      formData.append('file', this.file);
         try{
           // console.log(this.file);
-          await axios.post("http://localhost:3000/user/user/addImage", formData)
+          // console.log(this.formData);
+          if(this.formData == '') {
+            console.log(this.formData, "is undefined");
+            this.postForm.author = this.user.data.displayName,
+            await axios.post("http://localhost:3000/user/addPost/" + this.forumTopic, this.postForm)
+              .then(async () => {
+                axios.get("http://localhost:3000/user/getForumPosts/"+ this.forumTopic)
+                .then(newData => {
+                  this.forumData = newData.data;
+                  console.log(this.forumData);
+                })
+              })
+          } else {
+            console.log(this.formData, "defined");
+            await axios.post("http://localhost:3000/user/user/addImage", this.formData)
             .then(async res => {
-              this.postForm.imagePath = res.data.file.filename;
+              this.postForm.imagePath = await res.data.file.filename;
               //* This is a workaround to assign the Current User to the author propperty, since it was throwing errors above
               this.postForm.author = this.user.data.displayName,
               await axios.post("http://localhost:3000/user/addPost/" + this.forumTopic, this.postForm)
+            }).then(async() => {
+              await axios.get("http://localhost:3000/user/getForumPosts/"+ this.forumTopic)
+                .then(async newData => {
+                  this.forumData = await newData.data;
+                  console.log(this.forumData);
+                })
             })
-              .then(async() => {
-                await axios.get("http://localhost:3000/user/getForumPosts/"+ this.forumTopic)
-                  .then(newData => {
-                    this.forumData =  newData.data;
-                    console.log(this.forumData);
-                  })
-              })
-            // .then(window.location.reload(true))
+          }
+          
         } catch(err){
           console.log(err);
         }
@@ -126,12 +141,17 @@ export default {
     },
     selectFile() {
       this.file = this.$refs.file.files[0];
+
+      // const formData = new FormData();
+      this.formData = new FormData();
+      this.formData.append('file', this.file);
     },
     reportPost(author, postId){
-      this.$router.push('/user/reportPost/' + author + '&' + postId);
+      this.$router.push('/user/reportPost/' + author + '&' + postId + '&' + this.forumTopic);
     },
     async deletePost(author, postId) {
       // console.log(postId);
+      // console.log(author, postId);
       await axios.delete('http://localhost:3000/user/deletePost/' + author + '&' + postId)
       .then(async () => {
         await axios.get('http://localhost:3000/user/getForumPosts/'+ this.forumTopic)
@@ -156,8 +176,22 @@ export default {
   created() {
     axios.get("http://localhost:3000/user/getForumPosts/"+ this.forumTopic)
       .then(res => {
+        if(res.data.length == 0){
+          this.$router.push("/")
+          
+          this.$swal({
+            icon: 'error',
+            title: `Oopsie Daisy... :D`,
+            text: `Could not find ${this.forumTopic}`,
+            footer: ` <div style="display: flex; flex-direction:column; text-align: center;">
+                        <h6>It may seem that the forum does not exist.</h6>
+                        <h5>Please contact the administration if you think this was wrong.</h5>
+                      </div>
+                    `
+          })
+        }
         this.forumData = res.data;
-        // console.log(this.forumData);
+        console.log(res.data);
       })
       
   },

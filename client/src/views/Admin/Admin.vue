@@ -1,9 +1,10 @@
 <template>
   <div class="admin-main">
-    <div id="admin">
-      <h1>Admin</h1>
-    </div>
+    <AdminSideBar></AdminSideBar>
     <div class="container">
+      <div class="admin-title">
+        <h1>Admin</h1>
+      </div>
       <div v-if="userData.length !== 0 && currentUser.isAdmin === true " class="users-table-main">
         <table class="table">
           <thead>
@@ -34,9 +35,9 @@
                 {{ user.isAdmin }}
               </td>
               <td>
-                <button class="btn" @click='editUser(user.username); cancelButton();'>Edit</button> |
-                <router-link class="btn" :to="'user/' + user.username">Details</router-link> |
-                <button class="btn" @click='deleteUser(user.username); swalTest();'>Delete</button>
+                <button class="btn btn-edit" @click='editUser(user.username); cancelButton();'>Edit</button> |
+                <router-link class="btn btn-details" :to="'user/' + user.username">Details</router-link> |
+                <button class="btn btn-remove" @click='deleteUser(user.username); column();'>Delete</button>
                 <!-- <a href=""></a> -->
               </td>
             </tr>
@@ -45,35 +46,6 @@
       </div>
       <div v-else>
         <p>No users yeet.</p>
-      </div>
-      <hr style="border-top: 3px solid black;">
-          <!-- <button class="btn btn-primary" @click="sortBy('username')">Sort</button> -->
-      
-      <h2 style="text-align: center">Create a Forum Here :D</h2>
-
-      <div class="forum-container-main">
-        <div class="forum-container">
-          <form @submit.prevent="createForum">
-            <label for="forum-topic">Forum Topic</label>
-            <input id="forum-topic" class="form-control" type="text" v-model="postForm.forumTopic" placeholder="Type here" required/>
-            <label for="forum-description">Forum Description</label>
-            <input id="forum-description" class="form-control" type="text" v-model="postForm.forumDescription" placeholder="Type here" required/>
-            
-            <div class="flex-column">
-              <input hidden id="forum-picture" class="form-control" type="file" @change="selectFile" ref='file' name='file'/>
-              <div class='flex-row'>
-                <button @click.prevent="choosePic" class="btn btn-primary">Select Picture</button>
-                <button v-if="url" type="submit" class="btn btn-success">Create Forum</button>
-              </div>
-              
-            </div>
-          </form>
-
-        </div>
-        <div v-if="url" id="imgPreview">
-            <p>Preview for the image.</p>
-            <img :src="url" alt="Your Image will load here...">
-        </div>
       </div>
     </div>
   </div>
@@ -84,9 +56,13 @@ import "firebase/auth";
 import { mapGetters } from "vuex";
 import axios from "axios";
 import $ from 'jquery'
+import AdminSideBar from "@/components/AdminSideBar";
 
 export default {
   name: "admin",
+  components: {
+    AdminSideBar,
+  },
   data() {
     return {
       url: null,
@@ -115,34 +91,13 @@ export default {
     //   });
     //   console.log(userData)
     // },
-    async createForum() {
-      const formData = new FormData();
-      formData.append('file', this.file);
-        try{
-          // console.log(this.file);
-          axios.post("http://localhost:3000/user/admin/forumImg", formData)
-            .then(res => {
-              this.postForm.imagePath = res.data.file.filename;
-              axios.post("http://localhost:3000/user/admin/createForum", this.postForm)
-              this.postForm = ''
-              this.$swal({
-                title: "Forum Created",
-                icon: 'success',
-                toast: true,
-                showConfirmButton: false,
-                timer: 1250,
-                timerProgressBar: false,
-              })
-            })
-        } catch(err){
-          console.log(err);
-        }
-    },
     logHere() {
       console.log(this.userRole.isAdmin)
     },
     editUser(username) {
       // console.log(username)
+      // $('#app').css('width', '100vw')
+      // $('#app').css('max-width', '100%')
       document.querySelector('#app').style.position = 'absolute'
       this.$swal.fire({
         title: 'Edit User Role',
@@ -184,7 +139,10 @@ export default {
             console.log(err)
           })
         }
-      }).then(() => { })
+      })
+    },
+    column(){
+      $('.swal2-popup').css('flex-direction', 'column')
     },
     async deleteUser(username) {
       console.log(username);
@@ -200,13 +158,8 @@ export default {
         confirmButtonText: `<span style="color: #000">Proceed!</span>`,
         confirmButtonColor: '#fff',
         cancelButtonColor: '#d33',
-        customClass: {
-          content: 'swal-test',
-          container: 'swal-admin',
-          popup: 'swal-admin-popup',
-          header: 'swal-admin-header',
-        }
-      },).then(async (result) => {
+        customClass: 'sweet-alert button',
+      }).then(async (result) => {
         if (result.isConfirmed) {
           // console.log("Confirmed")
           await axios.delete("http://localhost:3000/user/admin/deleteUser/" + username)
@@ -256,9 +209,6 @@ export default {
     },
     choosePic() {
       this.$refs.file.click()
-    },
-    swalTest() {
-      $(".swal-admin .swal-admin-popup").css('flex-direction', 'column');
     },
     cancelButton(){
       $(".swal2-cancel").css('margin-right', 'auto');

@@ -44,7 +44,28 @@ const routes = [
     path: "/admin",
     name: "admin",
     component: () =>
-      import(/* webpackChunkName: "admin" */ "../views/Admin.vue"),
+      import(/* webpackChunkName: "admin" */ "../views/Admin/Admin.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/admin/forums",
+    name: "adminForums",
+    component: () =>
+      import(/* webpackChunkName: "adminForums" */ "../views/Admin/AdminForums.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/admin/contacts",
+    name: "adminContacts",
+    component: () =>
+      import(/* webpackChunkName: "adminContacts" */ "../views/Admin/AdminContacts.vue"),
+    meta: { requiresAuth: true }
+  },
+  {
+    path: "/admin/reports",
+    name: "adminReports",
+    component: () =>
+      import(/* webpackChunkName: "adminReports" */ "../views/Admin/AdminReports.vue"),
     meta: { requiresAuth: true }
   },
   {
@@ -66,7 +87,7 @@ const routes = [
     meta: { requiresAuth: true }
   },
   {
-    path: "/user/reportPost/:username&:postId",
+    path: "/user/reportPost/:username&:postId&:forumTopic",
     name: "reportPost",
     component: () => import(/* webpackChunkName: "reportPost" */ "../views/ReportPost.vue"),
     meta: { requiresAuth: true }

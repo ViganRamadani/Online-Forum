@@ -14,6 +14,8 @@
   --highlight-2: #414648;
   --link: #3ca4ff;
   --transition-delay: 0.2s ease;
+  --side-bar-width: 250px;
+  --nav-bar-height: 80px;
 }
 
 .dark-mode {
@@ -33,6 +35,15 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400&display=swap');
+
+.importantRule {
+  flex-direction: column !important;
+}
+
+.sweet-alert {
+  width: 500px !important;
+}
+
 
 * {
   margin: 0;
@@ -58,10 +69,13 @@ html,
   width: auto;
   height: 100vh;
   overflow-x: hidden;
+  background-color: var(--bg);
 }
 
 #app {
   min-height: 100%;
+  width:100vw;
+  max-width: 100%;
   font-family: sans-serif;
   display: flex;
   flex-direction: column;
@@ -73,13 +87,32 @@ header, footer {
 }
 
 header {
-  width: 100vw;
-  background-color: rgba(34, 34, 34, 0.9);
+  display: flex;
+  z-index: 3;
+  width: 100%;
+  /* height: var(--nav-bar-height); */
+  /* min-height: webkit-fill-available; */
+  min-height: var(--nav-bar-height);
+  height: auto;
+  background-color: rgb(34, 34, 34);
   /* padding: 15px; */
   /* font-family: sans-serif; */
 } .user-nav {
   display: flex;
   flex-direction: row;
+}
+
+#dropdown a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.navbar{
+  min-height: var(--nav-bar-height);
+}
+
+footer {
+  z-index: 2;
 }
 
 .swal2-popup.swal2-toast::before {
@@ -88,10 +121,6 @@ header {
 
 .swal2-popup.swal2-toast::after {
   flex-direction: column;
-}
-
-#dropdown {
-  z-index: 1;
 }
 
 footer {
@@ -116,21 +145,29 @@ footer {
 }
 
 .centered {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #navCollapse {
   background-color:var(--bg);
+  margin-top: 10px;
+}
+
+#nav-collapse {
+  /* margin-top: 10px; */
+  align-items: center;
 }
 
 .navbar-toggler-icon {
   color: #fff;
 }
 
-nav .menu-items {
+
+
+.menu-items {
   position: relative;
   display: flex;
   padding: 10px 20px;
@@ -140,15 +177,15 @@ nav .menu-items {
   transition: 0.4s;
 }
 
-nav .menu-items.active,
-nav .menu-items:hover {
+.menu-items.active,
+.menu-items:hover {
   color: #fff;
   text-decoration: none;
   background-color: #444;
   border-bottom: 3px solid #ff5858;
 }
 
-nav .menu-items a,
+.menu-items a,
 #username {
   color: inherit;
   text-decoration: none;
@@ -195,6 +232,11 @@ nav .menu-items a,
   }
 }
 
+@media screen and (max-width:434px) {
+  footer :is(div) {
+    justify-content: center
+  }
+}
 @media screen and (max-width:416px) {
   footer {
     display: flex;

@@ -20,19 +20,15 @@ var storage = multer.diskStorage({
 })
 var upload = multer({ storage: storage });
 
-router.post('/user/addImage', upload.single('file'), (req, res) => {
-  res.json({ file: req.file });
-});
-
 //@ ADMIN
 router.get('/allUsers', userController.getAllUsers)
+
+
+//@ ADMIN Forum
 router.post('/admin/forumImg', upload.single('file'), (req, res) => {
   res.json({ file: req.file });
 });
-
-//@ ADMIN Forum
 router.post('/admin/createForum', adminController.createForum)
-router.post('/addPost/:forumTopic', userPostController.addUserPost)
 
 router.patch('/updatePost/:forumTopic&:id', userPostController.updatePost)
 router.patch('/admin/editUserRole/:username', adminController.editUserRole)
@@ -41,34 +37,43 @@ router.get('/getForums', adminController.getForums)
 router.get('/getForumPosts/:forumTopic', adminController.getForumPosts)
 
 router.delete('/admin/deleteUser/:username', adminController.deleteUser)
+router.delete('/admin/forumTopic/:forumTopic', adminController.deleteForum)
 
-// //@ USER
+router.get('/test', adminController.test)
+
+//@ ADMIN Reports
+router.post('/report/:author&:postId', reportController.createReport)
+
+router.get('/reports', reportController.getReports)
+router.get('/reports/:reportReason', reportController.getFilteredReports)
+
+router.delete('/deleteReport/:reportId', reportController.deleteReport)
+
+
+//@ USER
 router.post('/signUp', userController.signUp)
-
-router.get('/:username', userController.getUser)
-
 router.post('/profilePic', upload.single('file'), (req, res) => {
   res.json({ file: req.file });
 });
+
+
+router.get('/:username', userController.getUser)
+
 router.patch('/addProfile', userController.addProfile)
 
 // //@ USER POST
+router.post('/addPost/:forumTopic', userPostController.addUserPost)
+router.post('/user/addImage', upload.single('file'), (req, res) => {
+  res.json({ file: req.file });
+});
+
 router.get('/getPost/:username&:id', userPostController.getPost)
-// router.get('/getPost/:id', userPostController.getPost)
 
 router.put('/like/:username&:postId', userPostController.likePost)
 router.put('/unlike/:username&:postId', userPostController.unlikePost)
+router.post('/comment/:username&:postId', userPostController.commentPost)
 
+router.delete('/deleteComment/:username&:postId', userPostController.deleteCommentPost)
 router.delete('/deletePost/:username&:postId', userPostController.deletePost)
-
-
-// router.get('/test/:username', userPostController.test)
-
-// //@ Forum
-// router.post('/createForum', adminController.createForum)
-
-// ! REPORTS
-router.post('/report/:author&:postId', reportController.createReport)
-
 
 module.exports = router
