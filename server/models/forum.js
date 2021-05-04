@@ -4,16 +4,19 @@ const mongoose = require('mongoose')
 const userPostSchema = mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, required: true },
-  imagePath: { type: String, required: true },
+  imagePath: { type: String, },
   author: { type: String, required: true },
   likes: [{
     likedBy: { type: String, required: true },
     postId: { type: String, required: true },
   }],
   likeCount: { type: Number, required: true , default: 0 },
-},
-
-  { timestamps: true }
+  comments: [{ 
+    commentedBy:{ type: String, required: true }, 
+    commentDescription: { type: String, required: true},
+  }],
+  commentCount: { type: Number, required: true, default: 0 },
+}, { timestamps: true }
 )
 
 const forumSchema = mongoose.Schema({
@@ -24,11 +27,10 @@ const forumSchema = mongoose.Schema({
     required: [true, 'Please Include your forumDescription']
   },
   imagePath: { type: String, required: true },
-  allPosts: [ userPostSchema ]
+  allPosts: [ userPostSchema ],
+  postsSum: { type: Number, required: true, default: 0},
   },
-
   { timestamps: true }
-
   )
 
 module.exports = mongoose.model('Forum', forumSchema)

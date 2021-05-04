@@ -4,9 +4,9 @@
           
       <b-collapse id="nav-collapse" is-nav>
         <router-link v-if="user.loggedIn" class="menu-items" to="/">Home</router-link>
-        <router-link class="menu-items" to="/about">About</router-link>
-        <Dropdown class="nav-link" v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
-        <Dropdown v-if="user.loggedIn" title="Category" :items="category" />
+        <router-link class="menu-items"  to="/about">About</router-link>
+        <Dropdown dropDownLink="/tutorials" v-if="user.loggedIn" title="Tutorials" :items="tutorials" />
+        <Dropdown v-if="user.loggedIn" dropDownLink="#" title="Category" :items="category" />
         <router-link class="menu-items" to="/contactUs">Contact Us</router-link>
         <router-link class="menu-items" v-if="user.loggedIn && currentUser.isAdmin == true" to="/admin">Admin</router-link>
       
@@ -34,7 +34,9 @@ export default {
   name: "navbar",
   data() {
     return {
-      currentUser: {},
+      currentUser: {
+        isAdmin: false,
+      },
       tutorials: [
         {
           title: "HTML",
@@ -97,7 +99,7 @@ export default {
         .get("http://localhost:3000/user/" + this.user.data.displayName)
         .then(async res => {
           this.currentUser = await res.data;
-          console.log(this.currentUser, " currentUser");
+          // console.log(this.currentUser, "currentUser");
 
           this.$emit('dataChanges', this.currentUser)
         });
@@ -124,61 +126,3 @@ export default {
 };
 </script>
 
-<style>
-nav {
-  display: flex;
-  align-items: center;
-  
-}
-
-nav .menu-items {
-  position: relative; /* <-- Added */
-    z-index: 1; /* <-- Added */
-  display: flex;
-  padding: 10px 20px;
-  border-bottom: 3px solid transparent;
-  color: #fff;
-  text-align: center;
-  transition: 0.4s;
-}
-
-nav .menu-items.active,
-nav .menu-items:hover {
-  color: #fff;
-  text-decoration: none;
-
-  background-color: #444;
-  border-bottom: 3px solid #ff5858;
-
-  /* border-bottom-color: #ff5858; */
-}
-
-nav .menu-items a {
-  color: inherit;
-  text-decoration: none;
-}
-
-#welcome-text {
-  display: flex;
-  color: white;
-}
-#welcome-text p {
-  padding: 10px 20px;
-  margin: 0;
-}
-
-#signOut {
-  width: fit-content;
-  height: max-content;
-  font-size: inherit;
-  background: transparent;
-  border: none;
-  border-bottom: 3px solid transparent;
-  outline: none;
-  cursor: pointer;
-}
-#signOut:hover {
-  background-color: rgb(128, 106, 106);
-  border-bottom: 3px solid #d62e2e;
-}
-</style>

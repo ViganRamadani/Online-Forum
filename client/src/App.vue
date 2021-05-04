@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     
-    <header>
+    <header id="mainHeader">
       <Navbar></Navbar>
     </header>
 
@@ -27,6 +27,4 @@ export default {
 };
 </script>
 
-<style src="./static/main.css">
-
-</style>
+<style src="./static/main.css"></style>

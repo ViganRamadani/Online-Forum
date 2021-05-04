@@ -1,8 +1,6 @@
 <template>
   <div class="home">
-    <div class="postContainerMain">
- 
-    </div>
+
     <div class="home-main">
       <h1 id="title">Forums</h1>
 
@@ -10,7 +8,6 @@
     </div>
 
     <div v-if="forums.length != 0" id="allForums" class="forums-main">
-      
       <div class="go-vertical">
           <a id="startHere" href="#allForums">Ask Here!</a>
         <div class="go-horizontal">
@@ -179,12 +176,10 @@ export default {
   .go-vertical {
     max-width: 495px;
     width: 100%;
-
   }
-
+  
   .go-horizontal {
     width: 100%;
-    /* align-items: center; */
     justify-content: center;
   }
   
