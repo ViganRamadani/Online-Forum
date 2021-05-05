@@ -74,25 +74,25 @@ const routes = [
   {
     path: "/createCategoryPost",
     name: "createCategoryPost",
-    component: () => import(/* webpackChunkName: "createCategoryPost" */ "../views/Category/CreateCategoryPost"),
+    component: () => import(/* webpackChunkName: "createCategoryPost" */ "../views/category/CreateCategoryPost"),
     meta: { requiresAuth: true }
   },
   {
     path: "/listCategoryPost",
     name: "listCategoryPost",
-    component: () => import(/* webpackChunkName: "listCategoryPost" */ "../views/Category/ListCategoryPost"),
+    component: () => import(/* webpackChunkName: "listCategoryPost" */ "../views/category/ListCategoryPost"),
     meta: { requiresAuth: true }
   },
   {
     path: "/editCategoryPost/:id",
     name: "editCategoryPost",
-    component: () => import(/* webpackChunkName: "editCategoryPost" */ "../views/Category/EditCategoryPost"),
+    component: () => import(/* webpackChunkName: "editCategoryPost" */ "../views/category/EditCategoryPost"),
     meta: { requiresAuth: true }
   },
   {
     path: "/category/:selected",
     name: "categoryPosts",
-    component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/Category/CategoryPosts.vue"),
+    component: () => import(/* webpackChunkName: "categoryPosts" */ "../views/category/CategoryPosts.vue"),
     meta: { requiresAuth: true }
   },
   {

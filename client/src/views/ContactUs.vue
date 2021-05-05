@@ -1,83 +1,135 @@
 <template>
-  <div class="contact-form">
-    <h1>Contact Us</h1>
-    <div class="txtb">
-      <label>Full Name :</label>
-      <input type="text" name="" value="" placeholder="Enter Your Name">
-    </div>
-
-    <div class="txtb">
-      <label>Email :</label>
-      <input type="email" name="" value="" placeholder="Enter Your Email">
-    </div>
-
-    <div class="txtb">
-      <label>Phone Number :</label>
-      <input type="text" name="" value="" placeholder="Enter Your Phone Number">
-    </div>
-
-    <div class="txtb">
-      <label>Message :</label>
-      <textarea></textarea>
-    </div>
-    <a class="btn">Send</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Responsive Contact us form Using HTML and CSS</title>
+</head>
+<body>
+	
+<div class="wrapper">
+  <div class="title">
+    <h1>contact us form</h1>
   </div>
+  <div class="contact-form">
+    <div class="input-fields">
+      <input type="text" class="input" placeholder="Name">
+      <input type="text" class="input" placeholder="Email Address">
+      <input type="text" class="input" placeholder="Phone">
+      <input type="text" class="input" placeholder="Subject">
+    </div>
+    <div class="msg">
+      <textarea placeholder="Message"></textarea>
+      <div class="btn">send</div>
+    </div>
+  </div>
+</div>
+	
+</body>
+</html>
 </template>
 <style scoped>
-body{
+
+
+*{
   margin: 0;
   padding: 0;
-  /* background: url(bg.jfif); */
-  background-size: cover;
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: #303233;
 }
-.contact-form{
-  width: 85%;
-  max-width: 600px;
-  background: #f1f1f1;
+
+body{
+  background-size: cover;
+  height: 100vh;
+  
+}
+
+.wrapper{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
-  padding: 30px 40px;
-  box-sizing: border-box;
-  border-radius: 8px;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 550px;
+  background: rgba(0,0,0,0.8);
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.wrapper .title h1{
+  color: #c5ecfd;
   text-align: center;
-  box-shadow: 0 0 20px #000000b3;
-  font-family: "Montserrat",sans-serif;
+  margin-bottom: 25px;
 }
-.contact-form h1{
-  margin-top: 0;
-  font-weight: 200;
+
+.contact-form{
+  display: flex;
 }
-.txtb{
-  border:1px solid gray;
-  margin: 8px 0;
-  padding: 12px 18px;
-  border-radius: 8px;
+
+.input-fields{
+  display: flex;
+  flex-direction: column;
+  margin-right: 4%;
 }
-.txtb label{
-  display: block;
-  text-align: left;
-  color: #333;
-  text-transform: uppercase;
-  font-size: 14px;
+
+.input-fields,
+.msg{
+  width: 48%;
 }
-.txtb input,.txtb textarea{
-  width: 100%;
-  border: none;
-  background: none;
-  outline: none;
-  font-size: 18px;
-  margin-top: 6px;
-}
-.btn{
-  display: inline-block;
-  background: #9b59b6;
-  padding: 14px 0;
-  color: white;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin-top: 8px;
+
+.input-fields .input,
+.msg textarea{
+  margin: 10px 0;
+  background: transparent;
+  border: 0px;
+  border-bottom: 2px solid #c5ecfd;
+  padding: 10px;
+  color: #c5ecfd;
   width: 100%;
 }
+
+.msg textarea{
+  height: 212px;
+}
+
+::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: #c5ecfd;
+}
+::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #c5ecfd;
+}
+:-ms-input-placeholder {
+  /* IE 10+ */
+  color: #c5ecfd;
+}
+
+.btn {
+    background: #39b7dd;
+    text-align: center;
+    padding: 15px;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 600px){
+  .contact-form{
+    flex-direction: column;
+  }
+  .msg textarea{
+    height: 80px;
+  }
+  .input-fields,
+  .msg{
+    width: 100%;
+  }
+}
+
 </style>
+
