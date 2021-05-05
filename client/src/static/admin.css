@@ -14,12 +14,52 @@
   flex-direction: column;
 }
 
+.container {
+  width: 100%;
+}
+
+.admin-main {
+  display: flex;
+  /* margin-left: var(--side-bar-width); */
+  /* width: 100%; */
+}
+
+.btn {
+  transition: all 0.2s;
+}
+
+
+:is(.btn-edit):hover {
+  background: rgba(0, 33, 124, 0.39);
+}
+
+.btn-details:hover {
+  background: rgba(255, 208, 0, 0.39);
+
+}
+
+.btn-remove:hover {
+  background: rgba(124, 0, 0, 0.39);
+}
+.table td {
+  padding: 5px;
+}
+:is(.users-table-main) :is(button, a) {
+  padding: 5px 5px;
+  margin: 0;
+}
+
+.admin-title {
+  text-align: center;
+  margin: 20px 0;
+}.admin-title h1 {
+  font-weight: 600;
+}
+
 #admin {
   text-align: center;
   margin: 20px 0;
-}
-
-#admin h1 {
+}#admin h1 {
   font-weight: 600;
 }
 
@@ -28,7 +68,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
 }
 
 .forum-container {
@@ -65,4 +104,18 @@ button {
 
 .swal2-header {
   display: block;
+}
+
+
+@media screen and (max-width: 991px) {
+  thead tr {
+    text-align: center;
+  }
+  tbody tr> td:nth-child(4) {
+    display: flex;
+    flex-direction: column;
+  }
+  /* tbody td:nth-child(4) {
+    content: "";
+  } */
 }

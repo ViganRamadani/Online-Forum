@@ -140,9 +140,6 @@ export default {
         /* border-radius: 30px; */
         color: rgb(184, 6, 6);
     }
-    .comment{
-      
-    }
     .comment:hover{
          background-image: linear-gradient(to right, rgb(226, 225, 225) ,white,rgb(247, 244, 244));
         /* border-radius: 30px; */

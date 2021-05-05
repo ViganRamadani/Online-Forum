@@ -2,7 +2,7 @@
   <div>
     <h1 class="text-center">Report Post</h1>
     <form class="col-md-4" @submit.prevent="reportPost">
-      <label :for="this.$route.params.username">Username</label>
+      <label :for="this.$route.params.username">Poster's Username</label>
       <input disabled :placeholder="this.$route.params.username" class="col text-center p-1">
       <label for="reportReason">Report Reason</label>
       <select autofocus class="form-control" v-model="report.reportReason" >
@@ -28,7 +28,8 @@ import axios from 'axios';
       return {
         report: {
           reportReason: '',
-        }
+        },
+        forumTopic: this.$route.params.forumTopic,
       }
     },
     methods: {
@@ -37,7 +38,7 @@ import axios from 'axios';
       // console.log(this.$route.params.postId)
       axios.post('http://localhost:3000/user/report/' + this.$route.params.username + '&' + this.$route.params.postId, this.report)
         .then(res => {
-          console.log(res.data);
+          // console.log(res.data);
           this.$swal({
             toast: true,
             html: `<h1>Report Created!</h1><h5>ReportId:</h5> 
@@ -45,12 +46,14 @@ import axios from 'axios';
             footer: `<h5 style="text-align:center;">We Will Get back to this post as soon as possible!</h5>`,
             showConfirmButton: false,
             timer: 3000,
-            // timerProgressBar: true
           }).then(() => {
-            this.$router.push('../../forums/')
+            this.$router.push('../../forums/' + this.forumTopic)
           })
         })
       }
+    },
+    created(){
+      console.log(this.forumTopic)
     }
 }
 </script>

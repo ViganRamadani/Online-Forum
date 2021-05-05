@@ -1,7 +1,7 @@
 <template>
   <div class="user-profile-container">
-    <div @click="toggleProfile" class="profile">
-        <img v-if="userData.profilePath" id="profilePic" :src="require('../../../server/uploads/' + userData.profilePath)">
+    <div @click="reveal = !reveal" class="profile">
+      <img v-if="userData.profilePath" id="profilePic" :src="require('../../../server/uploads/' + userData.profilePath)">
       <div class="change-profile-main">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="changeProfile bi bi-person-bounding-box" viewBox="0 0 16 16">
           <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5z"/>
@@ -38,17 +38,17 @@
         </form>
       </div>
     </div>
-    <!-- <h1 style="text-align:center; margin: 25px 0;">{{postLength}}</h1> -->
+    <h1 style="text-align:center; margin: 25px 0;">Users Posts</h1>
     <div v-if="postLength != 0" class="all-posts-main">
       <div class="post" v-for="post in userData.allPosts" :key="post.postId">
           <div class="flex-row top-main">
             <router-link class="username" :to="userData.username">
               <img class="postProfile" v-if="userData.profilePath" :src="require('../../../server/uploads/' + userData.profilePath)">
             </router-link>
-            <div class="flex-column">
-              <h2>{{ post.postTitle }}</h2>
+            <div class="flex-column px-2">
+              <span >{{ post.forum }}</span>
+              <h2 style="margin: 0;">{{ post.postTitle }}</h2>
               <h3> {{ post.description }}</h3>
-              <!-- <p>{{ post.forum }}</p> -->
             </div>
             <div class="dropdown-main">
               <button class="toggle-menu">···</button>
@@ -58,7 +58,7 @@
               </ul>
             </div>
           </div>
-          <div class="content-main">
+          <div class="content-main" v-if="post.imagePath">
             <img :src="require('../../../server/uploads/' + post.imagePath)">
           </div>
           <div class="bottom-main">
@@ -145,10 +145,6 @@ export default {
       this.currentProfile = !this.currentProfile;
       this.newProfile = !this.newProfile;
     },
-    toggleProfile() {
-      this.reveal = !this.reveal;
-      // this.$refs.file.click();
-    }
   },
   async created() {
     await axios
@@ -211,6 +207,7 @@ export default {
 
 
 .new-profile-main {
+  z-index: 0;
   position:absolute;
   display: flex;
   align-items: center;
@@ -221,6 +218,7 @@ export default {
   top: 0;
 }
 .profile-containter {
+  z-index: 5;
   width: 600px;
   height: 700px; 
   padding: 25px; 

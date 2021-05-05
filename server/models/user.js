@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
-const {ObjectId} = mongoose.Schema.Types
 
 const likeSchema = mongoose.Schema({
   // likedId: { type: ObjectId, ref: "users"},
   likedBy: { type: String, required: true },
   postId: { type: String, required: true },
 })
+
 
 const postDetails = mongoose.Schema({
   postId: {
@@ -25,11 +25,15 @@ const postDetails = mongoose.Schema({
     required: true
   },
   imagePath: {
-    type: String,
-    required: true
+    type: String
   },
   likes: [ likeSchema ],
   likeCount: { type: Number, required: true, default: 0 },
+  comments: [{
+    commentedBy: { type: String, required: true },
+    commentDescription: { type: String, required: true },
+  }],
+  commentCount: { type: Number, required: true, default: 0 },
 },
 { 
   timestamps: true
