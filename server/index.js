@@ -44,6 +44,9 @@ app.get('/', (req, res) => {
 const userRoutes = require('./route/index')  //bring in our user routes
 app.use('/user', userRoutes)
 
+const contactUsRoutes = require('./route/contactUs')
+app.use(contactUsRoutes)
+
 //Category posts
 const categoryAPI = require('./route/category')
 

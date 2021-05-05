@@ -12,24 +12,54 @@
     <h1>contact us form</h1>
   </div>
   <div class="contact-form">
-    <div class="input-fields">
-      <input type="text" class="input" placeholder="Name">
-      <input type="text" class="input" placeholder="Email Address">
-      <input type="text" class="input" placeholder="Phone">
-      <input type="text" class="input" placeholder="Subject">
-    </div>
-    <div class="msg">
-      <textarea placeholder="Message"></textarea>
-      <div class="btn">send</div>
-    </div>
+    <form @submit.prevent='sendMessage' class="input-fields flex-row">
+      <div class="flex-column">
+        <input v-model="form.name" type="text" class="input" placeholder="Name">
+        <input v-model="form.email" type="text" class="input" placeholder="Email Address">
+        <input v-model="form.phoneNumber" type="text" class="input" placeholder="Phone">
+        <input v-model="form.subject" type="text" class="input" placeholder="Subject">
+      </div>
+      <div class="msg flex-column">
+        <textarea v-model="form.message" placeholder="Message"></textarea>
+        <button type="submit" class="btn btn-submit">send</button>
+      </div>
+    </form>
   </div>
 </div>
-	
 </body>
 </html>
 </template>
-<style scoped>
+<script>
+import axios from 'axios'
 
+export default {
+  data() {
+    return {
+      form: {
+        name: '',
+        email: '',
+        phoneNumber: '',
+        subject: '',
+        message: '',
+      },
+    }
+  },
+  methods: {
+    sendMessage(){
+      console.log("submitted")
+      axios.post('http://localhost:3000/contactUs', this.form)
+        .then(data => {
+          console.log(data, "done")
+        })
+    }
+  }
+}
+</script>
+
+<style scoped>
+/* .btn-submit {
+  
+} */
 
 *{
   margin: 0;
@@ -77,7 +107,7 @@ body{
 
 .input-fields,
 .msg{
-  width: 48%;
+  width: 100%;
 }
 
 .input-fields .input,
