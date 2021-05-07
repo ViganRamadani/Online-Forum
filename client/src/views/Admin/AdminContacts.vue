@@ -3,9 +3,52 @@
     <AdminSideBar></AdminSideBar>
   <div class="container">
     <!-- <h1>{{contactMessages}}</h1>   -->
+    <div class="container">
+      <div class="admin-title">
+        <h1>Menage User</h1>
+      </div>
+      
+        <table class="table">
+          <thead>
+            <tr>
+              <th>
+                Username:
+              </th>
+              <th>
+                Email:
+              </th>
+              <th>
+              Message:
+              </th>
+              
+            </tr>
+          </thead>
+          <tbody style="width: max-content;">
+            <tr v-for="user in userData" :key="user._id">
+              <td>
+                <router-link :to="'user/' + user.username">{{user.username}}</router-link>
+              </td>
+              <td>
+                {{ user.email }}
+              </td>
+              <td>
+                {{ user.isAdmin }}
+              </td>
+              <td>
+                |
+                <button class="btn btn-remove" @click='deleteUser(user.username); column();'>Delete</button>
+                <!-- <a href=""></a> -->
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+     
+        <p>No users yeet.</p>
+      </div>
     
   </div>
-  </div>
+  
 </template>
 
 <script>
