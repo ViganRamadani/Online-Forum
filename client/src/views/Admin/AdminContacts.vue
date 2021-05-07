@@ -5,7 +5,7 @@
     <!-- <h1>{{contactMessages}}</h1>   -->
     <div class="container">
       <div class="admin-title">
-        <h1>Menage User</h1>
+        <h1>Menage Message</h1>
       </div>
       
         <table class="table">
@@ -44,7 +44,7 @@
         </table>
       </div>
      
-        <p>No users yeet.</p>
+        <p>No message yeet.</p>
       </div>
     
   </div>
