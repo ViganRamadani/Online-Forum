@@ -73,7 +73,7 @@ router.put('/like/:username&:postId', userPostController.likePost)
 router.put('/unlike/:username&:postId', userPostController.unlikePost)
 router.post('/comment/:username&:postId', userPostController.commentPost)
 
-router.delete('/deleteComment/:username&:postId', userPostController.deleteCommentPost)
+router.put('/deleteComment/:username&:postId', userPostController.deleteCommentPost)
 router.delete('/deletePost/:username&:postId', userPostController.deletePost)
 
 module.exports = router

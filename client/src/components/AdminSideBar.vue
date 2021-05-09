@@ -1,7 +1,7 @@
 <template>
   <div id="sideBar">
     <current-profile hidden @dataChanges="fetchData"></current-profile>
-    <div class="side-nav">
+    <div id="sideNav" class="side-nav">
       <div class="side-nav-option">
         <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="icon bi bi-people" viewBox="0 0 16 16">
           <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
@@ -29,6 +29,7 @@
         </svg>
         <router-link class="link" to="/admin/reports">Manage Reports</router-link>
       </div>
+      <a id="closebtn" @click="closeNav()">&times;</a>
     </div>
   </div>
 </template>
@@ -47,6 +48,10 @@ export default {
     }
   },
   methods: {
+    closeNav(){
+      document.getElementById("sideBar").style.width = "0%";
+      document.getElementById("showNav").style.opacity = "100%"
+    },
     fetchData(data) {
       this.currentUser = data
     }
@@ -108,6 +113,52 @@ export default {
  
 :is(.side-nav-option):hover :is(a, svg){
   color: #f1f1f1;
+}
+
+#closebtn  {
+  position: absolute;
+  top: 70px;
+  right: 40px;
+  font-size: 60px;
+  color: #f1f1f1;
+  cursor: pointer;
+}
+
+#showNav, #closebtn {
+  display: none;
+}
+
+
+@media (max-width: 767px) {
+  #sideBar{
+    --side-bar-width: 100%;
+    /* display: none; */
+    height: 100%;
+    width: 0;
+    position: fixed; /* Stay in place */
+    /* z-index: 1; Sit on top */
+    left: 0;
+    top: 0;
+    padding: 80px 0 0 0;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(0, 0, 0); /* Black fallback color */
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/opacity */
+    /* overflow-x: hidden; Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+  }
+
+  .side-nav {
+    display: flex;
+    flex-direction: column;
+    background-color: transparent;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #showNav, #closebtn {
+    display: initial;
+  }
 }
 
 </style>

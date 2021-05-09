@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -9,13 +10,9 @@ export default new Vuex.Store({
       data: {
         displayName: null,
       },
-    }
+    },
   },
-  getters: {
-    user(state) {
-      return state.user;
-    }
-  },
+  
   mutations: {
     SET_LOGGED_IN(state, value) {
       state.user.loggedIn = value;
@@ -25,7 +22,7 @@ export default new Vuex.Store({
     },
     SET_USERNAME(state, data) {
       state.user.data.displayName = data;
-    }
+    }, 
   },
   actions: {
     fetchUser({ commit }, user) {
@@ -38,7 +35,12 @@ export default new Vuex.Store({
       } else {
         commit("SET_USER", 'null');
       }
-    }
+    },
+  },
+  getters: {
+    user(state) {
+      return state.user;
+    },
   },
   modules: {}
 });

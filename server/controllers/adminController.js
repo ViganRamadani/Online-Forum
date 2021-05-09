@@ -36,8 +36,10 @@ exports.createForum = async (req, res) => {
     })
 }
 
-exports.getForums = (req, res) => {
-  Forum.find().sort({ createdAt: 0 })
+exports.getForums = async (req, res) => {
+
+  // Forum.find().sort({ createdAt: 0 }).limit(2).skip(pageIndex).exec()
+  Forum.find().sort({ createdAt: -1 })
     .then(forums => {
       res.status(200).json(forums)
     })
@@ -93,7 +95,7 @@ exports.deleteUser = async (req, res) => {
     user.allPosts.forEach(async (post) => {
       console.log(post) //* Will List all the Users Posts
       
-      var forum = await Forum.findOneAndUpdate({ 'forumTopic': post.forum },
+      var Forum = await Forum.findOneAndUpdate({ 'forumTopic': post.Forum },
         { $pull: { allPosts: { "_id": post.postId } } }, 
         { safe: true });
     });

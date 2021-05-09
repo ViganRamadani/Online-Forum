@@ -1,7 +1,7 @@
 <template>
   <div>
+    <button id="showNav" class="btn btn-open-side-bar" @click="open">Open</button>
     <AdminSideBar></AdminSideBar>
-
   </div>
 </template>
 

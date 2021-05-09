@@ -1,5 +1,6 @@
 <template>
   <b-navbar id="navMain" toggleable="md">
+
       <b-navbar-toggle class="ml-auto" style="margin-right: 10px;" target="nav-collapse" id="navCollapse"></b-navbar-toggle>
           
       <b-collapse id="nav-collapse" is-nav>
@@ -109,9 +110,6 @@ export default {
     Dropdown
   },
   methods: {
-    // emitChanges(){
-    //   this.$emit('dataChanges', this.currentUser)
-    // },
     signOut() {
       firebase
         .auth()

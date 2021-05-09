@@ -1,6 +1,7 @@
 <template>
   <div class="admin-main">
     <AdminSideBar></AdminSideBar>
+    <button id="showNav" class="btn btn-open-side-bar" @click="open">Open</button>
     <div class="container">
       <div class="admin-title">
         <h1>Admin</h1>
@@ -35,10 +36,9 @@
                 {{ user.isAdmin }}
               </td>
               <td>
-                <button class="btn btn-edit" @click='editUser(user.username); cancelButton();'>Edit</button> |
-                <router-link class="btn btn-details" :to="'user/' + user.username">Details</router-link> |
+                <button class="btn btn-edit" @click='editUser(user.username); cancelButton();'>Edit</button> <div class="separator">|</div>
+                <router-link class="btn btn-details" :to="'user/' + user.username">Details</router-link> <div class="separator">|</div>
                 <button class="btn btn-remove" @click='deleteUser(user.username); column();'>Delete</button>
-                <!-- <a href=""></a> -->
               </td>
             </tr>
           </tbody>
@@ -48,6 +48,7 @@
         <p>No users yeet.</p>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -81,6 +82,10 @@ export default {
     };
   },
   methods: {
+    open(){
+      document.getElementById("sideBar").style.width = "100%";
+      document.getElementById("showNav").style.opacity = "0";
+    },
     // sortBy(prop){
     //   this.userData.sort((a,b) =>  a[prop] < b[prop] ? -1 : 1 );
     // },
@@ -96,8 +101,6 @@ export default {
     },
     editUser(username) {
       // console.log(username)
-      // $('#app').css('width', '100vw')
-      // $('#app').css('max-width', '100%')
       document.querySelector('#app').style.position = 'absolute'
       this.$swal.fire({
         title: 'Edit User Role',
