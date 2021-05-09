@@ -3,12 +3,16 @@
 ## How to setup the servers.
 ``` 
 cd server
-npm i 
+npm install
 npm run serve
 ```
-### Create another bash inside vs code
+### Create another terminal inside VS Code 
 ```
-cd client/app
-npm i 
+mongod (May work without doing this step)
+```
+### Create another terminal inside VS Code 
+```
+cd client
+npm install 
 npm run serve
 ```
