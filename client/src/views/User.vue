@@ -442,6 +442,8 @@ export default {
 .top-main {
   display: flex;
   padding: 15px 20px 0;
+} .top-main h5, .comment-description {
+  word-break: break-all;
 }
 
 .postProfile {
