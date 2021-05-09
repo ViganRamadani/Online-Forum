@@ -281,9 +281,6 @@ exports.deleteCommentPost = async (req, res) => {
   let commentIndex;
   const obj = {
     _id: req.body.commentId,
-    // commentedBy: req.body.username,
-
-    // commentDescription: req.body.commentDescription,
   }
   // console.log(req.params.postId)
   await User.findOne({ "username": req.body.postAuthor }).then((user) => {

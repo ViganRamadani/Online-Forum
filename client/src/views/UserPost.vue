@@ -153,7 +153,7 @@ export default {
         commentId: cId,
         postAuthor: author,
       }
-      // console.log(pId, forum, cId, commentedBy, author)
+      console.log(pId, forum, cId, commentedBy, author)
       axios.put('http://localhost:3000/user/deleteComment/' + commentedBy + '&' + pId, obj)
       .then((newData) => {
         let index;
@@ -161,7 +161,7 @@ export default {
         for (var i = 0; i < newData.data.allPosts.length; i++) {
           if(newData.data.allPosts[i].postId == this.postData.postId){
             index = i
-            console.log(index)
+            // console.log(index)
             break;
           }
         }

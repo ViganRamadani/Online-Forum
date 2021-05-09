@@ -91,7 +91,7 @@
               <div>
                 <form enctype="multipart/form-data" ref="addPost" @submit.prevent="comment">
                   <div class="col-md-16 p-2 px-4" style="display: flex;">
-                    <textarea ref="commentArea" @input='resize($event)' id="comment" @keyup.enter="comment" v-model="commentForm.commentDescription" placeholder="Write your comment Here :]"></textarea>
+                    <textarea ref="commentArea" @input='resize($event)' id="comment" @keyup.enter="comment(post.forum, $event, post.postId);" v-model="commentForm.commentDescription" placeholder="Write your comment Here :]"></textarea>
                   </div>
                 </form>
               </div>
@@ -101,10 +101,10 @@
                 <router-link :to="'/user/' + comment.commentedBy ">{{ comment.commentedBy }}</router-link>
                 <h5 class="comment-description">{{ comment.commentDescription }}</h5>  
               </div>
-              <div v-if="comment.commentedBy == user.data.displayName || currentUser.isAdmin" class="dropdown-main">
+              <div v-if="comment.commentedBy == user.data.displayName || userData.isAdmin" class="dropdown-main">
                 <button class="toggle-menu">···</button>
                 <ul class="menu-list">
-                  <li class="menu-button"><button class="menu-remove" @click="deleteComment(comment._id)">Delete Comment</button></li>
+                  <li class="menu-button"><button class="menu-remove" @click="deleteComment(post.postId, post.forum, comment._id, comment.commentedBy, userData.username)">Delete Comment</button></li>
                 </ul>
               </div>
             </div>
@@ -214,24 +214,72 @@ export default {
                                       //@ ok found it it offsets the hight of the element because of the borders, try removing them completly.
       e.target.style.height = (e.target.scrollHeight) + 'px' ;
     },
-    async comment(e){
-      // console.log(e);
+    async comment(forum, e, postId){
+      console.log(forum, e);
       if (e.keyCode === 13 && !e.shiftKey || e.type == 'click') {
         e.preventDefault();
         // console.log("submit"),
+        // const pId = postId
         const obj = {
           commentedBy: this.user.data.displayName,
-          forumTopic: this.post.forum,
+          forumTopic: forum,
           commentDescription: this.commentForm.commentDescription
         };
         // console.log(obj);
-        axios.post('http://localhost:3000/user/comment/' + this.$route.params.username + "&" + this.post.postId , obj)
-          .then(res =>{
-            console.log(res.data);
-            this.post.comments.push(res.data)
+        axios.post('http://localhost:3000/user/comment/' + this.$route.params.username + "&" + postId, obj)
+        .then(res =>{
 
-          })
+          console.log(res.data);
+          // this.post.comments.push(res.data)
+          let postIndex;
+          console.log(this.userData);
+          for (let i = 0; i < this.userData.allPosts.length; i++) {
+            if (this.userData.allPosts[i].postId == postId) {
+              postIndex = i;
+              break;
+            }
+          }
+          console.log(postIndex);
+          this.userData.allPosts[postIndex].comments.push(res.data)
+          // for (let i = 0; i < this.userData.allPosts[postIndex].comments.length; i++) {
+          //   if (this.userData.allPosts[postIndex].comments[i] == res.data._id) {
+              
+          //   }
+          // }
+        })
       } 
+    },
+    deleteComment(pId, forum, cId, commentedBy, author) {
+      const obj = {
+        forumTopic: forum,
+        commentId: cId,
+        postAuthor: author,
+      }
+      console.log(pId, forum, cId, commentedBy, author)
+      axios.put('http://localhost:3000/user/deleteComment/' + commentedBy + '&' + pId, obj)
+      .then((newData) => {
+        let index;
+        // let commentIndex
+        console.log(newData, "NEW");
+        for (var i = 0; i < newData.data.allPosts.length; i++) {
+          if(newData.data.allPosts[i].postId == pId){
+            index = i
+            console.log(index)
+            break;
+          }
+        }
+        // for (let i = 0; i < newData.data.allPosts[index].comments.length; i++) {
+        //   if (newData.data.allposts[index].comments[i]._id == cId) {
+        //     // commentIndex = i
+            
+        //     break;
+        //   }
+        // }
+        // console.log(commentIndex)
+        // this.userData.allPosts[index].comments.splice(commentIndex, 1)
+
+        this.userData = newData.data;
+      })
     },
     like(postId, forum){
       const obj = {
