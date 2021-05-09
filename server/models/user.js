@@ -6,6 +6,10 @@ const likeSchema = mongoose.Schema({
   postId: { type: String, required: true },
 })
 
+const commentSchema = mongoose.Schema({ 
+  commentedBy: { type: String, required: false },
+  commentDescription: { type: String, required: false },
+})
 
 const postDetails = mongoose.Schema({
   postId: {
@@ -29,10 +33,7 @@ const postDetails = mongoose.Schema({
   },
   likes: [ likeSchema ],
   likeCount: { type: Number, required: true, default: 0 },
-  comments: [{
-    commentedBy: { type: String, required: true },
-    commentDescription: { type: String, required: true },
-  }],
+  comments: [ commentSchema ],
   commentCount: { type: Number, required: true, default: 0 },
 },
 { 

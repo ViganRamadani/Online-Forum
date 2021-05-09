@@ -1,6 +1,7 @@
 <template>
   <div class="admin-main">
     <AdminSideBar></AdminSideBar>
+    <button id="showNav" class="btn btn-open-side-bar" @click="open">Open</button>
     <div class="container">
       <div class="admin-title">
         <h1>Manage your Forums</h1>
@@ -95,6 +96,10 @@ export default {
     }
   },
   methods: {
+    open(){
+      document.getElementById("sideBar").style.width = "100%";
+      document.getElementById("showNav").style.opacity = "0";
+    },
     async createForum() {
       const formData = new FormData();
       formData.append('file', this.file);
@@ -290,6 +295,15 @@ export default {
     justify-content: center;
   }
   
+}
+
+@media screen and (max-width: 533px) {
+  .forum-container-main,.forum-container-main .forum-container {
+    width: 100%;
+  }
+  .forum-container-main #imgPreview {
+    width: 100%;
+  }
 }
 </style>
 <style scoped src="@/static/admin.css"></style>

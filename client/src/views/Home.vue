@@ -31,7 +31,7 @@
 // @ is an alias to /src
 import "firebase/auth";
 import { mapGetters } from "vuex";
-import axios from 'axios'
+import axios from 'axios';
 
 export default {
   name: "Home",
@@ -45,26 +45,27 @@ export default {
         description: '',
         imagePath: '',
       },
+      page: 1,
+      nextId: 4,
+      pageSize: 2,
+      visibleForums: {}
     };
   },
+  beforeMount(){
+    this.updateVisibleForums()
+  },
   methods: {
-    async addPost() {
-      const formData = new FormData();
-      formData.append('file', this.file);
-        try{
-          // console.log(this.file);
-          axios.post("http://localhost:3000/user/user/addImage", formData)
-            .then(res => {
-              this.postForm.imagePath = res.data.file.filename;
-              axios.post("http://localhost:3000/user/addPost/" + this.forumTopic, this.postForm)
-            })
-        } catch(err){
-          console.log(err);
-        }
+    updateVisibleForums() {
+      this.visibleForums = this.forums.sclice(this.currentPage * this.pageSize, (this.currentPage * this.pageSize) + this.pageSize);
+
+      if (this.visibleForums.length == 0 && this.currentPage > 0) {
+        this.updatePage(this.currentPage - 1);
+      }
     },
-    selectFile() {
-      this.file = this.$refs.file.files[0];
-    }
+    updatePage(pageNumber) {
+      this.currentPage = pageNumber
+      this.updateVisibleForums();
+    },
   },
   created() {
       try {

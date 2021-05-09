@@ -143,7 +143,7 @@ exports.likePost = async (req, res) => {
     await User.findOne({ "username": username }, (err, post) => {
       // console.log(post)
       for (let i = 0; i < post.allPosts.length; i++) {
-        if (post.allPosts[i].postId == req.params.postId) {
+        if (post.allPosts[i].postId == req.params.postId) { 
           index = i;
           break;
         }
@@ -213,7 +213,6 @@ exports.unlikePost = async (req, res) => {
           {
             "$pull": { ["allPosts." + index + ".likes"]: obj },
             "$inc": { ["allPosts." + index + ".likeCount"]: -1 },
-            returnOriginal: false
           },
           {
             returnOriginal: false //@ This ensures returning the updated Document Object
@@ -241,55 +240,30 @@ exports.commentPost = async (req, res) => {
     commentedBy: req.body.commentedBy,
     commentDescription: req.body.commentDescription,
   }
-  if (!req.body) {
+  if (!req.body || req.body.commentDescription == '') {
     return res.status(400).send({ message: 'Missing required Params!' })
   }
-  //@ Commenting in forum
-  await Forum.findOne({ "forumTopic": forumTopic }, (err, forum) => {
-    // console.log(forum)
-    for (let i = 0; i < forum.allPosts.length; i++) {
-      if (forum.allPosts[i]._id == req.params.postId) {
-        index = i;
+  await User.findOne({"username": username}).then(user => {
+    for (let i = 0; i < user.allPosts.length; i++) {
+      if (user.allPosts[i].postId == req.params.postId) {
+        userIndex = i;
         break;
       }
     }
-    // if (!forum.allPosts[index].comments) {
-    //   return commentSum += 1;
-    // }
-    commentSum = forum.allPosts[index].comments.length + 1
-  }).then(async () =>{
-    await Forum.findOneAndUpdate({ "forumTopic": forumTopic },
+    commentSum = user.allPosts[userIndex].comments.length + 1
+  }).then(async () => {
+    await User.findOneAndUpdate({ "username": username },
     {
-      "$push": { ["allPosts." + index + ".comments"]: obj },
-      "$set": { ["allPosts." + index + ".commentCount"]: commentSum },
+      "$push": { ["allPosts." + userIndex + ".comments"]: obj },
+      "$set": { ["allPosts." + userIndex + ".commentCount"]: commentSum },
+      ["allPosts." + userIndex + "likes"]: 0,
     },
-      { new: true, setDefaultsOnInsert: true, returnOriginal: false }
-    ).then(() =>{
-      User.findOne({"username": username}).then(user => {
-        for (let i = 0; i < user.allPosts.length; i++) {
-          if (user.allPosts[i].postId == req.params.postId) {
-            userIndex = i;
-            break;
-          }
-        }
-        commentSum = user.allPosts[userIndex].comments.length + 1
-      }).then(async () => {
-        await User.findOneAndUpdate({ "username": username },
-        {
-          "$push": { ["allPosts." + userIndex + ".comments"]: obj },
-          "$set": { ["allPosts." + userIndex + ".commentCount"]: commentSum },
-          ["allPosts." + userIndex + "likes"]: 0,
-          // comments: 1
-          // 'allPosts.comments':
-        },
-        {
-          returnOriginal: false 
-        }).then((userData) =>{
-          userComments = userData.allPosts[userIndex].comments
-          last = Object.keys(userComments)[Object.keys(userComments).length - 1] //@ gets the last index
-          res.send(userComments[last]);
-        })
-      })
+    {
+      returnOriginal: false 
+    }).then((userData) =>{
+      userComments = userData.allPosts[userIndex].comments
+      last = Object.keys(userComments)[Object.keys(userComments).length - 1] //@ gets the last index
+      res.send(userComments[last]);
     })
   }).catch(err =>{
     console.log(err)
@@ -299,9 +273,44 @@ exports.commentPost = async (req, res) => {
   
 }
 
-exports.deleteCommentPost = (req, res) => {
+exports.deleteCommentPost = async (req, res) => {
   if (!req.body) {
     return res.status(400).send({ message: 'Missing required Params!' })
   }
-
+  let postIndex
+  let commentIndex;
+  const obj = {
+    _id: req.body.commentId,
+  }
+  // console.log(req.params.postId)
+  await User.findOne({ "username": req.body.postAuthor }).then((user) => {
+    for (let i = 0; i < user.allPosts.length; i++) {
+      if (user.allPosts[i].postId == req.params.postId) {
+        postIndex = i;
+        // console.log("DONE", postIndex)
+        break;
+      }
+    }
+    // const commentLength = user.allPosts[postIndex].comments
+    for (var j = 0; j < user.allPosts[postIndex].comments.length; j++) {
+      if (user.allPosts[postIndex].comments[j]._id == req.body.commentId) {
+        commentIndex = j;
+        // console.log("DONE", commentIndex)
+        break;
+      }
+    }
+  }).then(async () => {
+    console.log(req.body.commentId)
+    await User.findOneAndUpdate({ "username": req.body.postAuthor },
+    {
+      "$pull": { ["allPosts." + postIndex + ".comments" ]: obj },
+    },
+    {
+      returnOriginal: false
+    })
+    .then(user => {
+      res.status(200).send(user)
+      console.log("DONE", user)
+    })
+  })
 }

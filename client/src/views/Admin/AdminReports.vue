@@ -1,6 +1,7 @@
 <template>
   <div class="admin-main">
     <AdminSideBar></AdminSideBar>
+    <button id="showNav" class="btn btn-open-side-bar" @click="open">Open</button>
     <div class="container">
       <!-- <div v-if="userData.length !== 0 && currentUser.isAdmin === true " class="users-table-main"> -->
       <div id="admin">
@@ -36,7 +37,7 @@
                 {{ report.reportReason }}
               </td>
               <td>
-                <button class="btn btn-remove" @click='removeReport(report._id)'>Remove Report</button> |
+                <button class="btn btn-remove" @click='removeReport(report._id)'>Remove Report</button> <div class="separator">|</div>
                 <button class="btn btn-remove" @click='removePost(report.author, report.postId, report._id)'>Remove Post</button>
               </td>
             </tr>
@@ -63,6 +64,10 @@ export default {
     }
   },
   methods: {
+    open(){
+      document.getElementById("sideBar").style.width = "100%";
+      document.getElementById("showNav").style.opacity = "0";
+    },
     async removePost(username, pId, id){
       // console.log(id)
       await axios.delete("http://localhost:3000/user/deletePost/" + username + '&' + pId)

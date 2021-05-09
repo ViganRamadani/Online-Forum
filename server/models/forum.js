@@ -1,5 +1,9 @@
 const mongoose = require('mongoose')
 // const userPosts = require('./userPost')
+const commentSchema = mongoose.Schema({
+  commentedBy: { type: String, required: false },
+  commentDescription: { type: String, required: false },
+})
 
 const userPostSchema = mongoose.Schema({
   title: { type: String, required: true },
@@ -11,10 +15,7 @@ const userPostSchema = mongoose.Schema({
     postId: { type: String, required: true },
   }],
   likeCount: { type: Number, required: true , default: 0 },
-  comments: [{ 
-    commentedBy:{ type: String, required: true }, 
-    commentDescription: { type: String, required: true},
-  }],
+  comments: [ commentSchema ],
   commentCount: { type: Number, required: true, default: 0 },
 }, { timestamps: true }
 )
