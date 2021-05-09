@@ -20,6 +20,12 @@ export default {
 
       }
     },
+    methods: {
+      open(){
+      document.getElementById("sideBar").style.width = "100%";
+      document.getElementById("showNav").style.opacity = "0";
+    },
+    },
     computed: {
     ...mapGetters({
       // map `this.user` to `this.$store.getters.user`
@@ -28,6 +34,7 @@ export default {
   },  
   }
 </script>
+<style scoped src="@/static/admin.css"></style>
 
 <style scoped>
 
